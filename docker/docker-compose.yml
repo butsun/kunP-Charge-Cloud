@@ -320,6 +320,29 @@ services:
     privileged: true
     network_mode: "host"
 
+  #################################################################################################
+  #################################### 以下为kp-cloud 充电模块 #########################################
+  #################################################################################################
+
+  kp-system:
+    build:
+      context: /docker/images/kp-system/
+    image: kp/kp-system:2.2.2
+    container_name: kp-system
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    #    ports:
+    #      - "9201:9201"
+    volumes:
+      # 配置文件
+      - /docker/kp-system/logs/:/kp-cloud/kp-system/logs
+      # skywalking 探针
+      - /docker/skywalking/agent/:/ruoyi/skywalking/agent
+    privileged: true
+    network_mode: "host"
+
+
 
 #################################################################################################
 #################################### 以下为扩展根据需求搭建 #########################################

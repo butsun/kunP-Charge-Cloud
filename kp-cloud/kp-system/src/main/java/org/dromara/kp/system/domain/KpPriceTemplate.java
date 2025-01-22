@@ -4,6 +4,8 @@ import org.dromara.common.tenant.core.TenantEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,11 +32,6 @@ public class KpPriceTemplate extends TenantEntity {
     private Long id;
 
     /**
-     * 充电站ID
-     */
-    private Long stationId;
-
-    /**
      * 价格模版编号
      */
     private Long priceCode;
@@ -42,27 +39,32 @@ public class KpPriceTemplate extends TenantEntity {
     /**
      * 时段起始时间点 6位 HHmmss
      */
-    private Date startTime;
+    private String startTime;
 
     /**
      * 价格类型:0、尖;1、峰;2、平;3、谷;
      */
-    private Long priceType;
+    private Short priceType;
 
     /**
      * 电价:XXXX.XXXX
      */
-    private Long elecPrice;
+    private BigDecimal elecPrice;
 
     /**
      * 服务费单价:XXXX.XXXX
      */
-    private Long servicePrice;
+    private BigDecimal servicePrice;
 
     /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 主节点 1
+     */
+    private Short mainPoint;
 
     /**
      * 数据状态:0、正常;1、删除

@@ -28,12 +28,6 @@ public class KpPriceTemplateBo extends BaseEntity {
     private Long id;
 
     /**
-     * 充电站ID
-     */
-    @NotBlank(message = "充电站ID不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long stationId;
-
-    /**
      * 价格模版编号
      */
     private Long priceCode;
@@ -42,7 +36,7 @@ public class KpPriceTemplateBo extends BaseEntity {
      * 时段起始时间点 6位 HHmmss
      */
     @NotNull(message = "时段起始时间点 6位 HHmmss不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Date startTime;
+    private String startTime;
 
     /**
      * 价格类型:0、尖;1、峰;2、平;3、谷;

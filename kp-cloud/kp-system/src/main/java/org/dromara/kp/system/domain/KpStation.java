@@ -93,6 +93,11 @@ public class KpStation extends TenantEntity {
     private String remark;
 
     /**
+     * 价格模版code
+     */
+    private Long priceCode;
+
+    /**
      * 数据状态:0、正常;1、删除
      */
     @TableLogic

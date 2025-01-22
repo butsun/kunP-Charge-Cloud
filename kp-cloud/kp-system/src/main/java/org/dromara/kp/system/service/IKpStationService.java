@@ -66,4 +66,11 @@ public interface IKpStationService {
      * @return 是否删除成功
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     * 查找是否有站点关联价格模版
+     * @param priceCode priceCode
+     * @return List
+     */
+    List<Long> getLinkStations(Long priceCode);
 }

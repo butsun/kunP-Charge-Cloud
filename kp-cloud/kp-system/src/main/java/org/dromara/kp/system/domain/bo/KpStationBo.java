@@ -93,5 +93,10 @@ public class KpStationBo extends BaseEntity {
      */
     private String remark;
 
+    /**
+     * 价格模版code
+     */
+    private Long priceCode;
+
 
 }

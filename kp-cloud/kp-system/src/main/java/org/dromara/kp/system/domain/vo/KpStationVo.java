@@ -108,6 +108,13 @@ public class KpStationVo implements Serializable {
     @ExcelProperty(value = "停车费")
     private String parkFee;
 
+
+    /**
+     * 价格模版code
+     */
+    @ExcelProperty(value = "价格模版code")
+    private Long priceCode;
+
     /**
      * 备注信息
      */

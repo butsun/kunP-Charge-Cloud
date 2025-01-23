@@ -382,6 +382,8 @@
         <module>ruoyi-api</module>
         <module>ruoyi-common</module>
         <module>ruoyi-example</module>
+        <module>kp-cloud</module>
+        <module>kp-protocol</module>
     </modules>
     <packaging>pom</packaging>
 

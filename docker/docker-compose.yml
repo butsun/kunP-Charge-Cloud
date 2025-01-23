@@ -344,6 +344,25 @@ services:
 
 
 
+  kp-protocol:
+    build:
+      context: /docker/images/kp-protocol/
+    image: kp/kp-protocol:2.2.2
+    container_name: kp-protocol
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    #    ports:
+    #      - "9201:9201"
+    volumes:
+      # 配置文件
+      - /docker/kp-protocol/logs/:/kp-cloud/kp-protocol/logs
+      # skywalking 探针
+      - /docker/skywalking/agent/:/ruoyi/skywalking/agent
+    privileged: true
+    network_mode: "host"
+
+
 #################################################################################################
 #################################### 以下为扩展根据需求搭建 #########################################
 #################################################################################################

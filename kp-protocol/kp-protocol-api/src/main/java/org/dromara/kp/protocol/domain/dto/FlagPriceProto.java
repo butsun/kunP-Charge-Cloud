@@ -1,0 +1,14 @@
+package org.dromara.kp.protocol.domain.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+@Builder
+public class FlagPriceProto {
+    private PeriodProto.PricingModelFlag flag;
+    private String elec;
+    private String serv;
+}

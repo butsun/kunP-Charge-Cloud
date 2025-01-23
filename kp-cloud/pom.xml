@@ -10,6 +10,7 @@
 
     <modules>
         <module>kp-system</module>
+        <module>kp-business</module>
     </modules>
 
     <artifactId>kp-cloud</artifactId>

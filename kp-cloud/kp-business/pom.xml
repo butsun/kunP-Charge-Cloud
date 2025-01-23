@@ -16,7 +16,6 @@
     </description>
 
     <dependencies>
-
         <dependency>
             <groupId>org.dromara</groupId>
             <artifactId>ruoyi-common-nacos</artifactId>
@@ -31,11 +30,6 @@
         <dependency>
             <groupId>org.dromara</groupId>
             <artifactId>ruoyi-common-log</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-dict</artifactId>
         </dependency>
 
         <dependency>
@@ -60,50 +54,9 @@
 
         <dependency>
             <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-seata</artifactId>
+            <artifactId>kp-api-business</artifactId>
+            <version>2.2.2</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-idempotent</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-tenant</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-translation</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-sensitive</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-encrypt</artifactId>
-        </dependency>
-
-        <!-- RuoYi Api System -->
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-api-system</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-api-resource</artifactId>
-        </dependency>
-
     </dependencies>
 
     <build>

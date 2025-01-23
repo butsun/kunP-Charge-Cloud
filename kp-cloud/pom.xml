@@ -11,6 +11,7 @@
     <modules>
         <module>kp-system</module>
         <module>kp-business</module>
+        <module>kp-api-business</module>
     </modules>
 
     <artifactId>kp-cloud</artifactId>

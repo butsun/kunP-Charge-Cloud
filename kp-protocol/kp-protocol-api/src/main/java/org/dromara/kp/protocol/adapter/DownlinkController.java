@@ -7,6 +7,7 @@ package org.dromara.kp.protocol.adapter;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.dromara.kp.protocol.domain.ProtocolSession;
 import org.dromara.kp.protocol.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.provider.ProtocolSessionRegistryProvider;
@@ -26,10 +27,9 @@ import java.util.UUID;
  *
  * @author baigod
  */
-@RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 @Slf4j
+@DubboService
 public class DownlinkController {
 
     @Value("${api.timeout.onDownlink:3000}")
@@ -38,15 +38,14 @@ public class DownlinkController {
     @Resource
     ProtocolSessionRegistryProvider protocolSessionRegistryProvider;
 
-    @PostMapping(value = "/onDownlink", consumes = "application/x-protobuf", produces = "application/x-protobuf")
+    @PostMapping(value = "/onDownlink")
     public DeferredResult<ResponseEntity<String>> onDownlink(@RequestBody DownlinkRequestMessage downlinkMsg) {
         log.debug("收到REST下行请求 {}", downlinkMsg);
 
         final DeferredResult<ResponseEntity<String>> response = new DeferredResult<>(onDownlinkTimeout,
                 ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build());
 
-//        UUID protocolSessionId = new UUID(downlinkMsg.getSessionIdMSB(), downlinkMsg.getSessionIdLSB());
-        UUID protocolSessionId = new UUID(0L, 0L);
+        UUID protocolSessionId = new UUID(downlinkMsg.getSessionIdMSB(), downlinkMsg.getSessionIdLSB());
 
         ProtocolSession protocolSession = protocolSessionRegistryProvider.get(protocolSessionId);
 

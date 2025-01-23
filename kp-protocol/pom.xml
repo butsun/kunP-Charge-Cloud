@@ -13,6 +13,7 @@
         <module>kp-protocol-yunkuaichong</module>
         <module>kp-protocol-api</module>
         <module>kp-infrastructure-util</module>
+        <module>kp-protocol-entity</module>
     </modules>
 
     <artifactId>kp-protocol</artifactId>

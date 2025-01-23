@@ -8,7 +8,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.kp.protocol.cfg.ForwarderCfg;
 import org.dromara.kp.protocol.cfg.ProtocolCfg;
 import org.dromara.kp.protocol.cfg.TcpCfg;
 import org.dromara.kp.protocol.cfg.enums.ForwarderType;
@@ -34,6 +33,7 @@ public abstract class ProtocolBootstrap implements HealthIndicator {
 
     protected Listener listener;
 
+    @Resource
     protected Forwarder forwarder;
 
     @PostConstruct
@@ -43,17 +43,6 @@ public abstract class ProtocolBootstrap implements HealthIndicator {
         log.info("Protocol Service [{}] Initializing...", protocolName);
 
         protocolCfg = protocolContext.getProtocolsConfigProvider().loadConfig(protocolName);
-
-        ForwarderCfg forwarderCfg = protocolCfg.getForwarder();
-
-        if (forwarderCfg.getType() == ForwarderType.memory) {
-
-
-        } else if (forwarderCfg.getType() == ForwarderType.kafka) {
-
-        } else {
-            throw new IllegalArgumentException("Unknown Forwarder type: " + forwarderCfg.getType());
-        }
 
         TcpCfg tcpCfg = protocolCfg.getListener().getTcp();
 

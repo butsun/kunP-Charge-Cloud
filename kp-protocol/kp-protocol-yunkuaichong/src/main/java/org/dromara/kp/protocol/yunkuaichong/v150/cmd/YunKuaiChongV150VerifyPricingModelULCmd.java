@@ -19,6 +19,10 @@ import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
 
+import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.FAILURE_BYTE;
+import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.SUCCESS_BYTE;
+import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.VERIFY_PRICING_ACK;
+
 
 /**
  * 云快充1.5.0计费模型验证请求
@@ -53,7 +57,22 @@ public class YunKuaiChongV150VerifyPricingModelULCmd extends YunKuaiChongUplinkC
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(heartBeatRequest.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
                 .verifyPricingRequest(heartBeatRequest)
                 .build();
-        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
+//        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
+
+        //TODO 调试用   必须登录成功
+        YunKuaiChongUplinkMessage requestData = JacksonUtil.fromBytes(uplinkQueueMessage.getRequestData(), YunKuaiChongUplinkMessage.class);
+
+        // 创建ACK消息体7字节桩编号+2字节计费模型编号+1字节验证结果
+        ByteBuf verifyPricingAckMsgBody = Unpooled.buffer(10);
+        verifyPricingAckMsgBody.writeBytes(pileCodeBytes);
+        verifyPricingAckMsgBody.writeBytes(encodePricingId(pricingModelId));
+        verifyPricingAckMsgBody.writeByte(SUCCESS_BYTE);
+
+        encodeAndWriteFlush(VERIFY_PRICING_ACK,
+            requestData.getSequenceNumber(),
+            requestData.getEncryptionFlag(),
+            verifyPricingAckMsgBody,
+            tcpSession);
     }
 }

@@ -9,6 +9,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.dromara.common.json.utils.JsonUtils;
 import org.dromara.kp.infrastructure.util.codec.BCDUtil;
 import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.infrastructure.util.trace.TracerContextUtil;
@@ -149,7 +150,9 @@ public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe 
             .gunRunStatusProto(gunRunStatusProto)
             .build();
 
-        tcpSession.getForwarder().sendMessage(gunRunStatusMessage);
+//        tcpSession.getForwarder().sendMessage(gunRunStatusMessage);
+
+        log.debug("设备实时数据  {}", JsonUtils.toJsonString(gunRunStatusProto));
 
         if (StringUtils.isNotBlank(tradeNo)) {
 
@@ -172,7 +175,8 @@ public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe 
                 .chargingProgressProto(chargingProgressProto)
                 .build();
 
-            tcpSession.getForwarder().sendMessage(chargingProgressMessage);
+            log.debug("流水实时数据  {}", JsonUtils.toJsonString(chargingProgressProto));
+//            tcpSession.getForwarder().sendMessage(chargingProgressMessage);
         }
     }
 

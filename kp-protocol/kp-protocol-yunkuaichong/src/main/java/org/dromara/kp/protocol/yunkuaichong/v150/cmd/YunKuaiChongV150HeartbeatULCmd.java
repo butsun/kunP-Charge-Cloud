@@ -58,7 +58,7 @@ public class YunKuaiChongV150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(heartBeatRequest.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
                 .heartBeatRequest(heartBeatRequest)
                 .build();
-        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
+//        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
         pingAck(tcpSession, pileCodeBytes, gunCodeByte);
     }

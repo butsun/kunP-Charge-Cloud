@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,8 +9,8 @@ import org.dromara.kp.infrastructure.util.codec.BCDUtil;
 import org.dromara.kp.infrastructure.util.codec.CP56Time2aUtil;
 import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.domain.dto.TransactionRecord;
-import org.dromara.kp.protocol.domain.dto.UplinkQueueMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.TransactionRecord;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
@@ -26,7 +23,7 @@ import java.time.Instant;
 /**
  * 云快充1.5.0 交易记录
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 @YunKuaiChongCmd(0x3B)

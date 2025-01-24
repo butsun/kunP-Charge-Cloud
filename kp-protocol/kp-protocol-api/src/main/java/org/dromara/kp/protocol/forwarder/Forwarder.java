@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.forwarder;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -18,7 +15,7 @@ import java.util.function.BiConsumer;
  *
  *
  *  改用dubbo
- * @author baigod
+ * @author but
  */
 @Slf4j
 public abstract class Forwarder {

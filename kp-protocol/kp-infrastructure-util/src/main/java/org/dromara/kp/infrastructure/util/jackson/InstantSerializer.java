@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.jackson;
 
 import java.time.format.DateTimeFormatter;
@@ -9,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Instant 序列化
  *
- * @author baigod
+ * @author but
  */
 public class InstantSerializer extends com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer {
     public static final InstantSerializer INSTANCE = new InstantSerializer();

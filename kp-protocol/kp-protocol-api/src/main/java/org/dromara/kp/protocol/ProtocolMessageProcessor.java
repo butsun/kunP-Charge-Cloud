@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +12,7 @@ import org.dromara.kp.protocol.forwarder.Forwarder;
 import java.util.UUID;
 
 /**
- * @author baigod
+ * @author but
  */
 @Slf4j
 public abstract class ProtocolMessageProcessor {

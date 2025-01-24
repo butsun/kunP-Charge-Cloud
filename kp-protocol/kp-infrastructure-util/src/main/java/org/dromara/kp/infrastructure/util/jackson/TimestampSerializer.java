@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -15,7 +12,7 @@ import java.sql.Timestamp;
 /**
  * timestamp 序列化
  *
- * @author baigod
+ * @author but
  */
 public class TimestampSerializer extends StdSerializer<Timestamp> {
     public static final TimestampSerializer INSTANCE = new TimestampSerializer();

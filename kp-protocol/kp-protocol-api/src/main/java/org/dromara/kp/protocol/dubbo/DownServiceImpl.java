@@ -1,6 +1,7 @@
 package org.dromara.kp.protocol.dubbo;
 
 import org.apache.dubbo.config.annotation.DubboService;
+import org.dromara.kp.business.api.DownlinkService;
 import org.dromara.kp.business.api.UplinkService;
 
 /**
@@ -9,8 +10,8 @@ import org.dromara.kp.business.api.UplinkService;
  * @author: sunjun
  * @create: 17:33
  **/
-@DubboService
-public class DownServiceImpl implements UplinkService {
+//@DubboService
+public class DownServiceImpl implements DownlinkService {
 
 
 }

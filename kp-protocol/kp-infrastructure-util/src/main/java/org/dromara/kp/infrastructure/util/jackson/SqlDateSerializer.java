@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -15,7 +12,7 @@ import java.sql.Date;
 /**
  * sqlDate序列化
  *
- * @author baigod
+ * @author but
  */
 public class SqlDateSerializer extends StdSerializer<Date> {
     public static final SqlDateSerializer INSTANCE = new SqlDateSerializer();

@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.listener.tcp;
 
 import io.netty.buffer.ByteBuf;
@@ -11,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.dromara.kp.protocol.domain.ProtocolSession;
 import org.dromara.kp.protocol.domain.SessionCloseReason;
-import org.dromara.kp.protocol.domain.dto.DownlinkRequestMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.listener.tcp.enums.SequenceNumberLength;
 
 
@@ -22,7 +19,7 @@ import java.util.function.Consumer;
 /**
  * 设备会话
  *
- * @author baigod
+ * @author but
  */
 @EqualsAndHashCode(callSuper = true)
 @Getter

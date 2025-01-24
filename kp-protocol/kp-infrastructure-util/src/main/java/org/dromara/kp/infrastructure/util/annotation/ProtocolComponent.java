@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.annotation;
 
 import org.springframework.context.annotation.Condition;
@@ -17,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author baigod
+ * @author but
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

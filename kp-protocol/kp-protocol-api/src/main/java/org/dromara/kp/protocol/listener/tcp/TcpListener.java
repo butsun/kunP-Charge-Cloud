@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.listener.tcp;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -24,7 +21,7 @@ import org.dromara.kp.protocol.listener.Listener;
 import org.springframework.boot.actuate.health.Health;
 
 /**
- * @author baigod
+ * @author but
  */
 @Slf4j
 public class TcpListener extends Listener {

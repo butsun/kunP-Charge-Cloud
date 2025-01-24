@@ -1,17 +1,14 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong;
 
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.domain.dto.UplinkQueueMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 
 /**
- * @author baigod
+ * @author but
  */
 @Slf4j
 public abstract class YunKuaiChongUplinkCmdExe extends AbstractYunKuaiChongCmdExe {

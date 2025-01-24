@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.listener.tcp;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,10 +17,9 @@ import org.dromara.kp.protocol.domain.ListenerToHandlerMsg;
 import org.dromara.kp.protocol.domain.ProtocolUplinkMsg;
 import org.dromara.kp.protocol.domain.SessionCloseReason;
 import org.dromara.kp.protocol.domain.SessionToHandlerMsg;
-import org.dromara.kp.protocol.domain.dto.DownlinkRequestMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.listener.ChannelHandlerParameter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.function.Supplier;

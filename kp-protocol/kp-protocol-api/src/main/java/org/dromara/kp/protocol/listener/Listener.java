@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.listener;
 
 import lombok.Getter;
@@ -11,7 +8,7 @@ import org.springframework.boot.actuate.health.Health;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author baigod
+ * @author but
  */
 public abstract class Listener {
 

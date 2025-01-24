@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
 import cn.hutool.core.util.RandomUtil;
@@ -15,8 +12,8 @@ import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.infrastructure.util.mdc.MDCUtils;
 import org.dromara.kp.infrastructure.util.trace.TracerContextUtil;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.domain.dto.LoginRequest;
-import org.dromara.kp.protocol.domain.dto.UplinkQueueMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.LoginRequest;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.listener.tcp.enums.SequenceNumberLength;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
@@ -30,8 +27,8 @@ import java.util.concurrent.TimeUnit;
 import static org.dromara.kp.infrastructure.util.config.ThreadPoolConfiguration.PROTOCOL_SESSION_SCHEDULED;
 import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.FAILURE_BYTE;
 import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.SUCCESS_BYTE;
-import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.LOGIN_ACK;
-import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.SYNC_TIME;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.LOGIN_ACK;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.SYNC_TIME;
 
 /**
  * 云快充1.5.0充电桩登录认证

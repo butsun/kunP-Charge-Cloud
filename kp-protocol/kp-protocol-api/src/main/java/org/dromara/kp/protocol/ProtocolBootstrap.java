@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol;
 
 import jakarta.annotation.PostConstruct;
@@ -21,7 +18,7 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import static org.springframework.boot.actuate.health.Status.UP;
 
 /**
- * @author baigod
+ * @author but
  */
 @Slf4j
 public abstract class ProtocolBootstrap implements HealthIndicator {
@@ -33,7 +30,7 @@ public abstract class ProtocolBootstrap implements HealthIndicator {
 
     protected Listener listener;
 
-    @Resource
+//    @Resource
     protected Forwarder forwarder;
 
     @PostConstruct

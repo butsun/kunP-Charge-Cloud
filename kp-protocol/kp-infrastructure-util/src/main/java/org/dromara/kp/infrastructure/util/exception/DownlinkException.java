@@ -1,11 +1,8 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.exception;
 
 /**
- * @author baigod
+ * @author but
  */
 public class DownlinkException extends RuntimeException {
 

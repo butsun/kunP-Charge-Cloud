@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -15,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * 时间类型序列化工具
  *
- * @author baigod
+ * @author but
  */
 public class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
     public static final LocalDateTimeSerializer INSTANCE = new LocalDateTimeSerializer();

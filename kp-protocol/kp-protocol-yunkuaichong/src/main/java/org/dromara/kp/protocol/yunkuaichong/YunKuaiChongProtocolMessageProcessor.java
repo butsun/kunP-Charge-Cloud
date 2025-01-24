@@ -1,11 +1,7 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong;
 
 import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ObjectUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +11,11 @@ import org.dromara.kp.protocol.ProtocolContext;
 import org.dromara.kp.protocol.ProtocolMessageProcessor;
 import org.dromara.kp.protocol.domain.ListenerToHandlerMsg;
 import org.dromara.kp.protocol.domain.SessionToHandlerMsg;
-import org.dromara.kp.protocol.domain.dto.DownlinkRequestMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.forwarder.Forwarder;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
-import org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;

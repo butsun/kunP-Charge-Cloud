@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.listener.tcp.handler;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -14,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 心跳检测
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 @RequiredArgsConstructor

@@ -1,26 +1,23 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.domain.dto.RemoteStopChargingRequest;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.RemoteStopChargingRequest;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDownlinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
 
-import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.REMOTE_START_CHARGING;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.REMOTE_START_CHARGING;
 
 
 /**
  * 云快充1.5.0 运营平台远程停机
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 @YunKuaiChongCmd(0x36)

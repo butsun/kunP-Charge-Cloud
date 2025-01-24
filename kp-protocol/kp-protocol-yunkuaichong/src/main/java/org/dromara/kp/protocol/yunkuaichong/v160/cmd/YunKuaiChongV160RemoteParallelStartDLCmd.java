@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v160.cmd;
 
 import io.netty.buffer.ByteBuf;
@@ -10,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.kp.infrastructure.util.codec.BCDUtil;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.domain.dto.RemoteStartChargingRequest;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.RemoteStartChargingRequest;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDownlinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage;
@@ -20,12 +17,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.REMOTE_START_CHARGING;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.REMOTE_START_CHARGING;
 
 /**
  * 云快充1.6.0 运营平台远程控制并充启机
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 @YunKuaiChongCmd(0xA4)

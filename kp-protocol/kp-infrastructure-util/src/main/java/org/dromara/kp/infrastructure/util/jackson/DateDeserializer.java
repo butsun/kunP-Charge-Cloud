@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -17,7 +14,7 @@ import java.util.Date;
 /**
  * 时间反序列化
  *
- * @author baigod
+ * @author but
  */
 public class DateDeserializer extends JsonDeserializer<Date> {
     public static final DateDeserializer INSTANCE = new DateDeserializer();

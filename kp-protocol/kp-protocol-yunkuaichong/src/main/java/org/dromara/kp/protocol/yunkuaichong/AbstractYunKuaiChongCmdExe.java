@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong;
 
 import cn.hutool.core.text.CharSequenceUtil;
@@ -9,10 +6,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.kp.infrastructure.util.codec.BCDUtil;
-import org.dromara.kp.protocol.domain.dto.PeriodProto;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.listener.tcp.enums.SequenceNumberLength;
-import org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,7 +22,7 @@ import static org.dromara.kp.infrastructure.util.codec.ByteUtil.toBytes;
 
 
 /**
- * @author baigod
+ * @author but
  */
 public class AbstractYunKuaiChongCmdExe {
 

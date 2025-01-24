@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.config;
 
 
@@ -28,7 +25,7 @@ import static org.dromara.kp.infrastructure.util.JCPPHashUtil.hash;
 
 
 /**
- * @author baigod
+ * @author but
  */
 @Component
 @Slf4j

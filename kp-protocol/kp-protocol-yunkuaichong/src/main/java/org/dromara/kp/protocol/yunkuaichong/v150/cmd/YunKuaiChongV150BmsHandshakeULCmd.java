@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
 import cn.hutool.core.util.HexUtil;
@@ -22,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 云快充1.5.0 充电握手
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 @YunKuaiChongCmd(0x15)

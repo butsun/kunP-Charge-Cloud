@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
 
@@ -12,22 +9,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.dromara.kp.infrastructure.util.codec.BCDUtil;
 import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.domain.dto.UplinkQueueMessage;
-import org.dromara.kp.protocol.domain.dto.VerifyPricingRequest;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.VerifyPricingRequest;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
 
-import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.FAILURE_BYTE;
 import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.SUCCESS_BYTE;
-import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.VERIFY_PRICING_ACK;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.VERIFY_PRICING_ACK;
 
 
 /**
  * 云快充1.5.0计费模型验证请求
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 @YunKuaiChongCmd(0x05)

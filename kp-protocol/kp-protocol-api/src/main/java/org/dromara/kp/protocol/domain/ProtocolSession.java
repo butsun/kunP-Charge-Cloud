@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.domain;
 
 
@@ -10,7 +7,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.kp.protocol.domain.dto.DownlinkRequestMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.forwarder.Forwarder;
 
 
@@ -26,7 +23,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.function.Function;
 
 /**
- * @author baigod
+ * @author but
  */
 @Getter
 @Slf4j

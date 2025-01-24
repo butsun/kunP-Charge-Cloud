@@ -1,17 +1,14 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.domain.dto.FlagPriceProto;
-import org.dromara.kp.protocol.domain.dto.PeriodProto;
-import org.dromara.kp.protocol.domain.dto.PricingModelProto;
-import org.dromara.kp.protocol.domain.dto.SetPricingRequest;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.FlagPriceProto;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.SetPricingRequest;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDownlinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage;
@@ -22,14 +19,14 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
-import static org.dromara.kp.protocol.domain.dto.PeriodProto.PricingModelFlag.*;
-import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.QUERY_PRICING_ACK;
-import static org.dromara.kp.protocol.yunkuaichong.enums.YunKuaiChongDownlinkCmdEnum.SET_PRICING;
+import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto.PricingModelFlag.*;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.QUERY_PRICING_ACK;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.SET_PRICING;
 
 /**
  * 云快充1.5.0 计费模型设置
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 @YunKuaiChongCmd(0x58)

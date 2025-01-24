@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.jackson;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -22,7 +19,7 @@ import java.util.Date;
 /**
  * 类型转换
  *
- * @author baigod
+ * @author but
  */
 public class DataTypeModule extends SimpleModule {
     public static final DataTypeModule INSTANCE = new DataTypeModule();

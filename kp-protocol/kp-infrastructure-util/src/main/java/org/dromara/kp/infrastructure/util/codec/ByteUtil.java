@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.codec;
 
 import cn.hutool.core.io.checksum.crc16.CRC16Modbus;
@@ -13,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
- * @author baigod
+ * @author but
  */
 public class ByteUtil {
 

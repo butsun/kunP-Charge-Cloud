@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.config;
 
 import jakarta.annotation.PreDestroy;
@@ -14,7 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author baigod
+ * @author but
  */
 @Configuration
 public class ThreadPoolConfiguration {

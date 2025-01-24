@@ -11,6 +11,6 @@ import org.dromara.kp.business.api.UplinkService;
  **/
 
 
-@DubboService
+//@DubboService
 public class UplinkServiceImpl implements UplinkService {
 }

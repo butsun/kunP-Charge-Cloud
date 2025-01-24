@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.listener.tcp.decoder;
 
 import cn.hutool.core.util.HexUtil;
@@ -25,7 +22,7 @@ import static org.dromara.kp.protocol.listener.tcp.enums.ReadAct.CONTINUE;
 /**
  * JCPP长度域拆包
  *
- * @author baigod
+ * @author but
  */
 @Slf4j
 public class JCPPLengthFieldBasedFrameDecoder extends ByteToMessageDecoder {

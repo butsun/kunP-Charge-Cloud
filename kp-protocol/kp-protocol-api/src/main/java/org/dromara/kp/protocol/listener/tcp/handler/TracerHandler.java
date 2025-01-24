@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.listener.tcp.handler;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -11,7 +8,7 @@ import org.dromara.kp.infrastructure.util.trace.TracerContextUtil;
 
 
 /**
- * @author baigod
+ * @author but
  */
 public class TracerHandler extends ChannelInboundHandlerAdapter {
     @Override

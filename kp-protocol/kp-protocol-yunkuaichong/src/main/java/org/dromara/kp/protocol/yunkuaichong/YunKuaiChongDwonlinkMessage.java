@@ -1,19 +1,16 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.dromara.kp.protocol.domain.dto.DownlinkRequestMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * @author baigod
+ * @author but
  */
 @Data
 @Accessors(chain = true)

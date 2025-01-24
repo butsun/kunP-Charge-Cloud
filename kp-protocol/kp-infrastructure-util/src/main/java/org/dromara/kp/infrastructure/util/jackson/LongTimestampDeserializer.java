@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.infrastructure.util.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -14,7 +11,7 @@ import java.time.ZoneId;
 
 /**
  * 13位时间戳反序列化器
- * @author baigod
+ * @author but
  */
 public class LongTimestampDeserializer extends JsonDeserializer<Long> {
 

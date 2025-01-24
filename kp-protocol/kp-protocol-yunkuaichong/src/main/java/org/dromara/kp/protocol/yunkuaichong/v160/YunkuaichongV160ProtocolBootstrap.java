@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.yunkuaichong.v160;
 
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +8,7 @@ import org.dromara.kp.protocol.ProtocolMessageProcessor;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongProtocolMessageProcessor;
 
 /**
- * @author baigod
+ * @author but
  */
 
 @ProtocolComponent(YunkuaichongV160ProtocolBootstrap.PROTOCOL_NAME)

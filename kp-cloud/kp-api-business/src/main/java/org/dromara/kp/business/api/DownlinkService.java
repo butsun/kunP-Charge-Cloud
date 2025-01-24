@@ -6,5 +6,5 @@ package org.dromara.kp.business.api;
  * @author: sunjun
  * @create: 17:30
  **/
-public class DownlinkService {
+public interface DownlinkService {
 }

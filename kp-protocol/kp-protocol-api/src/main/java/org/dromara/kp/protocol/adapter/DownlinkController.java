@@ -1,7 +1,4 @@
-/**
- * 抖音关注：程序员三丙
- * 知识星球：https://t.zsxq.com/j9b21
- */
+
 package org.dromara.kp.protocol.adapter;
 
 import jakarta.annotation.Resource;
@@ -9,15 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.dromara.kp.protocol.domain.ProtocolSession;
-import org.dromara.kp.protocol.domain.dto.DownlinkRequestMessage;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.provider.ProtocolSessionRegistryProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.UUID;
@@ -25,11 +20,11 @@ import java.util.UUID;
 /**
  * TODO 改成dubbo
  *
- * @author baigod
+ * @author but
  */
 @RequiredArgsConstructor
 @Slf4j
-@DubboService
+//@DubboService
 public class DownlinkController {
 
     @Value("${api.timeout.onDownlink:3000}")

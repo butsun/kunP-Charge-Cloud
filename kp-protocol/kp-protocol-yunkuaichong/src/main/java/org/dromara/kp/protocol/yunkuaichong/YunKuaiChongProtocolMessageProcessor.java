@@ -33,11 +33,10 @@ public class YunKuaiChongProtocolMessageProcessor extends ProtocolMessageProcess
 
     public YunKuaiChongProtocolMessageProcessor(Forwarder forwarder, ProtocolContext protocolContext) {
         super(forwarder, protocolContext);
-
         Set<Class<?>> cmdClasses = ClassUtil.scanPackageByAnnotation(ClassUtil.getPackage(this.getClass()), YunKuaiChongCmd.class);
         cmdClasses.stream().filter(YunKuaiChongUplinkCmdExe.class::isAssignableFrom)
                 .forEach(clazz -> {
-                    int cmd = clazz.getAnnotation(YunKuaiChongCmd.class).value();
+                    int cmd = clazz.getAnnotation(YunKuaiChongCmd.class).upCmd().getCmd();
                     try {
                         YunKuaiChongUplinkCmdExe yunKuaiChongUplinkCmdExe = (YunKuaiChongUplinkCmdExe) clazz.getDeclaredConstructor().newInstance();
                         uplinkCmdExeMap.put(cmd, yunKuaiChongUplinkCmdExe);
@@ -51,7 +50,7 @@ public class YunKuaiChongProtocolMessageProcessor extends ProtocolMessageProcess
 
         cmdClasses.stream().filter(YunKuaiChongDownlinkCmdExe.class::isAssignableFrom)
                 .forEach(clazz -> {
-                    int cmd = clazz.getAnnotation(YunKuaiChongCmd.class).value();
+                    int cmd = clazz.getAnnotation(YunKuaiChongCmd.class).downCmd().getCmd();
                     try {
                         YunKuaiChongDownlinkCmdExe yunKuaiChongDownlinkCmdExe = (YunKuaiChongDownlinkCmdExe) clazz.getDeclaredConstructor().newInstance();
                         downlinkCmdExeMap.put(cmd, yunKuaiChongDownlinkCmdExe);

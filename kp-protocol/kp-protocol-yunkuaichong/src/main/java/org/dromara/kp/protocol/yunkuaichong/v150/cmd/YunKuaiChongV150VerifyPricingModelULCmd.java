@@ -15,6 +15,7 @@ import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.SUCCESS_BYTE;
 import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.VERIFY_PRICING_ACK;
@@ -26,7 +27,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x05)
+@YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.VERIFY_PRICING_MODEL)
 public class YunKuaiChongV150VerifyPricingModelULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override

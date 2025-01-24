@@ -1,6 +1,8 @@
 
 package org.dromara.kp.protocol.yunkuaichong;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.protocol.ProtocolContext;
@@ -24,6 +26,10 @@ public abstract class YunKuaiChongUplinkCmdExe extends AbstractYunKuaiChongCmdEx
                 .requestData(JacksonUtil.writeValueAsBytes(yunKuaiChongUplinkMessage))
                 .messageKey(messageKey)
                 .protocolName(tcpSession.getProtocolName());
+    }
+
+    protected ByteBuf getMessageByteBuf(byte[] msgBody) {
+        return Unpooled.copiedBuffer(msgBody);
     }
 
 }

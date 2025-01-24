@@ -24,7 +24,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x34)
+@YunKuaiChongCmd(downCmd = REMOTE_START_CHARGING)
 public class YunKuaiChongV150RemoteStartDLCmd extends YunKuaiChongDownlinkCmdExe {
 
     @Override

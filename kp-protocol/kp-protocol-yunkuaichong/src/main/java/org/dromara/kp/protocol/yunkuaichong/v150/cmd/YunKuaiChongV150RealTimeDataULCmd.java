@@ -18,6 +18,7 @@ import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.dto.GunRunStatusProto.
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x13)
+@YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.REAL_TIME_DATA)
 public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe {
 
     // 故障说明列表

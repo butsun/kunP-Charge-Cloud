@@ -15,6 +15,7 @@ import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +27,7 @@ import java.time.Instant;
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x3B)
+@YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.TRANSACTION_RECORD)
 public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {

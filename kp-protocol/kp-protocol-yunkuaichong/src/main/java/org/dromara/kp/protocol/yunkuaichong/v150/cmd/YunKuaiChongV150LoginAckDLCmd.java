@@ -17,6 +17,7 @@ import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDownlinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x02)
+@YunKuaiChongCmd(downCmd = LOGIN_ACK)
 public class YunKuaiChongV150LoginAckDLCmd extends YunKuaiChongDownlinkCmdExe {
 
     @Override

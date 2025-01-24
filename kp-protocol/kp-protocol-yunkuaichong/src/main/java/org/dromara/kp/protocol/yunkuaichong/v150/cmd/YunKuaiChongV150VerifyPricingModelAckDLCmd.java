@@ -25,7 +25,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x06)
+@YunKuaiChongCmd(downCmd = VERIFY_PRICING_ACK)
 public class YunKuaiChongV150VerifyPricingModelAckDLCmd extends YunKuaiChongDownlinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {

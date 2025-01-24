@@ -9,7 +9,9 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum YunKuaiChongDownlinkCmdEnum {
+public enum YunKuaiChongDownlinkCmdEnum{
+
+    UNKNOWN(Integer.MAX_VALUE),
 
     /**
      * 登录认证应答
@@ -22,7 +24,7 @@ public enum YunKuaiChongDownlinkCmdEnum {
     /**
      * 心跳包应答
      */
-    HEARTBEAT(0x04),
+    HEARTBEAT_ACK(0x04),
     /**
      * 计费模型验证请求应答
      */
@@ -32,21 +34,25 @@ public enum YunKuaiChongDownlinkCmdEnum {
      */
     QUERY_PRICING_ACK(0X0A),
     /**
-     * 计费模型设置
+     * 充电桩主动申请启动充电应答
      */
-    SET_PRICING(0x58),
+    PILE_TRY_CHARGE_ACK(0x32),
     /**
-     *
+     * 运营平台远程控制启机
      */
     REMOTE_START_CHARGING(0x34),
     /**
-     * 运营平台远程控制启机
+     * 运营平台远程停机
      */
     REMOTE_STOP_CHARGING(0x36),
     /**
      * 交易记录确认
      */
-    TRANSACTION_RECORD(0x40),
+    TRANSACTION_RECORD_ACK(0x40),
+    /**
+     * 计费模型设置
+     */
+    SET_PRICING(0x58),
     /**
      *
      */

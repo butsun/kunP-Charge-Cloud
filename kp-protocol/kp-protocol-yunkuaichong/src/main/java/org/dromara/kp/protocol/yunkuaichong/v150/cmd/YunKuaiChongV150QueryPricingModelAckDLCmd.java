@@ -31,7 +31,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x0A)
+@YunKuaiChongCmd(downCmd = QUERY_PRICING_ACK)
 public class YunKuaiChongV150QueryPricingModelAckDLCmd extends YunKuaiChongDownlinkCmdExe {
 
     @Override

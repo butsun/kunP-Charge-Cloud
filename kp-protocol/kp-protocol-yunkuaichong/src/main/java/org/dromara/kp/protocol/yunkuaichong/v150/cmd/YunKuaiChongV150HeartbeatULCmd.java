@@ -15,7 +15,8 @@ import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
 
-import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.HEARTBEAT;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.HEARTBEAT_ACK;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum.HEARTBEAT;
 
 /**
  * 云快充1.5.0 充电桩心跳包
@@ -23,7 +24,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x03)
+@YunKuaiChongCmd(upCmd = HEARTBEAT)
 public class YunKuaiChongV150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
@@ -66,7 +67,7 @@ public class YunKuaiChongV150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
         pingAckMsgBody.writeByte(gunCodeByte);
         pingAckMsgBody.writeByte(0);
 
-        encodeAndWriteFlush(HEARTBEAT,
+        encodeAndWriteFlush(HEARTBEAT_ACK,
                 pingAckMsgBody,
                 tcpSession);
     }

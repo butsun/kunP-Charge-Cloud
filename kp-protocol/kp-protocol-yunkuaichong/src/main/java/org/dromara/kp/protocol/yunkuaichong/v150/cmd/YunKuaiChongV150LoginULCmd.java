@@ -19,6 +19,7 @@ import org.dromara.kp.protocol.listener.tcp.enums.SequenceNumberLength;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -34,7 +35,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * 云快充1.5.0充电桩登录认证
  */
 @Slf4j
-@YunKuaiChongCmd(0x01)
+@YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.LOGIN)
 public class YunKuaiChongV150LoginULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override

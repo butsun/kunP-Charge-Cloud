@@ -14,6 +14,7 @@ import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
@@ -25,7 +26,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x09)
+@YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.QUERY_PRICING_MODEL)
 public class YunKuaiChongV150QueryPricingModelULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override

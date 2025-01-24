@@ -16,6 +16,7 @@ import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 /**
  * 云快充1.5.0 远程停机命令回复
@@ -23,7 +24,7 @@ import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x35)
+@YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.REMOTE_STOP_RESULT)
 public class YunKuaiChongV150RemoteStopResultULCmd extends YunKuaiChongUplinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {

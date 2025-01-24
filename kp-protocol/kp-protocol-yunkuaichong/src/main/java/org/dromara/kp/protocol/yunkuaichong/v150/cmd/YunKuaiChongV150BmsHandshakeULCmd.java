@@ -13,8 +13,10 @@ import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 import java.nio.charset.StandardCharsets;
+
 
 /**
  * 云快充1.5.0 充电握手
@@ -22,10 +24,13 @@ import java.nio.charset.StandardCharsets;
  * @author but
  */
 @Slf4j
-@YunKuaiChongCmd(0x15)
+@YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.CHARGE_HANDSHAKE)
 public class YunKuaiChongV150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe {
+
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
+
+
         log.debug("{} 云快充1.5.0充电握手", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
 

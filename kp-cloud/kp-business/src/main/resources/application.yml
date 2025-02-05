@@ -6,7 +6,7 @@ server:
 spring:
   application:
     # 应用名称
-    name: kp-system
+    name: kp-business
   profiles:
     # 环境配置
     active: @profiles.active@
@@ -30,5 +30,4 @@ spring:
   config:
     import:
       - optional:nacos:application-common.yml
-      - optional:nacos:datasource.yml
       - optional:nacos:${spring.application.name}.yml

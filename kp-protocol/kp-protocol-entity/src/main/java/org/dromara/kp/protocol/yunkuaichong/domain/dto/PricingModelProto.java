@@ -1,6 +1,7 @@
 package org.dromara.kp.protocol.yunkuaichong.domain.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class PricingModelProto {
     private PricingModelType type;
     private PricingModelRule rule;

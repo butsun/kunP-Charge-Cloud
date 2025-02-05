@@ -2,6 +2,7 @@ package org.dromara.kp.protocol.dubbo;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.dromara.kp.business.api.DownlinkService;
 import org.dromara.kp.protocol.domain.ProtocolSession;
 import org.dromara.kp.protocol.provider.ProtocolSessionRegistryProvider;
@@ -15,7 +16,7 @@ import java.util.UUID;
  * @author: sunjun
  * @create: 17:33
  **/
-//@DubboService
+@DubboService
 @Slf4j
 public class DownServiceImpl implements DownlinkService {
     @Resource

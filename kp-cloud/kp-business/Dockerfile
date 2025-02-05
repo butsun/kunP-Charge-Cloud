@@ -5,17 +5,17 @@ FROM bellsoft/liberica-openjdk-debian:17.0.11-cds
 
 LABEL maintainer="Lion Li"
 
-RUN mkdir -p /kp-cloud/kp-system/logs \
-    /kp-cloud/kp-system/temp \
+RUN mkdir -p /kp-cloud/kp-business/logs \
+    /kp-cloud/kp-business/temp \
     /kp-cloud/skywalking/agent
 
-WORKDIR /kp-cloud/kp-system
+WORKDIR /kp-cloud/kp-business
 
-ENV SERVER_PORT=9801 LANG=C.UTF-8 LC_ALL=C.UTF-8 JAVA_OPTS=""
+ENV SERVER_PORT=9802 LANG=C.UTF-8 LC_ALL=C.UTF-8 JAVA_OPTS=""
 
 EXPOSE ${SERVER_PORT}
 
-ADD ./target/kp-system.jar ./app.jar
+ADD kp-business.jar ./app.jar
 
 ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${SERVER_PORT} \
            #-Dskywalking.agent.service_name=ruoyi-system \

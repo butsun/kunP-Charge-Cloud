@@ -362,6 +362,23 @@ services:
     privileged: true
     network_mode: "host"
 
+  kp-business:
+    build:
+      context: /docker/images/kp-business/
+    image: kp/kp-business:2.2.2
+    container_name: kp-business
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    #    ports:
+    #      - "9201:9201"
+    volumes:
+      # 配置文件
+      - /docker/kp-business/logs/:/kp-cloud/kp-business/logs
+      # skywalking 探针
+      - /docker/skywalking/agent/:/ruoyi/skywalking/agent
+    privileged: true
+    network_mode: "host"
 
 #################################################################################################
 #################################### 以下为扩展根据需求搭建 #########################################

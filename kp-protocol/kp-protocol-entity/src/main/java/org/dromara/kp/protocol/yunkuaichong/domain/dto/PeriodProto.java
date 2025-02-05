@@ -1,11 +1,13 @@
 package org.dromara.kp.protocol.yunkuaichong.domain.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class PeriodProto {
     private int sn;
     private String begin;
@@ -19,7 +21,7 @@ public class PeriodProto {
         PEAK,
         FLAT,
         VALLEY,
-        DEEP
+        TRANSACTION_RECORD, DEEP
     }
 }
 

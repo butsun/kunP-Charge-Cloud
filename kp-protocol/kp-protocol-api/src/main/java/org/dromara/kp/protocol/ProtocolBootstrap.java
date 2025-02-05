@@ -30,7 +30,7 @@ public abstract class ProtocolBootstrap implements HealthIndicator {
 
     protected Listener listener;
 
-//    @Resource
+    @Resource
     protected Forwarder forwarder;
 
     @PostConstruct
@@ -59,10 +59,6 @@ public abstract class ProtocolBootstrap implements HealthIndicator {
             listener.destroy();
         }
 
-        if (forwarder != null) {
-            forwarder.destroy();
-        }
-
         _destroy();
     }
 
@@ -79,10 +75,6 @@ public abstract class ProtocolBootstrap implements HealthIndicator {
 
         if (listener != null) {
             healthBuilder.withDetail("listener", listener.health().getStatus());
-        }
-
-        if (forwarder != null) {
-            healthBuilder.withDetail("forwarder", forwarder.health().getStatus());
         }
 
         return healthBuilder.build();

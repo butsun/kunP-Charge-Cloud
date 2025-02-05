@@ -4,6 +4,7 @@ package org.dromara.kp.protocol.forwarder;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
 import org.springframework.boot.actuate.health.Health;
 
 
@@ -21,38 +22,8 @@ import java.util.function.BiConsumer;
 public abstract class Forwarder {
     protected static final String ERROR = "error";
 
-    AtomicBoolean healthy = new AtomicBoolean(true);
+    public abstract void sendMessage(UplinkQueueMessage msg, BiConsumer<Boolean, ObjectNode> consumer);
 
-    @Getter
-    private final String protocolName;
-
-
-//    protected final PartitionProvider partitionProvider;
-//    protected final ServiceInfoProvider serviceInfoProvider;
-
-//    protected final boolean isMonolith;
-//    protected QueueProducer<ProtoQueueMsg<UplinkQueueMessage>> producer;
-
-    protected Forwarder(String protocolName) {
-        this.protocolName = protocolName;
-//        this.partitionProvider = partitionProvider;
-//        this.serviceInfoProvider = serviceInfoProvider;
-//
-//        this.forwarderMessagesStats = statsFactory.createMessagesStats("forwarderMessages", "protocol", protocolName);
-//
-//        this.isMonolith = serviceInfoProvider.isMonolith();
-    }
-
-    public abstract Health health();
-
-    public abstract void destroy();
-
-    protected void jcppForward(String topic, String key, Object msg, BiConsumer<Boolean, ObjectNode> consumer) {
-
-    }
-
-    public abstract void sendMessage(Object msg, BiConsumer<Boolean, ObjectNode> consumer);
-
-    public abstract void sendMessage(Object msg);
+    public abstract void sendMessage(UplinkQueueMessage msg);
 
 }

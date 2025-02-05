@@ -1,6 +1,7 @@
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.kp.infrastructure.util.codec.BCDUtil;
 import org.dromara.kp.protocol.ProtocolContext;
@@ -11,6 +12,8 @@ import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
 import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum;
 
 import java.nio.charset.StandardCharsets;
+
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.PILE_TRY_CHARGE_ACK;
 
 /**
  * @program: RuoYi-Cloud-Plus
@@ -42,7 +45,7 @@ public class YunKuaiChongV150PileTryChargeULCmd extends YunKuaiChongUplinkCmdExe
         byteBuf.readByte();
 
         //5 账号或者物理卡号
-        byteBuf.readLongLE();
+        long cardNo = byteBuf.readLongLE();
 
         //6 输入密码
         byte[] pwdBytes = new byte[16];
@@ -53,5 +56,32 @@ public class YunKuaiChongV150PileTryChargeULCmd extends YunKuaiChongUplinkCmdExe
         byte[] carVINBytes = new byte[17];
         byteBuf.readBytes(carVINBytes);
         new String(carVINBytes, StandardCharsets.US_ASCII);
+
+
+        //todo 此处必须成功
+        loginAck(tcpSession, pileCode, gunCode, cardNo, yunKuaiChongUplinkMessage);
+
+
+    }
+
+
+    private void loginAck(TcpSession tcpSession, String pileCodeBytes, String gunCode, Long cardNo, YunKuaiChongUplinkMessage requestData) {
+        // 创建ACK消息体16字节流水号+7字节桩编号+1字节枪号+8字节卡号+4字节账户余额+1字节鉴权结果+1字节失败原因
+        ByteBuf tryChargeAckMsgBody = Unpooled.buffer(38);
+        byte[] tradeNo = encodeTradeNo("32010600019236012001061803423060");
+
+        tryChargeAckMsgBody.writeBytes(tradeNo);
+        tryChargeAckMsgBody.writeBytes(encodePileCode(pileCodeBytes));
+        tryChargeAckMsgBody.writeBytes(encodeGunCode(gunCode));
+        tryChargeAckMsgBody.writeLongLE(cardNo);
+        tryChargeAckMsgBody.writeIntLE(0);
+        tryChargeAckMsgBody.writeByte(0x01);
+        tryChargeAckMsgBody.writeByte(0);
+
+        encodeAndWriteFlush(PILE_TRY_CHARGE_ACK,
+            requestData.getSequenceNumber(),
+            requestData.getEncryptionFlag(),
+            tryChargeAckMsgBody,
+            tcpSession);
     }
 }

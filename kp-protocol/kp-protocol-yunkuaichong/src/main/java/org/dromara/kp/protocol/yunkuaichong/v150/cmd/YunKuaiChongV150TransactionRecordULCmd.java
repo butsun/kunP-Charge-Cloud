@@ -21,6 +21,10 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
+import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.FAILURE_BYTE;
+import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.SUCCESS_BYTE;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.VERIFY_PRICING_ACK;
+
 /**
  * 云快充1.5.0 交易记录
  *
@@ -176,6 +180,20 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
                 .build();
 
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
+
+
+        //todo  强制ack
+
+        // 创建ACK消息体16字节交易流水号 + 1字节确认结果
+        ByteBuf msgBody = Unpooled.buffer(17);
+        msgBody.writeBytes(encodeTradeNo(tradeNo));
+        msgBody.writeByte(SUCCESS_BYTE);
+
+        encodeAndWriteFlush(VERIFY_PRICING_ACK,
+            yunKuaiChongUplinkMessage.getSequenceNumber(),
+            yunKuaiChongUplinkMessage.getEncryptionFlag(),
+            msgBody,
+            tcpSession);
     }
 
     public static long readLongLE5Byte(byte[] bytes) {

@@ -51,26 +51,33 @@ public class YunKuaiChongV150ChargeEndULCmd extends YunKuaiChongUplinkCmdExe {
         additionalInfo.put("BMS中止荷电状态SOC", bmsStopSoc);
 
         //5.BMS 动力蓄电池单体最低电压
-        byteBuf.readUnsignedShortLE();
+        int bmsLowVoltage = byteBuf.readUnsignedShortLE();
+        additionalInfo.put("BMS动力蓄电池单体最低电压", bmsLowVoltage);
+
 
         //6.BMS 动力蓄电池单体最高电压
-        byteBuf.readUnsignedShortLE();
+        int bmsMaxVoltage =byteBuf.readUnsignedShortLE();
+        additionalInfo.put("BMS动力蓄电池单体最高电压", bmsMaxVoltage);
 
         //7.BMS 动力蓄电池最低温度
-        byteBuf.readByte();
+        int bmsLowTemp = byteBuf.readByte();
+        additionalInfo.put("BMS动力蓄电池最低温度", bmsLowTemp);
 
         //8.BMS 动力蓄电池最高温度
-        byteBuf.readByte();
+        int bmsMaxTemp = byteBuf.readByte();
+        additionalInfo.put("BMS动力蓄电池最高温度", bmsMaxTemp);
 
         //9.电桩累计充电时间
-        byteBuf.readUnsignedShortLE();
+        int chargingTime = byteBuf.readUnsignedShortLE();
+        additionalInfo.put("电桩累计充电时间", chargingTime);
 
         //10.电桩输出能量
-        byteBuf.readUnsignedShortLE();
+        int outputEnergy = byteBuf.readUnsignedShortLE();
+        additionalInfo.put("电桩输出能量", outputEnergy);
 
         //11.电桩充电机编号
-        byteBuf.readIntLE();
-
+        int chargingMachineNo = byteBuf.readIntLE();
+        additionalInfo.put("电桩充电机编号", chargingMachineNo);
 
         // TODO 先打印日志，暂不转发
         log.debug("{} 云快充1.5.0充电结束信息解析完成:{}", tcpSession, additionalInfo);

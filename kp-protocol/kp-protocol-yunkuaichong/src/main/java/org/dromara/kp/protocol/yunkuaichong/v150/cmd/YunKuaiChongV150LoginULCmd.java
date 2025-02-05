@@ -85,11 +85,10 @@ public class YunKuaiChongV150LoginULCmd extends YunKuaiChongUplinkCmdExe {
 
 
         //TODO 调试用   必须登录成功
-        YunKuaiChongUplinkMessage requestData = JacksonUtil.fromBytes(uplinkQueueMessage.getRequestData(), YunKuaiChongUplinkMessage.class);
         // 构造并下发登录ACK
-        loginAck(tcpSession, pileCodeBytes, requestData, true);
+        loginAck(tcpSession, pileCodeBytes, yunKuaiChongUplinkMessage, true);
         // 构造定时对时
-        registerSyncTimeTask(tcpSession, pileCodeBytes, requestData);
+        registerSyncTimeTask(tcpSession, pileCodeBytes, yunKuaiChongUplinkMessage);
     }
 
 

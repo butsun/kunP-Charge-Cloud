@@ -81,7 +81,7 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
 
     /**
      * 新增充电设备管理
-     *
+     * todo  新增的同时 根据枪数 新增connector数据
      * @param bo 充电设备管理
      * @return 是否新增成功
      */
@@ -98,7 +98,7 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
 
     /**
      * 修改充电设备管理
-     *
+     * todo  修改的同时 修改绑定的connector数据
      * @param bo 充电设备管理
      * @return 是否修改成功
      */

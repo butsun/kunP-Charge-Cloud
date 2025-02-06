@@ -5,7 +5,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 
+import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.protocol.ProtocolContext;
+import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.FlagPriceProto;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto;
@@ -23,6 +25,7 @@ import java.util.Objects;
 
 import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto.PricingModelFlag.*;
 import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.QUERY_PRICING_ACK;
+import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.TRANSACTION_RECORD_ACK;
 
 
 /**
@@ -32,7 +35,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  */
 @Slf4j
 @YunKuaiChongCmd(downCmd = QUERY_PRICING_ACK)
-public class YunKuaiChongV150QueryPricingModelAckDLCmd extends YunKuaiChongDownlinkCmdExe {
+public class Ykc00AV150QueryPricingModelAckDLCmd extends YunKuaiChongDownlinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
@@ -43,6 +46,8 @@ public class YunKuaiChongV150QueryPricingModelAckDLCmd extends YunKuaiChongDownl
         }
 
         QueryPricingResponse queryPricingResponse = yunKuaiChongDwonlinkMessage.getMsg().getQueryPricingResponse();
+
+        YunKuaiChongUplinkMessage requestData = JacksonUtil.fromBytes(yunKuaiChongDwonlinkMessage.getMsg().getRequestData(), YunKuaiChongUplinkMessage.class);
 
         long pricingId = queryPricingResponse.getPricingId();
         String pileCode = queryPricingResponse.getPileCode();
@@ -82,8 +87,9 @@ public class YunKuaiChongV150QueryPricingModelAckDLCmd extends YunKuaiChongDownl
         queryPricingAckMsgBody.writeBytes(bytes);
 
         encodeAndWriteFlush(QUERY_PRICING_ACK,
-                queryPricingAckMsgBody,
-                tcpSession);
-
+            requestData.getSequenceNumber(),
+            requestData.getEncryptionFlag(),
+            queryPricingAckMsgBody,
+            tcpSession);
     }
 }

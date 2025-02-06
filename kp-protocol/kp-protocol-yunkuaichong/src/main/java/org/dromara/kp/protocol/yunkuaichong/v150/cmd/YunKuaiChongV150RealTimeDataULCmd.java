@@ -55,7 +55,7 @@ public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe 
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0上传实时监测数据", tcpSession);
+        log.debug("{} 云快充1.5.0上传实时监测数据", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
 
         // 从Tracer总获取当前时间
@@ -148,9 +148,9 @@ public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe 
             .gunRunStatusProto(gunRunStatusProto)
             .build();
 
-//        tcpSession.getForwarder().sendMessage(gunRunStatusMessage);
+        tcpSession.getForwarder().sendMessage(gunRunStatusMessage);
 
-        log.debug("设备实时数据  {}", JsonUtils.toJsonString(gunRunStatusProto));
+        log.info("设备实时数据  {}", JsonUtils.toJsonString(gunRunStatusProto));
 
         if (StringUtils.isNotBlank(tradeNo)) {
 
@@ -173,8 +173,8 @@ public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe 
                 .chargingProgressProto(chargingProgressProto)
                 .build();
 
-            log.debug("流水实时数据  {}", JsonUtils.toJsonString(chargingProgressProto));
-//            tcpSession.getForwarder().sendMessage(chargingProgressMessage);
+            log.info("流水实时数据  {}", JsonUtils.toJsonString(chargingProgressProto));
+            tcpSession.getForwarder().sendMessage(chargingProgressMessage);
         }
     }
 

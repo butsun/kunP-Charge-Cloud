@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * @program: RuoYi-Cloud-Plus
  * @description:
@@ -13,7 +16,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class DownlinkRequestMessage {
+public class DownlinkRequestMessage  implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private long messageIdMSB;
     private long messageIdLSB;
     private long sessionIdMSB;
@@ -31,4 +36,8 @@ public class DownlinkRequestMessage {
     private RemoteStartChargingRequest remoteStartChargingRequest;
     private RemoteStopChargingRequest remoteStopChargingRequest;
     private TransactionRecordAck transactionRecordAck;
+
+
+    /********新增******/
+    private PileTryChargeResponse pileTryChargeResponse;
 }

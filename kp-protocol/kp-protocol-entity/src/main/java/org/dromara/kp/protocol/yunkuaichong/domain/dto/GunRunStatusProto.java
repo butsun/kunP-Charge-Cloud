@@ -5,12 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @Builder
-public class GunRunStatusProto {
+public class GunRunStatusProto  implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private long ts;
     private String pileCode;
     private String gunCode;

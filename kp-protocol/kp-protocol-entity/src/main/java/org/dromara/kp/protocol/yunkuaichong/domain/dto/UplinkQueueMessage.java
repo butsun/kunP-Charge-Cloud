@@ -4,10 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @Builder
-public class UplinkQueueMessage {
+public class UplinkQueueMessage  implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private long messageIdMSB;
     private long messageIdLSB;
     private long sessionIdMSB;
@@ -25,4 +30,8 @@ public class UplinkQueueMessage {
     private RemoteStartChargingResponse remoteStartChargingResponse;
     private RemoteStopChargingResponse remoteStopChargingResponse;
     private TransactionRecord transactionRecord;
+
+    /********新增******/
+    private PileTryChargeRequest pileTryChargeRequest;
+
 }

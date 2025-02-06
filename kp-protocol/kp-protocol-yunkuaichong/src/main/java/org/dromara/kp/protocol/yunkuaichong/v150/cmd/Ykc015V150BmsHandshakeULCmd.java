@@ -25,11 +25,10 @@ import java.nio.charset.StandardCharsets;
  */
 @Slf4j
 @YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.CHARGE_HANDSHAKE)
-public class YunKuaiChongV150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe {
+public class Ykc015V150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
-
 
         log.debug("{} 云快充1.5.0充电握手", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
@@ -39,7 +38,7 @@ public class YunKuaiChongV150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe 
         // 1.交易流水号
         byte[] tradeNoBytes = new byte[16];
         byteBuf.readBytes(tradeNoBytes);
-        String tradeNo = BCDUtil.toString(tradeNoBytes);
+        String tradeNo = decodeTradeNo(tradeNoBytes);
         additionalInfo.put("交易流水号", tradeNo);
 
         // 2.桩编号
@@ -47,6 +46,7 @@ public class YunKuaiChongV150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe 
         byteBuf.readBytes(pileCodeBytes);
         String pileCode = BCDUtil.toString(pileCodeBytes);
         additionalInfo.put("桩编号", pileCode);
+
 
         // 3.抢号
         byte gunCodeByte = byteBuf.readByte();
@@ -115,6 +115,6 @@ public class YunKuaiChongV150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe 
         additionalInfo.put("BMS 软件版本号", HexUtil.encodeHexStr(bmsSoftVersionBytes));
 
         // TODO 先打印日志，暂不转发
-        log.debug("{} 云快充1.5.0充电握手信息解析完成:{}", tcpSession, additionalInfo);
+        log.info("{} 充电握手信息解析完成:{}", pileCode, additionalInfo);
     }
 }

@@ -26,7 +26,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  */
 @Slf4j
 @YunKuaiChongCmd(downCmd = VERIFY_PRICING_ACK)
-public class YunKuaiChongV150VerifyPricingModelAckDLCmd extends YunKuaiChongDownlinkCmdExe {
+public class Ykc006V150VerifyPricingModelAckDLCmd extends YunKuaiChongDownlinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
         log.info("{} 云快充1.5.0计费模型验证请求应答", tcpSession);
@@ -36,24 +36,18 @@ public class YunKuaiChongV150VerifyPricingModelAckDLCmd extends YunKuaiChongDown
         }
 
         VerifyPricingResponse verifyPricingResponse = yunKuaiChongDwonlinkMessage.getMsg().getVerifyPricingResponse();
-
         YunKuaiChongUplinkMessage requestData = JacksonUtil.fromBytes(yunKuaiChongDwonlinkMessage.getMsg().getRequestData(), YunKuaiChongUplinkMessage.class);
-
-        // 获取上行报文
-        byte[] uplinkRawFrame = requestData.getRawFrame();
-        // 从上行报文中取出桩编号字节数组
-        byte[] pileCodeBytes = Arrays.copyOfRange(uplinkRawFrame, 6, 13);
 
         // 创建ACK消息体7字节桩编号+2字节计费模型编号+1字节验证结果
         ByteBuf verifyPricingAckMsgBody = Unpooled.buffer(10);
-        verifyPricingAckMsgBody.writeBytes(pileCodeBytes);
+        verifyPricingAckMsgBody.writeBytes(encodePileCode(yunKuaiChongDwonlinkMessage.getMsg().getPileCode()));
         verifyPricingAckMsgBody.writeBytes(encodePricingId(verifyPricingResponse.getPricingId()));
         verifyPricingAckMsgBody.writeByte(verifyPricingResponse.isSuccess() ? SUCCESS_BYTE : FAILURE_BYTE);
 
         encodeAndWriteFlush(VERIFY_PRICING_ACK,
-                requestData.getSequenceNumber(),
-                requestData.getEncryptionFlag(),
-                verifyPricingAckMsgBody,
-                tcpSession);
+            requestData.getSequenceNumber(),
+            requestData.getEncryptionFlag(),
+            verifyPricingAckMsgBody,
+            tcpSession);
     }
 }

@@ -8,6 +8,8 @@ import lombok.*;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
@@ -15,7 +17,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @Data
-public class PricingModel {
+public class PricingModel  implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private UUID id;
 

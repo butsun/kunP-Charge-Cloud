@@ -69,38 +69,38 @@ public class KpChargeOrderController extends BaseController {
         return R.ok(kpChargeOrderService.queryById(id));
     }
 
-    /**
-     * 新增充电订单管理
-     */
-    @SaCheckPermission("kpSystem:chargeOrder:add")
-    @Log(title = "充电订单管理", businessType = BusinessType.INSERT)
-    @RepeatSubmit()
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody KpChargeOrderBo bo) {
-        return toAjax(kpChargeOrderService.insertByBo(bo));
-    }
+//    /**
+//     * 新增充电订单管理
+//     */
+//    @SaCheckPermission("kpSystem:chargeOrder:add")
+//    @Log(title = "充电订单管理", businessType = BusinessType.INSERT)
+//    @RepeatSubmit()
+//    @PostMapping()
+//    public R<Void> add(@Validated(AddGroup.class) @RequestBody KpChargeOrderBo bo) {
+//        return toAjax(kpChargeOrderService.insertByBo(bo));
+//    }
 
-    /**
-     * 修改充电订单管理
-     */
-    @SaCheckPermission("kpSystem:chargeOrder:edit")
-    @Log(title = "充电订单管理", businessType = BusinessType.UPDATE)
-    @RepeatSubmit()
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody KpChargeOrderBo bo) {
-        return toAjax(kpChargeOrderService.updateByBo(bo));
-    }
+//    /**
+//     * 修改充电订单管理
+//     */
+//    @SaCheckPermission("kpSystem:chargeOrder:edit")
+//    @Log(title = "充电订单管理", businessType = BusinessType.UPDATE)
+//    @RepeatSubmit()
+//    @PutMapping()
+//    public R<Void> edit(@Validated(EditGroup.class) @RequestBody KpChargeOrderBo bo) {
+//        return toAjax(kpChargeOrderService.updateByBo(bo));
+//    }
 
-    /**
-     * 删除充电订单管理
-     *
-     * @param ids 主键串
-     */
-    @SaCheckPermission("kpSystem:chargeOrder:remove")
-    @Log(title = "充电订单管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空")
-                          @PathVariable Long[] ids) {
-        return toAjax(kpChargeOrderService.deleteWithValidByIds(List.of(ids), true));
-    }
+//    /**
+//     * 删除充电订单管理
+//     *
+//     * @param ids 主键串
+//     */
+//    @SaCheckPermission("kpSystem:chargeOrder:remove")
+//    @Log(title = "充电订单管理", businessType = BusinessType.DELETE)
+//    @DeleteMapping("/{ids}")
+//    public R<Void> remove(@NotEmpty(message = "主键不能为空")
+//                          @PathVariable Long[] ids) {
+//        return toAjax(kpChargeOrderService.deleteWithValidByIds(List.of(ids), true));
+//    }
 }

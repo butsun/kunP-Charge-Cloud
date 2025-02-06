@@ -5,10 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @Builder
-public class PeriodProto {
+public class PeriodProto  implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private int sn;
     private String begin;
     private String end;
@@ -21,7 +26,7 @@ public class PeriodProto {
         PEAK,
         FLAT,
         VALLEY,
-        TRANSACTION_RECORD, DEEP
+        DEEP
     }
 }
 

@@ -1,6 +1,7 @@
 
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
+import cn.hutool.core.date.DateUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -21,7 +22,6 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
-import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.FAILURE_BYTE;
 import static org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage.SUCCESS_BYTE;
 import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.VERIFY_PRICING_ACK;
 
@@ -32,10 +32,10 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  */
 @Slf4j
 @YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.TRANSACTION_RECORD)
-public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCmdExe {
+public class Ykc03BV150TransactionRecordULCmd extends YunKuaiChongUplinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0交易记录", tcpSession);
+        log.debug("{} 云快充1.5.0交易记录", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
 
         ObjectNode additionalInfo = JacksonUtil.newObjectNode();
@@ -44,6 +44,7 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
         byte[] tradeNoBytes = new byte[16];
         byteBuf.readBytes(tradeNoBytes);
         String tradeNo = decodeTradeNo(tradeNoBytes);
+        additionalInfo.put("交易流水号", tradeNo);
 
         // 2.桩编号
         byte[] pileCodeBytes = new byte[7];
@@ -53,60 +54,83 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
         // 3.抢号
         byte gunCodeByte = byteBuf.readByte();
         String gunCode = BCDUtil.toString(gunCodeByte);
+        additionalInfo.put("枪号", gunCode);
+
 
         // 4.开始时间
         byte[] startTimeBytes = new byte[7];
         byteBuf.readBytes(startTimeBytes);
         Instant startTime = CP56Time2aUtil.decode(startTimeBytes);
+        additionalInfo.put("开始时间", DateUtil.date(startTime.toEpochMilli()).toStringDefaultTimeZone());
+
 
         // 5.结束时间
         byte[] endTimeBytes = new byte[7];
         byteBuf.readBytes(endTimeBytes);
         Instant endTime = CP56Time2aUtil.decode(endTimeBytes);
+        additionalInfo.put("结束时间", DateUtil.date(endTime.toEpochMilli()).toStringDefaultTimeZone());
+
 
         // 6.尖单价
         BigDecimal topPrice = reduceMagnification(byteBuf.readUnsignedIntLE(), 100000);
         additionalInfo.put("尖单价", topPrice);
         // 7. 尖电量
         BigDecimal topEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("尖电量", topEnergy);
+
+
         // 8.计损尖电量
         BigDecimal topLoseEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
         additionalInfo.put("计损尖电量", topLoseEnergy);
         // 9.尖金额
         BigDecimal topAmount = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("尖金额", topAmount);
 
         // 10.峰单价
         BigDecimal peakPrice = reduceMagnification(byteBuf.readUnsignedIntLE(), 100000);
         additionalInfo.put("峰单价", peakPrice);
         // 11. 峰电量
         BigDecimal peakEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("峰电量", peakEnergy);
+
+
         // 12.计损峰电量
         BigDecimal peakLoseEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
         additionalInfo.put("计损峰电量", peakLoseEnergy);
         // 13.峰金额
         BigDecimal peakAmount = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("峰金额", peakAmount);
+
 
         // 14.平单价
         BigDecimal flatPrice = reduceMagnification(byteBuf.readUnsignedIntLE(), 100000);
         additionalInfo.put("平单价", flatPrice);
         // 15. 平电量
         BigDecimal flatEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("平电量", flatEnergy);
+
+
         // 16.计损平电量
         BigDecimal flatLoseEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
         additionalInfo.put("计损平电量", flatLoseEnergy);
         // 17.平金额
         BigDecimal flatAmount = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("平金额", flatAmount);
 
         // 18.谷单价
         BigDecimal valleyPrice = reduceMagnification(byteBuf.readUnsignedIntLE(), 100000);
         additionalInfo.put("谷单价", valleyPrice);
         // 19. 谷电量
         BigDecimal valleyEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("谷电量", valleyEnergy);
+
+
         // 20.计损谷电量
         BigDecimal valleyLoseEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
         additionalInfo.put("计损谷电量", valleyLoseEnergy);
         // 21.谷金额
         BigDecimal valleyAmount = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("谷金额", valleyAmount);
 
         // 22.电表总起值
         byte[] meterStartValueBytes = new byte[5];
@@ -122,11 +146,14 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
 
         // 24.总电量
         BigDecimal totalEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000, 4);
+        additionalInfo.put("电表总电量", totalEnergy);
+
         // 25.计损总电量
         BigDecimal totalLoseEnergy = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000, 4);
         additionalInfo.put("计损总电量", totalLoseEnergy);
         // 26 .消费金额
         BigDecimal totalAmount = reduceMagnification(byteBuf.readUnsignedIntLE(), 10000);
+        additionalInfo.put("消费金额", totalAmount);
 
         // 27.电动汽车唯一标识
         byte[] carVINBytes = new byte[17];
@@ -142,10 +169,12 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
         byte[] tradeTimeBytes = new byte[7];
         byteBuf.readBytes(tradeTimeBytes);
         Instant tradeTime = CP56Time2aUtil.decode(tradeTimeBytes);
+        additionalInfo.put("交易日期、时间", DateUtil.date(tradeTime.toEpochMilli()).toStringDefaultTimeZone());
 
         // 30.停止原因
         byte stopReasonByte = byteBuf.readByte();
         String stopReason = mapStopReason(stopReasonByte);
+        additionalInfo.put("停止原因", stopReason);
 
         //31 物理卡号
         byte[] cardNoBytes = new byte[8];
@@ -154,46 +183,34 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
         additionalInfo.put("物理卡号", cardNo);
 
         TransactionRecord transactionRecord = TransactionRecord.builder()
-                .pileCode(pileCode)
-                .gunCode(gunCode)
-                .tradeNo(tradeNo)
-                .startTs(startTime.toEpochMilli())
-                .endTs(endTime.toEpochMilli())
-                .topEnergyKWh(topEnergy.toPlainString())
-                .topAmountYuan(topAmount.toPlainString())
-                .peakEnergyKWh(peakEnergy.toPlainString())
-                .peakAmountYuan(peakAmount.toPlainString())
-                .flatEnergyKWh(flatEnergy.toPlainString())
-                .flatAmountYuan(flatAmount.toPlainString())
-                .valleyEnergyKWh(valleyEnergy.toPlainString())
-                .valleyAmountYuan(valleyAmount.toPlainString())
-                .totalEnergyKWh(totalEnergy.toPlainString())
-                .totalAmountYuan(totalAmount.toPlainString())
-                .tradeTs(tradeTime.toEpochMilli())
-                .stopReason(stopReason)
-                .additionalInfo(additionalInfo.toString())
-                .build();
+            .pileCode(pileCode)
+            .gunCode(gunCode)
+            .tradeNo(tradeNo)
+            .startTs(startTime.toEpochMilli())
+            .endTs(endTime.toEpochMilli())
+            .topEnergyKWh(topEnergy.toPlainString())
+            .topAmountYuan(topAmount.toPlainString())
+            .peakEnergyKWh(peakEnergy.toPlainString())
+            .peakAmountYuan(peakAmount.toPlainString())
+            .flatEnergyKWh(flatEnergy.toPlainString())
+            .flatAmountYuan(flatAmount.toPlainString())
+            .valleyEnergyKWh(valleyEnergy.toPlainString())
+            .valleyAmountYuan(valleyAmount.toPlainString())
+            .totalEnergyKWh(totalEnergy.toPlainString())
+            .totalAmountYuan(totalAmount.toPlainString())
+            .tradeTs(tradeTime.toEpochMilli())
+            .stopReason(stopReason)
+            .additionalInfo(additionalInfo.toString())
+            .build();
 
         // 转发到后端
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(pileCode, tcpSession, yunKuaiChongUplinkMessage)
-                .transactionRecord(transactionRecord)
-                .build();
+            .transactionRecord(transactionRecord)
+            .build();
 
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
+        log.info("{} 云快充1.5.0交易记录: {}", pileCode, additionalInfo);
 
-
-        //todo  强制ack
-
-        // 创建ACK消息体16字节交易流水号 + 1字节确认结果
-        ByteBuf msgBody = Unpooled.buffer(17);
-        msgBody.writeBytes(encodeTradeNo(tradeNo));
-        msgBody.writeByte(SUCCESS_BYTE);
-
-        encodeAndWriteFlush(VERIFY_PRICING_ACK,
-            yunKuaiChongUplinkMessage.getSequenceNumber(),
-            yunKuaiChongUplinkMessage.getEncryptionFlag(),
-            msgBody,
-            tcpSession);
     }
 
     public static long readLongLE5Byte(byte[] bytes) {
@@ -211,10 +228,10 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
 
         // 将读取的字节合并成一个 long 值
         return ((long) byte1) |
-                ((long) byte2 << 8) |
-                ((long) byte3 << 16) |
-                ((long) byte4 << 24) |
-                ((long) byte5 << 32);
+            ((long) byte2 << 8) |
+            ((long) byte3 << 16) |
+            ((long) byte4 << 24) |
+            ((long) byte5 << 32);
     }
 
     public static String mapStartFlag(byte startFlag) {
@@ -297,7 +314,7 @@ public class YunKuaiChongV150TransactionRecordULCmd extends YunKuaiChongUplinkCm
             case (byte) 0x88 -> "充电异常中止，接收 BMS 充电统计报文超时";
             case (byte) 0x89 -> "充电异常中止，接收对侧 CCS 报文超时";
             case (byte) 0x8A, (byte) 0x8B, (byte) 0x8C, (byte) 0x8D, (byte) 0x8E, (byte) 0x8F ->
-                    "充电异常中止，其他原因（预留）";
+                "充电异常中止，其他原因（预留）";
             case (byte) 0x90 -> "未知原因停止";
             default -> "无效的错误码";
         };

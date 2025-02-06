@@ -28,11 +28,11 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  */
 @Slf4j
 @YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.VERIFY_PRICING_MODEL)
-public class YunKuaiChongV150VerifyPricingModelULCmd extends YunKuaiChongUplinkCmdExe {
+public class Ykc005V150VerifyPricingModelULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0计费模型验证请求", tcpSession);
+        log.debug("{} 云快充1.5.0计费模型验证请求", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
 
         ObjectNode additionalInfo = JacksonUtil.newObjectNode();
@@ -44,32 +44,20 @@ public class YunKuaiChongV150VerifyPricingModelULCmd extends YunKuaiChongUplinkC
         byte[] pricingModelIdBytes = new byte[2];
         byteBuf.readBytes(pricingModelIdBytes);
         long pricingModelId = BCDUtil.bcdBytesToLong(pricingModelIdBytes);
+        additionalInfo.put("计费模型编号", pricingModelId);
+
 
         // 转发到后端
         VerifyPricingRequest heartBeatRequest = VerifyPricingRequest.builder()
-                .pileCode(pileCode)
-                .pricingId(pricingModelId)
-                .additionalInfo(additionalInfo.toString())
-                .build();
+            .pileCode(pileCode)
+            .pricingId(pricingModelId)
+            .additionalInfo(additionalInfo.toString())
+            .build();
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(heartBeatRequest.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
-                .verifyPricingRequest(heartBeatRequest)
-                .build();
-//        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
+            .verifyPricingRequest(heartBeatRequest)
+            .build();
+        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
-
-        //TODO 调试用   必须登录成功
-        YunKuaiChongUplinkMessage requestData = JacksonUtil.fromBytes(uplinkQueueMessage.getRequestData(), YunKuaiChongUplinkMessage.class);
-
-        // 创建ACK消息体7字节桩编号+2字节计费模型编号+1字节验证结果
-        ByteBuf verifyPricingAckMsgBody = Unpooled.buffer(10);
-        verifyPricingAckMsgBody.writeBytes(pileCodeBytes);
-        verifyPricingAckMsgBody.writeBytes(encodePricingId(pricingModelId));
-        verifyPricingAckMsgBody.writeByte(SUCCESS_BYTE);
-
-        encodeAndWriteFlush(VERIFY_PRICING_ACK,
-            requestData.getSequenceNumber(),
-            requestData.getEncryptionFlag(),
-            verifyPricingAckMsgBody,
-            tcpSession);
+        log.info("{} 计费模型验证请求: {}", pileCode, additionalInfo);
     }
 }

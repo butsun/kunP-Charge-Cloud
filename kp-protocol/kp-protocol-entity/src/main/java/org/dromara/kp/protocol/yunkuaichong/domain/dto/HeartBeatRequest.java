@@ -4,10 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @Builder
-public class HeartBeatRequest {
+public class HeartBeatRequest  implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String pileCode;
     private String remoteAddress;
     private String nodeId;

@@ -53,6 +53,5 @@ public class YunKuaiChongV150SetPricingModelAckULCmd extends YunKuaiChongUplinkC
             tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
         }
 
-
     }
 }

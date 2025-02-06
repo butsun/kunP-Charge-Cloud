@@ -25,7 +25,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUpli
  */
 @Slf4j
 @YunKuaiChongCmd(upCmd = HEARTBEAT)
-public class YunKuaiChongV150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
+public class Ykc003V150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
         log.debug("{} 云快充1.5.0充电桩心跳包", tcpSession);
@@ -49,15 +49,16 @@ public class YunKuaiChongV150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
 
         // 转发到后端
         HeartBeatRequest heartBeatRequest = HeartBeatRequest.builder()
-                .pileCode(pileCode)
-                .remoteAddress(tcpSession.getAddress().toString())
-                .additionalInfo(additionalInfo.toString())
-                .build();
+            .pileCode(pileCode)
+            .remoteAddress(tcpSession.getAddress().toString())
+            .additionalInfo(additionalInfo.toString())
+            .build();
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(heartBeatRequest.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
-                .heartBeatRequest(heartBeatRequest)
-                .build();
+            .heartBeatRequest(heartBeatRequest)
+            .build();
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
+        log.info("{} 充电桩心跳包: {}", pileCode, additionalInfo);
         pingAck(tcpSession, pileCodeBytes, gunCodeByte);
     }
 
@@ -68,7 +69,7 @@ public class YunKuaiChongV150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
         pingAckMsgBody.writeByte(0);
 
         encodeAndWriteFlush(HEARTBEAT_ACK,
-                pingAckMsgBody,
-                tcpSession);
+            pingAckMsgBody,
+            tcpSession);
     }
 }

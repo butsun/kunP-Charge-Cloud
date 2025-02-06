@@ -26,7 +26,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  */
 @Slf4j
 @YunKuaiChongCmd(downCmd = TRANSACTION_RECORD_ACK)
-public class YunKuaiChongV150TransactionRecordAckDLCmd extends YunKuaiChongDownlinkCmdExe {
+public class Ykc040V150TransactionRecordAckDLCmd extends YunKuaiChongDownlinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
         log.info("{} 云快充1.5.0交易记录确认", tcpSession);
@@ -44,7 +44,7 @@ public class YunKuaiChongV150TransactionRecordAckDLCmd extends YunKuaiChongDownl
         msgBody.writeBytes(encodeTradeNo(transactionRecordAck.getTradeNo()));
         msgBody.writeByte(transactionRecordAck.isSuccess() ? SUCCESS_BYTE : FAILURE_BYTE);
 
-        encodeAndWriteFlush(VERIFY_PRICING_ACK,
+        encodeAndWriteFlush(TRANSACTION_RECORD_ACK,
                 requestData.getSequenceNumber(),
                 requestData.getEncryptionFlag(),
                 msgBody,

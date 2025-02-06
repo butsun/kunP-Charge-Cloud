@@ -69,27 +69,27 @@ public class KpConnectorController extends BaseController {
         return R.ok(kpConnectorService.queryById(id));
     }
 
-    /**
-     * 新增充电枪管理
-     */
-    @SaCheckPermission("kpSystem:connector:add")
-    @Log(title = "充电枪管理", businessType = BusinessType.INSERT)
-    @RepeatSubmit()
-    @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody KpConnectorBo bo) {
-        return toAjax(kpConnectorService.insertByBo(bo));
-    }
+//    /**
+//     * 新增充电枪管理
+//     */
+//    @SaCheckPermission("kpSystem:connector:add")
+//    @Log(title = "充电枪管理", businessType = BusinessType.INSERT)
+//    @RepeatSubmit()
+//    @PostMapping()
+//    public R<Void> add(@Validated(AddGroup.class) @RequestBody KpConnectorBo bo) {
+//        return toAjax(kpConnectorService.insertByBo(bo));
+//    }
 
-    /**
-     * 修改充电枪管理
-     */
-    @SaCheckPermission("kpSystem:connector:edit")
-    @Log(title = "充电枪管理", businessType = BusinessType.UPDATE)
-    @RepeatSubmit()
-    @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody KpConnectorBo bo) {
-        return toAjax(kpConnectorService.updateByBo(bo));
-    }
+//    /**
+//     * 修改充电枪管理
+//     */
+//    @SaCheckPermission("kpSystem:connector:edit")
+//    @Log(title = "充电枪管理", businessType = BusinessType.UPDATE)
+//    @RepeatSubmit()
+//    @PutMapping()
+//    public R<Void> edit(@Validated(EditGroup.class) @RequestBody KpConnectorBo bo) {
+//        return toAjax(kpConnectorService.updateByBo(bo));
+//    }
 
     /**
      * 删除充电枪管理

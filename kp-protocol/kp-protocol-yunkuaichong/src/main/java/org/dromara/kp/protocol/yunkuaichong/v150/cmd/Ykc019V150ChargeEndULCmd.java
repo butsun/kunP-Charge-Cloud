@@ -21,7 +21,7 @@ import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEn
  **/
 @Slf4j
 @YunKuaiChongCmd(upCmd = YunKuaiChongUplinkCmdEnum.CHARGE_END)
-public class YunKuaiChongV150ChargeEndULCmd extends YunKuaiChongUplinkCmdExe {
+public class Ykc019V150ChargeEndULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
@@ -32,7 +32,7 @@ public class YunKuaiChongV150ChargeEndULCmd extends YunKuaiChongUplinkCmdExe {
         // 1.交易流水号
         byte[] tradeNoBytes = new byte[16];
         byteBuf.readBytes(tradeNoBytes);
-        String tradeNo = BCDUtil.toString(tradeNoBytes);
+        String tradeNo = decodeTradeNo(tradeNoBytes);
         additionalInfo.put("交易流水号", tradeNo);
 
         // 2.桩编号

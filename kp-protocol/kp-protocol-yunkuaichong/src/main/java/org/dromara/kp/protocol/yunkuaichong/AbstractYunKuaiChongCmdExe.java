@@ -95,6 +95,14 @@ public class AbstractYunKuaiChongCmdExe {
         return BCDUtil.toBytes(tradeNoStr);
     }
 
+    protected static byte[] encodeCardNo(String cardNo) {
+        if (StringUtils.length(cardNo) > 16) {
+            throw new IllegalArgumentException("云快充1.5可接受最大卡号为16位");
+        }
+        String cardNoStr = StringUtils.leftPad(cardNo, 16, '0');
+        return BCDUtil.toBytes(cardNoStr);
+    }
+
 
     protected byte[] encode(YunKuaiChongDownlinkCmdEnum downlinkCmd,
                             int seqNo,

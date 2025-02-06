@@ -63,6 +63,8 @@ public interface PileProtocolService {
      */
     void onTransactionRecord(UplinkQueueMessage uplinkQueueMessage);
 
+
+    void pileTryChargeRequest(UplinkQueueMessage uplinkQueueMessage);
     /**
      * 启动充电
      */

@@ -67,12 +67,4 @@ public class YunKuaiChongV160RemoteParallelStartDLCmd extends YunKuaiChongDownli
                 tcpSession);
     }
 
-    /**
-     * 用交易流水号做卡号
-     */
-    private static byte[] encodeCardNo(String tradeNo) {
-        tradeNo = StringUtils.right(tradeNo, 16);
-        tradeNo = StringUtils.leftPad(tradeNo, 16, '0');
-        return BCDUtil.toBytes(tradeNo);
-    }
 }

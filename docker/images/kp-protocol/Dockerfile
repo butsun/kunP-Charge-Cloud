@@ -26,4 +26,5 @@ ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${SERVER_P
            #-javaagent:/ruoyi/skywalking/agent/skywalking-agent.jar \
            -XX:+HeapDumpOnOutOfMemoryError  ${JAVA_OPTS} \
            -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 \
-           -jar app.jar --logging.level.root=DEBUG --logging.level.org.springframework=INFO
+           -jar app.jar \
+#           --logging.level.root=DEBUG --logging.level.org.springframework=INFO

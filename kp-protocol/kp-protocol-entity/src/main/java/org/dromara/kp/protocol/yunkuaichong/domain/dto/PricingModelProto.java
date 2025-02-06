@@ -5,13 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @Builder
-public class PricingModelProto {
+public class PricingModelProto  implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private PricingModelType type;
     private PricingModelRule rule;
     private String standardElec;

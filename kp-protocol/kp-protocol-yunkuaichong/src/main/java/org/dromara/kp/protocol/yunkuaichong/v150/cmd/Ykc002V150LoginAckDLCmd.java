@@ -10,14 +10,13 @@ import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.infrastructure.util.mdc.MDCUtils;
 import org.dromara.kp.infrastructure.util.trace.TracerContextUtil;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.yunkuaichong.domain.dto.LoginResponse;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.listener.tcp.enums.SequenceNumberLength;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDownlinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
-import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.LoginResponse;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -38,7 +37,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  */
 @Slf4j
 @YunKuaiChongCmd(downCmd = LOGIN_ACK)
-public class YunKuaiChongV150LoginAckDLCmd extends YunKuaiChongDownlinkCmdExe {
+public class Ykc002V150LoginAckDLCmd extends YunKuaiChongDownlinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {

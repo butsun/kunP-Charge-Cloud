@@ -69,4 +69,10 @@ public interface PileProtocolService {
      * 启动充电
      */
     void startCharge(String pileCode, String gunCode, BigDecimal limitYuan, String orderNo);
+
+    /**
+     * 设备对时
+     * @param uplinkQueueMsg
+     */
+    void syncTimeResponse(UplinkQueueMessage uplinkQueueMsg);
 }

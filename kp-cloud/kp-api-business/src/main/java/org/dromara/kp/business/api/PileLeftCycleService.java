@@ -1,5 +1,7 @@
 package org.dromara.kp.business.api;
 
+import cn.hutool.core.date.DateTime;
+
 /**
  * @program: RuoYi-Cloud-Plus
  * @description:
@@ -9,5 +11,5 @@ package org.dromara.kp.business.api;
 public interface PileLeftCycleService {
     boolean authPileLogin(String pileCode,int netType);
 
-
+    void syncTime(String pileCode, DateTime date);
 }

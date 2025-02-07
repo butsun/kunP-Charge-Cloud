@@ -33,5 +33,6 @@ public class UplinkQueueMessage  implements Serializable {
 
     /********新增******/
     private PileTryChargeRequest pileTryChargeRequest;
+    private SyncTimeResponse syncTimeResponse;
 
 }

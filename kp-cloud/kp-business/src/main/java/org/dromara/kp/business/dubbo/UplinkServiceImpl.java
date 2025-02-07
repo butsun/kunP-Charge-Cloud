@@ -65,8 +65,12 @@ public class UplinkServiceImpl implements UplinkService {
 
                 pileProtocolService.onTransactionRecord(uplinkQueueMsg);
 
-            } else if (hasMessage(uplinkQueueMsg.getPileTryChargeRequest()))
+            } else if (hasMessage(uplinkQueueMsg.getPileTryChargeRequest())){
+
                 pileProtocolService.pileTryChargeRequest(uplinkQueueMsg);
+            } else if (hasMessage(uplinkQueueMsg.getSyncTimeResponse())){
+                pileProtocolService.syncTimeResponse(uplinkQueueMsg);
+            }
             else {
                 log.warn("uplinkMsg未找到可用实现, {}", uplinkQueueMsg);
             }

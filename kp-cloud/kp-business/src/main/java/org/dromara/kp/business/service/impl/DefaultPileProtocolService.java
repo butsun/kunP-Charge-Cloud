@@ -231,6 +231,13 @@ public class DefaultPileProtocolService implements PileProtocolService {
 
     }
 
+    @Override
+    public void syncTimeResponse(UplinkQueueMessage uplinkQueueMsg) {
+        log.info("接收到充电桩对时响应 {}", uplinkQueueMsg.getSyncTimeResponse());
+        SyncTimeResponse syncTimeResponse = uplinkQueueMsg.getSyncTimeResponse();
+        pileLeftCycleClient.syncTime(syncTimeResponse.getPileCode(), DateUtil.date(syncTimeResponse.getCurrentTime().toEpochMilli()));
+    }
+
     //远程下发启动响应
     @Override
     public void startCharge(String pileCode, String gunCode, BigDecimal limitYuan, String orderNo) {

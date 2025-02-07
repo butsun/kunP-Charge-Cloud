@@ -1,5 +1,6 @@
 package org.dromara.kp.system.dubbo;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,4 +40,10 @@ public class PileLeftCycleClient  implements PileLeftCycleService {
         return true;
     }
 
+    @Override
+    public void syncTime(String pileCode, DateTime date) {
+        KpEquipment equipment =  kpEquipmentService.queryByEquipmentNo(pileCode);
+        equipment.setSyncTm(DateUtil.date());
+        kpEquipmentService.update(equipment);
+    }
 }

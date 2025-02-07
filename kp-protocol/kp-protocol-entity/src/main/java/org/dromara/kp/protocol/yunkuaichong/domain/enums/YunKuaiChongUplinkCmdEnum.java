@@ -99,6 +99,13 @@ public enum YunKuaiChongUplinkCmdEnum {
      * 交易记录
      */
     TRANSACTION_RECORD(0x3B),
+
+
+    /**
+     * 对时设置应答
+     */
+    SYNC_TIME_ACK(0x55),
+
     /**
      * 设置计费模型应答
      */

@@ -36,12 +36,30 @@ public class KpEquipmentVo implements Serializable {
     @ExcelProperty(value = "")
     private Long id;
 
+    /**
+     * 设备编号
+     */
+    private String equipmentNo;
 
     /**
      * 站点id
      */
     @ExcelProperty(value = "站点id")
-    private String stationId;
+    private Long stationId;
+
+    @ExcelProperty(value = "站点名称")
+    private String stationName;
+
+
+    /**
+     * 运营商id
+     */
+    @ExcelProperty(value = "运营商id")
+    private Long operatorId;
+
+
+    @ExcelProperty(value = "运营商名称")
+    private String operatorName;
 
     /**
      * 设备生产商名称
@@ -59,32 +77,32 @@ public class KpEquipmentVo implements Serializable {
      * 额定电压上限(单位:V)
      */
     @ExcelProperty(value = "额定电压上限(单位:V)")
-    private Long voltageUpperLimits;
+    private Integer voltageUpperLimits;
 
     /**
      * 额定电压下限(单位:V)
      */
     @ExcelProperty(value = "额定电压下限(单位:V)")
-    private Long voltageLowerLimits;
+    private Integer voltageLowerLimits;
 
     /**
      * 额定电流
      */
     @ExcelProperty(value = "额定电流")
-    private Long currentValue;
+    private Integer currentValue;
 
     /**
      * 额定功率
      */
     @ExcelProperty(value = "额定功率")
-    private Long power;
+    private Integer power;
 
     /**
      * 设备类型
      */
     @ExcelProperty(value = "设备类型", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "kp_equipment_type")
-    private Long equipmentType;
+    private Integer equipmentType;
 
     /**
      * 工作状态
@@ -104,7 +122,7 @@ public class KpEquipmentVo implements Serializable {
      */
     @ExcelProperty(value = "联网类型", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "kp_net_type")
-    private Long netType;
+    private Integer netType;
 
     /**
      * 最近上线时间

@@ -45,7 +45,7 @@ public class KpConnectorBo extends BaseEntity {
      * 枪号
      */
     @NotBlank(message = "枪号不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long connectorNo;
+    private Integer connectorNo;
 
     /**
      * 枪名称
@@ -57,7 +57,7 @@ public class KpConnectorBo extends BaseEntity {
      * 枪类型
      */
     @NotNull(message = "枪类型不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long connectorType;
+    private Integer connectorType;
 
     /**
      * 国标
@@ -68,7 +68,7 @@ public class KpConnectorBo extends BaseEntity {
     /**
      * 状态
      */
-    private Long status;
+    private Integer status;
 
 
 }

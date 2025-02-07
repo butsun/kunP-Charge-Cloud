@@ -38,19 +38,19 @@ public class KpConnectorVo implements Serializable {
      * 站点id
      */
     @ExcelProperty(value = "站点id")
-    private String stationId;
+    private Long stationId;
 
     /**
      * 运营商id
      */
     @ExcelProperty(value = "运营商id")
-    private String operatorId;
+    private Long operatorId;
 
     /**
-     * 设备号
+     * 设备id
      */
-    @ExcelProperty(value = "设备号")
-    private String equipmentId;
+    @ExcelProperty(value = "设备id")
+    private Long equipmentId;
 
     /**
      * 枪号
@@ -94,5 +94,21 @@ public class KpConnectorVo implements Serializable {
     @ExcelProperty(value = "更新时间")
     private Date updateTime;
 
+
+    /**
+     * 设备号
+     */
+    @ExcelProperty(value = "设备号")
+    private String equipmentNo;
+
+    private String operatorName;
+
+    private String stationName;
+
+    private Integer equipmentType;
+
+    private Integer currentValue;
+
+    private Integer power;
 
 }

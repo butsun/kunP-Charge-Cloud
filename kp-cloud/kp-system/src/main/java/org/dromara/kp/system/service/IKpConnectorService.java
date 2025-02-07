@@ -66,4 +66,11 @@ public interface IKpConnectorService {
      * @return 是否删除成功
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     * 根据设备修改信息修改枪信息
+     * @param bo  充电枪管理
+     * @return 是否删除成功
+     */
+    Boolean updateByEquipmentId(KpConnectorBo bo);
 }

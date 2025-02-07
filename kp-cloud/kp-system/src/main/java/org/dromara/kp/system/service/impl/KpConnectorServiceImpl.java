@@ -8,6 +8,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.vo.KpEquipmentVo;
+import org.dromara.kp.system.domain.vo.KpOperatorVo;
+import org.dromara.kp.system.domain.vo.KpStationVo;
+import org.dromara.kp.system.mapper.KpEquipmentMapper;
+import org.dromara.kp.system.service.IKpEquipmentService;
+import org.dromara.kp.system.service.IKpOperatorService;
+import org.dromara.kp.system.service.IKpStationService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpConnectorBo;
 import org.dromara.kp.system.domain.vo.KpConnectorVo;
@@ -32,6 +40,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
 
     private final KpConnectorMapper baseMapper;
 
+    private final IKpEquipmentService kpEquipmentService;
     /**
      * 查询充电枪管理
      *
@@ -39,8 +48,21 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
      * @return 充电枪管理
      */
     @Override
-    public KpConnectorVo queryById(Long id){
-        return baseMapper.selectVoById(id);
+    public KpConnectorVo queryById(Long id) {
+        KpConnectorVo vo = baseMapper.selectVoById(id);
+        return getKpConnectorVo(vo);
+    }
+
+    @NotNull
+    private KpConnectorVo getKpConnectorVo(KpConnectorVo vo) {
+        KpEquipmentVo kpEquipmentVo = kpEquipmentService.queryById(vo.getEquipmentId());
+        vo.setOperatorName(kpEquipmentVo.getOperatorName());
+        vo.setStationName(kpEquipmentVo.getStationName());
+        vo.setEquipmentNo(kpEquipmentVo.getEquipmentNo());
+        vo.setEquipmentType(kpEquipmentVo.getEquipmentType());
+        vo.setCurrentValue(kpEquipmentVo.getCurrentValue());
+        vo.setPower(kpEquipmentVo.getPower());
+        return vo;
     }
 
     /**
@@ -54,6 +76,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
     public TableDataInfo<KpConnectorVo> queryPageList(KpConnectorBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<KpConnector> lqw = buildQueryWrapper(bo);
         Page<KpConnectorVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        result.getRecords().forEach(this::getKpConnectorVo);
         return TableDataInfo.build(result);
     }
 
@@ -66,7 +89,9 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
     @Override
     public List<KpConnectorVo> queryList(KpConnectorBo bo) {
         LambdaQueryWrapper<KpConnector> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<KpConnectorVo> vos = baseMapper.selectVoList(lqw);
+        vos.forEach(this::getKpConnectorVo);
+        return vos;
     }
 
     private LambdaQueryWrapper<KpConnector> buildQueryWrapper(KpConnectorBo bo) {
@@ -112,7 +137,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
     /**
      * 保存前的数据校验
      */
-    private void validEntityBeforeSave(KpConnector entity){
+    private void validEntityBeforeSave(KpConnector entity) {
         //TODO 做一些数据校验,如唯一约束
     }
 
@@ -125,9 +150,17 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
+        if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteByIds(ids) > 0;
+    }
+
+    @Override
+    public Boolean updateByEquipmentId(KpConnectorBo bo) {
+        return baseMapper.update(Wrappers.<KpConnector>lambdaUpdate()
+            .eq(KpConnector::getEquipmentId, bo.getEquipmentId())
+            .set(Objects.nonNull(bo.getStationId()), KpConnector::getStationId, bo.getStationId())
+            .set(Objects.nonNull(bo.getOperatorId()), KpConnector::getOperatorId, bo.getOperatorId())) > 0;
     }
 }

@@ -1,5 +1,8 @@
 package org.dromara.kp.system.domain;
 
+import jakarta.validation.constraints.NotBlank;
+import org.dromara.common.core.validate.AddGroup;
+import org.dromara.common.core.validate.EditGroup;
 import org.dromara.common.tenant.core.TenantEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -32,12 +35,17 @@ public class KpEquipment extends TenantEntity {
     /**
      * 设备编号
      */
-    private String pileNo;
+    private String equipmentNo;
 
     /**
      * 站点id
      */
     private Long stationId;
+
+    /**
+     * 运营商id
+     */
+    private Long operatorId;
 
     /**
      * 价格模版
@@ -78,6 +86,11 @@ public class KpEquipment extends TenantEntity {
      * 设备类型
      */
     private Long equipmentType;
+
+    /**
+     * 枪数量
+     */
+    private Integer gunSum;
 
     /**
      * 车位号

@@ -92,10 +92,10 @@ public class DefaultPileProtocolService implements PileProtocolService {
         periods.add(createPeriod(4, LocalTime.parse("18:00"), LocalTime.parse("00:00"), VALLEY));
 
         Map<PeriodProto.PricingModelFlag, PricingModel.FlagPrice> flagPriceMap = new HashMap<>();
-        flagPriceMap.put(TOP, new PricingModel.FlagPrice(new BigDecimal("0.75"), new BigDecimal("0.45")));
-        flagPriceMap.put(PEAK, new PricingModel.FlagPrice(new BigDecimal("0.75"), new BigDecimal("0.45")));
-        flagPriceMap.put(FLAT, new PricingModel.FlagPrice(new BigDecimal("0.75"), new BigDecimal("0.45")));
-        flagPriceMap.put(VALLEY, new PricingModel.FlagPrice(new BigDecimal("0.75"), new BigDecimal("0.45")));
+        flagPriceMap.put(TOP, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
+        flagPriceMap.put(PEAK, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
+        flagPriceMap.put(FLAT, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
+        flagPriceMap.put(VALLEY, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
 
         PricingModel model = new PricingModel();
         model.setId(UUID.randomUUID());
@@ -103,8 +103,8 @@ public class DefaultPileProtocolService implements PileProtocolService {
         model.setPileCode(pileCode);
         model.setType(CHARGE);
         model.setRule(SPLIT_TIME);
-        model.setStandardElec(new BigDecimal("0.75"));
-        model.setStandardServ(new BigDecimal("0.45"));
+        model.setStandardElec(new BigDecimal("3.00"));
+        model.setStandardServ(new BigDecimal("1.00"));
         model.setFlagPriceList(flagPriceMap);
         model.setPeriodsList(periods);
 

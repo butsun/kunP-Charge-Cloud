@@ -65,18 +65,18 @@ public class KpStationBo extends BaseEntity {
      * 类型
      */
     @NotNull(message = "类型不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long stationType;
+    private Integer stationType;
 
     /**
      * 状态
      */
     @NotNull(message = "状态不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long stationStatus;
+    private Integer stationStatus;
 
     /**
      * 车位数量
      */
-    private Long parkNums;
+    private Integer parkNums;
 
     /**
      * 营业时间

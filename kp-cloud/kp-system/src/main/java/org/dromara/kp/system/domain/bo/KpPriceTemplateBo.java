@@ -8,6 +8,8 @@ import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -42,19 +44,19 @@ public class KpPriceTemplateBo extends BaseEntity {
      * 价格类型:0、尖;1、峰;2、平;3、谷;
      */
     @NotNull(message = "价格类型:0、尖;1、峰;2、平;3、谷;不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long priceType;
+    private Integer priceType;
 
     /**
      * 电价:XXXX.XXXX
      */
     @NotNull(message = "电价:XXXX.XXXX不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long elecPrice;
+    private BigDecimal elecPrice;
 
     /**
      * 服务费单价:XXXX.XXXX
      */
     @NotNull(message = "服务费单价:XXXX.XXXX不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long servicePrice;
+    private BigDecimal servicePrice;
 
     /**
      * 备注

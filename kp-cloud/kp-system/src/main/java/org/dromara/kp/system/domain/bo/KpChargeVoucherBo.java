@@ -32,14 +32,14 @@ public class KpChargeVoucherBo extends BaseEntity {
     /**
      * 归属运营商
      */
-    @NotBlank(message = "归属运营商不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "归属运营商不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long operatorId;
 
     /**
      * 凭证类型
      */
     @NotNull(message = "凭证类型不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long voucherType;
+    private Integer voucherType;
 
     /**
      * 归属账户
@@ -50,7 +50,7 @@ public class KpChargeVoucherBo extends BaseEntity {
     /**
      * 禁用
      */
-    private Long disableFlag;
+    private Integer disableFlag;
 
     /**
      * 备注

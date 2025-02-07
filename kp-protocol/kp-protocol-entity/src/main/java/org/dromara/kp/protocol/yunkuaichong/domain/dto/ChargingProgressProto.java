@@ -15,7 +15,7 @@ public class ChargingProgressProto implements Serializable {
     private static final long serialVersionUID = 1L;
     private long ts;
     private String pileCode;
-    private String gunCode;
+    private int gunCode;
     private String tradeNo;
     private String outputVoltage;
     private String outputCurrent;

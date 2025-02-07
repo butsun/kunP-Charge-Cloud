@@ -49,15 +49,11 @@ public class DefaultPileProtocolService implements PileProtocolService {
         //查找设备是否存在
         String pileCode = loginRequest.getPileCode();
         int netType = loginRequest.getNetType();
-        boolean flag =  pileLeftCycleClient.authPileLogin(pileCode,netType);
+        LoginResponse loginResponse  =  pileLeftCycleClient.authPileLogin(pileCode,netType);
 
         DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, loginRequest.getPileCode());
 
         downlinkMessageBuilder.downlinkCmd(YunKuaiChongDownlinkCmdEnum.LOGIN_ACK.name());
-        LoginResponse loginResponse = LoginResponse.builder()
-            .pileCode(loginRequest.getPileCode())
-            .success(flag)
-            .build();
         downlinkMessageBuilder.loginResponse(loginResponse);
 
         downlinkCallService.downlinkCmdProcess(downlinkMessageBuilder.build());
@@ -65,7 +61,8 @@ public class DefaultPileProtocolService implements PileProtocolService {
 
     @Override
     public void heartBeat(UplinkQueueMessage uplinkQueueMessage) {
-        log.debug("接收到桩心跳事件 {}", uplinkQueueMessage);
+        log.debug("接收到枪心跳事件 {}", uplinkQueueMessage.getHeartBeatRequest());
+        pileLeftCycleClient.refreshGunStatus(uplinkQueueMessage.getHeartBeatRequest());
     }
 
 
@@ -138,13 +135,7 @@ public class DefaultPileProtocolService implements PileProtocolService {
     @Override
     public void postGunRunStatus(UplinkQueueMessage uplinkQueueMessage) {
         log.info("接收到充电桩上报的电桩状态 {}", uplinkQueueMessage.getGunRunStatusProto());
-        // TODO 处理相关业务逻辑 修改枪状态
-
-
-//        pileLeftCycleClient.
-
-
-
+        pileLeftCycleClient.refreshGunStatus(uplinkQueueMessage.getGunRunStatusProto());
     }
 
     @Override
@@ -208,17 +199,9 @@ public class DefaultPileProtocolService implements PileProtocolService {
     public void pileTryChargeRequest(UplinkQueueMessage uplinkQueueMessage) {
         log.info("接收到充电桩主动发起充电 {}", uplinkQueueMessage.getPileTryChargeRequest());
         PileTryChargeRequest pileTryChargeRequest = uplinkQueueMessage.getPileTryChargeRequest();
-        String pileCode = pileTryChargeRequest.getPileCode();
-        String gunNo = pileTryChargeRequest.getGunNo();
-
 
         PileTryChargeResponse response = pileChargeClient.tryCharge(pileTryChargeRequest);
-
-
-        //        32010600019236 01 20010618034230 60。
-        // 格式桩号（7bytes）+枪号（1byte）+年月日时分秒（6bytes）200106180342 +自增序号（2bytes）
-        // 构造下行计费
-        DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, pileCode);
+        DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, pileTryChargeRequest.getPileCode());
         downlinkMessageBuilder.downlinkCmd(PILE_TRY_CHARGE_ACK.name());
         downlinkMessageBuilder.pileTryChargeResponse(response);
         downlinkCallService.downlinkCmdProcess(downlinkMessageBuilder.build());

@@ -39,17 +39,17 @@ public class KpChargeAccountBo extends BaseEntity {
     /**
      * 性别
      */
-    private Long sex;
+    private Integer sex;
 
     /**
      * 账户类型
      */
-    private Long accoutType;
+    private Integer accoutType;
 
     /**
      * 禁用
      */
-    private Long disableFlag;
+    private Integer disableFlag;
 
     /**
      * 备注

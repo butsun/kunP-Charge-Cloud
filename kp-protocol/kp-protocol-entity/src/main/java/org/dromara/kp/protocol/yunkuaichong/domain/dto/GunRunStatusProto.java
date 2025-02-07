@@ -17,7 +17,7 @@ public class GunRunStatusProto  implements Serializable {
     private static final long serialVersionUID = 1L;
     private long ts;
     private String pileCode;
-    private String gunCode;
+    private int gunCode;
     private GunRunStatus gunRunStatus;
     private List<String> faultMessages;
     private String additionalInfo;

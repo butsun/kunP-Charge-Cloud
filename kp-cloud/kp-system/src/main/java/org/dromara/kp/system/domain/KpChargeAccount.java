@@ -42,17 +42,17 @@ public class KpChargeAccount extends TenantEntity {
     /**
      * 性别
      */
-    private Long sex;
+    private Integer sex;
 
     /**
      * 账户类型
      */
-    private Long accoutType;
+    private Integer accoutType;
 
     /**
      * 禁用
      */
-    private Long disableFlag;
+    private Integer disableFlag;
 
     /**
      * 注册时间

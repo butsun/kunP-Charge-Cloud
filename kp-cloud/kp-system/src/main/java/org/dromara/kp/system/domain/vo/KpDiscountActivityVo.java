@@ -10,6 +10,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -29,7 +30,7 @@ public class KpDiscountActivityVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     *
      */
     @ExcelProperty(value = "")
     private Long id;
@@ -57,13 +58,13 @@ public class KpDiscountActivityVo implements Serializable {
      * 服务费折扣
      */
     @ExcelProperty(value = "服务费折扣")
-    private Long disService;
+    private BigDecimal disService;
 
     /**
      * 充电费折扣
      */
     @ExcelProperty(value = "充电费折扣")
-    private Long disElectricity;
+    private BigDecimal disElectricity;
 
     /**
      * 禁用

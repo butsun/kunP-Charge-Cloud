@@ -14,10 +14,7 @@ public class HeartBeatRequest  implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private String pileCode;
-    private String remoteAddress;
-    private String nodeId;
-    private String nodeHostAddress;
-    private int nodeRestPort;
-    private int nodeGrpcPort;
+    private int gunState;
+    private int gunCode;
     private String additionalInfo;
 }

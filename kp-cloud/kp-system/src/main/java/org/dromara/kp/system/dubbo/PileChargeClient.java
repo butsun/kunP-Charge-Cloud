@@ -44,7 +44,7 @@ public class PileChargeClient implements PileChargeService {
         Date startDate = DateUtil.date();
 
         KpEquipment equipment = equipmentService.queryByEquipmentNo(pileCode);
-        KpConnector connector = connectorService.queryByNo(pileCode, CharSequenceUtil.strip(gunNo, "0", null));
+        KpConnector connector = connectorService.queryByNo(pileCode, Integer.parseInt(gunNo));
 
         //todo  还有卡校验等操作
         verifyChargeSession();

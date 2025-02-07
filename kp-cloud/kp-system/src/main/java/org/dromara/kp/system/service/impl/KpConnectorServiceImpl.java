@@ -166,7 +166,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
     }
 
     @Override
-    public KpConnector queryByNo(String pileCode, String gunNo) {
+    public KpConnector queryByNo(String pileCode, Integer gunNo) {
         return baseMapper.selectOne(Wrappers.<KpConnector>lambdaUpdate()
             .eq(KpConnector::getEquipmentNo, pileCode)
             .eq(KpConnector::getConnectorNo, gunNo));

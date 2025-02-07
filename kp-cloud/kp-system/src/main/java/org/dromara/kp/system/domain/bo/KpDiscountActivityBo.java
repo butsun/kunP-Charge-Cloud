@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
+
 /**
  * 充电优惠管理业务对象 kp_discount_activity
  *
@@ -34,7 +36,7 @@ public class KpDiscountActivityBo extends BaseEntity {
     /**
      * 运营商ID（组织机构代码）
      */
-    @NotBlank(message = "运营商ID（组织机构代码）不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "运营商ID（组织机构代码）不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long operatorId;
 
     /**
@@ -46,24 +48,24 @@ public class KpDiscountActivityBo extends BaseEntity {
      * 服务费折扣
      */
     @NotNull(message = "服务费折扣不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long disService;
+    private BigDecimal disService;
 
     /**
      * 充电费折扣
      */
     @NotNull(message = "充电费折扣不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long disElectricity;
+    private BigDecimal disElectricity;
 
     /**
      * 禁用
      */
-    private Long disableFlag;
+    private Integer disableFlag;
 
     /**
      * 活动类型
      */
     @NotNull(message = "活动类型不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long activityType;
+    private Integer activityType;
 
     /**
      * 备注

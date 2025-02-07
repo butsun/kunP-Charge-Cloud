@@ -75,7 +75,7 @@ public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe 
 
         // 3.抢号
         byte gunCodeByte = byteBuf.readByte();
-        String gunCode = BCDUtil.toString(gunCodeByte);
+        int gunCode = Integer.parseInt(BCDUtil.toString(gunCodeByte));
 
         // 4.状态 0x00：离线 0x01：故障 0x02：空闲 0x03：充电
         int gunStatus = byteBuf.readUnsignedByte();

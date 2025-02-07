@@ -57,30 +57,30 @@ public class KpEquipmentBo extends BaseEntity {
     /**
      * 额定电压上限(单位:V)
      */
-    private Long voltageUpperLimits;
+    private Integer voltageUpperLimits;
 
     /**
      * 额定电压下限(单位:V)
      */
-    private Long voltageLowerLimits;
+    private Integer voltageLowerLimits;
 
     /**
      * 额定电流
      */
     @NotNull(message = "额定电流不能为空", groups = {AddGroup.class, EditGroup.class})
-    private Long currentValue;
+    private Integer currentValue;
 
     /**
      * 额定功率
      */
     @NotNull(message = "额定功率不能为空", groups = {AddGroup.class, EditGroup.class})
-    private Long power;
+    private Integer power;
 
     /**
      * 设备类型
      */
     @NotNull(message = "设备类型不能为空", groups = {AddGroup.class, EditGroup.class})
-    private Long equipmentType;
+    private Integer equipmentType;
 
     @NotNull(message = "枪数不能为空", groups = {AddGroup.class})
     private Integer gunSum;
@@ -93,7 +93,7 @@ public class KpEquipmentBo extends BaseEntity {
     /**
      * 工作状态
      */
-    private Long isWorking;
+    private Integer isWorking;
 
 
 }

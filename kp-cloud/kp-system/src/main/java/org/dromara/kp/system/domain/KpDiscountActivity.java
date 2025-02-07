@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
+import java.math.BigDecimal;
 
 /**
  * 充电优惠管理对象 kp_discount_activity
@@ -45,12 +46,12 @@ public class KpDiscountActivity extends TenantEntity {
     /**
      * 服务费折扣
      */
-    private Long disService;
+    private BigDecimal disService;
 
     /**
      * 充电费折扣
      */
-    private Long disElectricity;
+    private BigDecimal disElectricity;
 
     /**
      * 禁用

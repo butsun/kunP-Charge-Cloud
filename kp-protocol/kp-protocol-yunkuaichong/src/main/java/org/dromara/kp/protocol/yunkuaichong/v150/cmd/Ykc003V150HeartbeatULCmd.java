@@ -50,8 +50,8 @@ public class Ykc003V150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
         // 转发到后端
         HeartBeatRequest heartBeatRequest = HeartBeatRequest.builder()
             .pileCode(pileCode)
-            .remoteAddress(tcpSession.getAddress().toString())
-            .additionalInfo(additionalInfo.toString())
+            .gunState(gunState)
+            .gunCode(gunCode)
             .build();
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(heartBeatRequest.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
             .heartBeatRequest(heartBeatRequest)

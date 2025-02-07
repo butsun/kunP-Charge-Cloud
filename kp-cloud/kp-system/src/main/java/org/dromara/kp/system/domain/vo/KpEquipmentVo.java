@@ -130,5 +130,15 @@ public class KpEquipmentVo implements Serializable {
     @ExcelProperty(value = "最近上线时间")
     private Date onlineTm;
 
+    /**
+     * 创建时间
+     */
+    @ExcelProperty(value = "创建时间")
+    private Date createTime;
 
+    /**
+     * 枪数量
+     */
+    @ExcelProperty(value = "枪数量")
+    private Integer gunSum;
 }

@@ -38,7 +38,7 @@ public class KpChargeOrderBo extends BaseEntity {
     /**
      * 订单状态
      */
-    private Long startChargeSeqStat;
+    private Integer startChargeSeqStat;
 
     /**
      * 站点id

@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.dromara.kp.business.api.PileLeftCycleService;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.GunRunStatusProto;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.HeartBeatRequest;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.LoginResponse;
+import org.dromara.kp.system.domain.KpConnector;
 import org.dromara.kp.system.domain.KpEquipment;
 import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.service.IKpConnectorService;
@@ -28,16 +32,21 @@ public class PileLeftCycleClient  implements PileLeftCycleService {
 
     private final IKpConnectorService kpConnectorService;
     @Override
-    public boolean authPileLogin(String pileCode,int netType) {
+    public LoginResponse authPileLogin(String pileCode, int netType) {
         KpEquipment equipment =  kpEquipmentService.queryByEquipmentNo(pileCode);
-        if (Objects.isNull(equipment)) {
-            return false;
+        boolean flag = false;
+        if (Objects.nonNull(equipment)) {
+            //设备存在 开始上电
+            equipment.setNetType(netType);
+            equipment.setOnlineTm(DateUtil.date());
+            equipment.setSyncTm(DateUtil.date());
+            kpEquipmentService.update(equipment);
+            flag = true;
         }
-        //设备存在 开始上电
-        equipment.setNetType(netType);
-        equipment.setSyncTm(DateUtil.date());
-        kpEquipmentService.update(equipment);
-        return true;
+        return LoginResponse.builder()
+            .pileCode(pileCode)
+            .success(flag)
+            .build();
     }
 
     @Override
@@ -45,5 +54,21 @@ public class PileLeftCycleClient  implements PileLeftCycleService {
         KpEquipment equipment =  kpEquipmentService.queryByEquipmentNo(pileCode);
         equipment.setSyncTm(DateUtil.date());
         kpEquipmentService.update(equipment);
+    }
+
+
+    @Override
+    public void refreshGunStatus(HeartBeatRequest heartBeatRequest) {
+        KpEquipment equipment =  kpEquipmentService.queryByEquipmentNo(heartBeatRequest.getPileCode());
+        equipment.setOnlineTm(DateUtil.date());
+        kpEquipmentService.update(equipment);
+    }
+
+
+    @Override
+    public void refreshGunStatus(GunRunStatusProto gunRunStatusProto) {
+
+
+
     }
 }

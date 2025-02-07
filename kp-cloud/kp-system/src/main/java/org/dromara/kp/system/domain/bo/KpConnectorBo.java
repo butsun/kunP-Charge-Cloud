@@ -32,19 +32,19 @@ public class KpConnectorBo extends BaseEntity {
     /**
      * 运营商id
      */
-    @NotBlank(message = "运营商id不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "运营商id不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long operatorId;
 
     /**
-     * 设备号
+     * 设备id
      */
-    @NotBlank(message = "设备号不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "设备id不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long equipmentId;
 
     /**
      * 枪号
      */
-    @NotBlank(message = "枪号不能为空", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "枪号不能为空", groups = { AddGroup.class, EditGroup.class })
     private Integer connectorNo;
 
     /**
@@ -58,12 +58,6 @@ public class KpConnectorBo extends BaseEntity {
      */
     @NotNull(message = "枪类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private Integer connectorType;
-
-    /**
-     * 国标
-     */
-    @NotNull(message = "国标不能为空", groups = { AddGroup.class, EditGroup.class })
-    private Long nationalStandard;
 
     /**
      * 状态

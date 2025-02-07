@@ -1,9 +1,12 @@
 package org.dromara.kp.system.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import org.dromara.common.tenant.core.TenantEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -47,7 +50,7 @@ public class KpChargeOrder extends TenantEntity {
     /**
      * 订单状态
      */
-    private Long startChargeSeqStat;
+    private Integer startChargeSeqStat;
 
     /**
      * 站点id
@@ -62,52 +65,57 @@ public class KpChargeOrder extends TenantEntity {
     /**
      * 充电费折扣
      */
-    private Long activittyElec;
+    private BigDecimal activittyElec;
 
     /**
      * 服务费折扣
      */
-    private Long activityService;
+    private BigDecimal activityService;
 
     /**
-     * 充电枪号
+     * 充电枪id
      */
-    private Long connectorId;
+    private Integer connectorId;
+
+    /**
+     * 充电设备id
+     */
+    private Integer equipmentId;
 
     /**
      * 电流A
      */
-    private Long currentA;
+    private BigDecimal currentA;
 
     /**
      * 电流B
      */
-    private Long currentB;
+    private BigDecimal currentB;
 
     /**
      * 电流C
      */
-    private Long currentC;
+    private BigDecimal currentC;
 
     /**
      * 电压A
      */
-    private Long voltageA;
+    private BigDecimal voltageA;
 
     /**
      * 电压B
      */
-    private Long voltageB;
+    private BigDecimal voltageB;
 
     /**
      * 电压C
      */
-    private Long voltageC;
+    private BigDecimal voltageC;
 
     /**
      * Soc
      */
-    private Long soc;
+    private BigDecimal soc;
 
     /**
      * 开始充电时间
@@ -122,42 +130,42 @@ public class KpChargeOrder extends TenantEntity {
     /**
      * 充电量
      */
-    private Long totalPower;
+    private BigDecimal totalPower;
 
     /**
      * 电费
      */
-    private Long elecMoney;
+    private BigDecimal elecMoney;
 
     /**
      * 服务费
      */
-    private Long serviceMoney;
+    private BigDecimal serviceMoney;
 
     /**
      * 合计费用
      */
-    private Long totalMoney;
+    private BigDecimal totalMoney;
 
     /**
      * 优惠后电费（元）
      */
-    private Long finalElecMoney;
+    private BigDecimal finalElecMoney;
 
     /**
      * 优惠后服务费（元）
      */
-    private Long finalServiceMoney;
+    private BigDecimal finalServiceMoney;
 
     /**
      * 总金额
      */
-    private Long finalTotalMoney;
+    private BigDecimal finalTotalMoney;
 
     /**
      * 故障原因 0无 1此设备不存在 2此设备离线 3设备已停止充电 4-99自定义（参考12.1 充电停止原因代码表）
      */
-    private Long failReason;
+    private Integer failReason;
 
     /**
      * vin码
@@ -185,5 +193,24 @@ public class KpChargeOrder extends TenantEntity {
      */
     private String priceInfo;
 
+    /**
+     * 运营商名称
+     */
+    private String operatorName;
+
+    /**
+     * 站点名称
+     */
+    private String stationName;
+
+    /**
+     * 枪口编号
+     */
+    private String connectorNo;
+
+    /**
+     * 设备编号
+     */
+    private String equipmentNo;
 
 }

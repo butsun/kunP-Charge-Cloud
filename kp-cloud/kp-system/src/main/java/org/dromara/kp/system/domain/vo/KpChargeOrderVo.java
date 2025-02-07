@@ -1,5 +1,6 @@
 package org.dromara.kp.system.domain.vo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.dromara.kp.system.domain.KpChargeOrder;
@@ -46,7 +47,7 @@ public class KpChargeOrderVo implements Serializable {
      * 运营商ID
      */
     @ExcelProperty(value = "运营商ID")
-    private String operatorId;
+    private Long operatorId;
 
     /**
      * 充电流水号
@@ -59,25 +60,31 @@ public class KpChargeOrderVo implements Serializable {
      */
     @ExcelProperty(value = "订单状态", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "kp_start_charge_seq_stat")
-    private Long startChargeSeqStat;
+    private Integer startChargeSeqStat;
 
     /**
      * 站点id
      */
     @ExcelProperty(value = "站点id")
-    private String stationId;
+    private Long stationId;
 
     /**
-     * 充电枪号
+     * 充电枪id
      */
-    @ExcelProperty(value = "充电枪号")
-    private String connectorId;
+    @ExcelProperty(value = "充电枪id")
+    private Long connectorId;
+
+    /**
+     * 充电设备id
+     */
+    @ExcelProperty(value = "充电设备id")
+    private Long equipmentId;
 
     /**
      * Soc
      */
     @ExcelProperty(value = "Soc")
-    private Long soc;
+    private BigDecimal soc;
 
     /**
      * 开始充电时间
@@ -95,46 +102,46 @@ public class KpChargeOrderVo implements Serializable {
      * 充电量
      */
     @ExcelProperty(value = "充电量")
-    private Long totalPower;
+    private BigDecimal totalPower;
 
     /**
      * 电费
      */
     @ExcelProperty(value = "电费")
-    private Long elecMoney;
+    private BigDecimal elecMoney;
 
     /**
      * 服务费
      */
     @ExcelProperty(value = "服务费")
-    private Long serviceMoney;
+    private BigDecimal serviceMoney;
 
     /**
      * 优惠后电费（元）
      */
     @ExcelProperty(value = "优惠后电费", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "元=")
-    private Long finalElecMoney;
+    private BigDecimal finalElecMoney;
 
     /**
      * 优惠后服务费（元）
      */
     @ExcelProperty(value = "优惠后服务费", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "元=")
-    private Long finalServiceMoney;
+    private BigDecimal finalServiceMoney;
 
     /**
      * 总金额
      */
     @ExcelProperty(value = "总金额")
-    private Long finalTotalMoney;
+    private BigDecimal finalTotalMoney;
 
     /**
      * 故障原因 0无 1此设备不存在 2此设备离线 3设备已停止充电 4-99自定义（参考12.1 充电停止原因代码表）
      */
     @ExcelProperty(value = "故障原因 0无 1此设备不存在 2此设备离线 3设备已停止充电 4-99自定义", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "参=考12.1,充=电停止原因代码表")
-    private Long failReason;
+    private Integer failReason;
 
     /**
      * vin码
@@ -167,4 +174,27 @@ public class KpChargeOrderVo implements Serializable {
     private String phoneNum;
 
 
+    /**
+     * 运营商名称
+     */
+    @ExcelProperty(value = "运营商名称")
+    private String operatorName;
+
+    /**
+     * 站点名称
+     */
+    @ExcelProperty(value = "站点名称")
+    private String stationName;
+
+    /**
+     * 枪口编号
+     */
+    @ExcelProperty(value = "枪口编号")
+    private String connectorNo;
+
+    /**
+     * 设备编号
+     */
+    @ExcelProperty(value = "设备编号")
+    private String equipmentNo;
 }

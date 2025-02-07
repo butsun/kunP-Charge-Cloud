@@ -45,7 +45,7 @@ public class KpConnector extends TenantEntity {
     /**
      * 枪号
      */
-    private Long connectorNo;
+    private Integer connectorNo;
 
     /**
      * 枪名称

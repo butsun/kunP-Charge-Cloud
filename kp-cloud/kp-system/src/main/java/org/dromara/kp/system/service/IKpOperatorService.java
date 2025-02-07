@@ -1,6 +1,5 @@
 package org.dromara.kp.system.service;
 
-import org.dromara.kp.system.domain.KpOperator;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.bo.KpOperatorBo;
 import org.dromara.common.mybatis.core.page.TableDataInfo;

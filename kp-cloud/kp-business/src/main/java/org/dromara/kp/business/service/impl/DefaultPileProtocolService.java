@@ -5,6 +5,8 @@ import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.dromara.kp.business.api.DownlinkService;
+import org.dromara.kp.business.api.PileChargeService;
+import org.dromara.kp.business.api.PileLeftCycleService;
 import org.dromara.kp.business.service.PileProtocolService;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.*;
 import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum;
@@ -20,7 +22,6 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto.Pricin
 import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto.PricingModelRule.SPLIT_TIME;
 import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto.PricingModelType.CHARGE;
 import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.*;
-import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEnum.TRANSACTION_RECORD;
 
 
 /**
@@ -33,17 +34,29 @@ public class DefaultPileProtocolService implements PileProtocolService {
     @DubboReference
     DownlinkService downlinkCallService;
 
+    @DubboReference
+    PileChargeService pileChargeClient;
+
+    @DubboReference
+    PileLeftCycleService pileLeftCycleClient;
+
+
     @Override
     public void pileLogin(UplinkQueueMessage uplinkQueueMessage) {
         log.debug("接收到桩登录事件 {}", uplinkQueueMessage.getLoginRequest());
         LoginRequest loginRequest = uplinkQueueMessage.getLoginRequest();
+
+        //查找设备是否存在
+        String pileCode = loginRequest.getPileCode();
+        int netType = loginRequest.getNetType();
+        boolean flag =  pileLeftCycleClient.authPileLogin(pileCode,netType);
 
         DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, loginRequest.getPileCode());
 
         downlinkMessageBuilder.downlinkCmd(YunKuaiChongDownlinkCmdEnum.LOGIN_ACK.name());
         LoginResponse loginResponse = LoginResponse.builder()
             .pileCode(loginRequest.getPileCode())
-            .success(true)
+            .success(flag)
             .build();
         downlinkMessageBuilder.loginResponse(loginResponse);
 
@@ -125,8 +138,11 @@ public class DefaultPileProtocolService implements PileProtocolService {
     @Override
     public void postGunRunStatus(UplinkQueueMessage uplinkQueueMessage) {
         log.info("接收到充电桩上报的电桩状态 {}", uplinkQueueMessage.getGunRunStatusProto());
+        // TODO 处理相关业务逻辑 修改枪状态
 
-        // TODO 处理相关业务逻辑
+
+//        pileLeftCycleClient.
+
 
 
     }
@@ -135,7 +151,7 @@ public class DefaultPileProtocolService implements PileProtocolService {
     public void postChargingProgress(UplinkQueueMessage uplinkQueueMessage) {
         log.info("接收到充电桩上报的充电进度 {}", uplinkQueueMessage.getChargingProgressProto());
 
-        // TODO 处理相关业务逻辑
+        // TODO 处理相关业务逻辑  找到订单计费
 
 
     }

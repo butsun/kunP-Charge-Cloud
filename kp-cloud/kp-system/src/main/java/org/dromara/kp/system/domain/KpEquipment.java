@@ -120,7 +120,7 @@ public class KpEquipment extends TenantEntity {
     /**
      * 联网类型
      */
-    private Long netType;
+    private Integer netType;
 
     /**
      * 最近上线时间

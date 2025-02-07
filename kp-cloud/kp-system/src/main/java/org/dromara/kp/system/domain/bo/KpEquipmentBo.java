@@ -33,6 +33,12 @@ public class KpEquipmentBo extends BaseEntity {
     private Long stationId;
 
     /**
+     * 运营商id
+     */
+    @NotNull(message = "运营商id不能为空", groups = {AddGroup.class, EditGroup.class})
+    private Long operatorId;
+
+    /**
      * 设备名称
      */
     @NotBlank(message = "设备编号不能为空", groups = {AddGroup.class, EditGroup.class})

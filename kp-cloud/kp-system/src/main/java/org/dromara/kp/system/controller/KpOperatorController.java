@@ -47,6 +47,15 @@ public class KpOperatorController extends BaseController {
     }
 
     /**
+     * 模糊查询运营商管理列表
+     */
+    @SaCheckPermission("kpSystem:operator:list")
+    @GetMapping("/like")
+    public TableDataInfo<KpOperatorVo> likeList(KpOperatorBo bo) {
+        return TableDataInfo.build(kpOperatorService.queryList(bo));
+    }
+
+    /**
      * 导出运营商管理列表
      */
     @SaCheckPermission("kpSystem:operator:export")

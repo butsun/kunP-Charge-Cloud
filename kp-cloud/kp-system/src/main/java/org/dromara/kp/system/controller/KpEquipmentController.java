@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import org.dromara.kp.system.domain.bo.KpStationBo;
+import org.dromara.kp.system.domain.vo.KpStationVo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 import org.dromara.common.idempotent.annotation.RepeatSubmit;
@@ -44,6 +46,15 @@ public class KpEquipmentController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo<KpEquipmentVo> list(KpEquipmentBo bo, PageQuery pageQuery) {
         return kpEquipmentService.queryPageList(bo, pageQuery);
+    }
+
+    /**
+     * 模糊查询充电设备管理列表
+     */
+    @SaCheckPermission("kpSystem:equipment:list")
+    @GetMapping("/like")
+    public TableDataInfo<KpEquipmentVo> likeList(KpEquipmentBo bo) {
+        return TableDataInfo.build(kpEquipmentService.queryList(bo));
     }
 
     /**

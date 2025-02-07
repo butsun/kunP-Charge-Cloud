@@ -66,4 +66,13 @@ public interface IKpEquipmentService {
      * @return 是否删除成功
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     * 根据设备编号精确查找
+     * @param pileCode 设备编号
+     * @return KpEquipmentVo
+     */
+    KpEquipment queryByEquipmentNo(String pileCode);
+
+    void update(KpEquipment equipment );
 }

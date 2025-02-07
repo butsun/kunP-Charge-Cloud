@@ -40,7 +40,8 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
 
     private final KpConnectorMapper baseMapper;
 
-    private final IKpEquipmentService kpEquipmentService;
+    private final KpEquipmentMapper equipmentMapper;
+
     /**
      * 查询充电枪管理
      *
@@ -55,7 +56,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
 
     @NotNull
     private KpConnectorVo getKpConnectorVo(KpConnectorVo vo) {
-        KpEquipmentVo kpEquipmentVo = kpEquipmentService.queryById(vo.getEquipmentId());
+        KpEquipmentVo kpEquipmentVo = equipmentMapper.selectVoById(vo.getEquipmentId());
         vo.setOperatorName(kpEquipmentVo.getOperatorName());
         vo.setStationName(kpEquipmentVo.getStationName());
         vo.setEquipmentNo(kpEquipmentVo.getEquipmentNo());
@@ -163,4 +164,5 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
             .set(Objects.nonNull(bo.getStationId()), KpConnector::getStationId, bo.getStationId())
             .set(Objects.nonNull(bo.getOperatorId()), KpConnector::getOperatorId, bo.getOperatorId())) > 0;
     }
+
 }

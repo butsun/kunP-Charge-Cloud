@@ -73,4 +73,5 @@ public interface IKpConnectorService {
      * @return 是否删除成功
      */
     Boolean updateByEquipmentId(KpConnectorBo bo);
+
 }

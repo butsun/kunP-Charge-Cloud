@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.*;
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import org.dromara.kp.system.domain.bo.KpOperatorBo;
+import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 import org.dromara.common.idempotent.annotation.RepeatSubmit;
@@ -44,6 +46,16 @@ public class KpStationController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo<KpStationVo> list(KpStationBo bo, PageQuery pageQuery) {
         return kpStationService.queryPageList(bo, pageQuery);
+    }
+
+
+    /**
+     * 模糊查询运营商管理列表
+     */
+    @SaCheckPermission("kpSystem:station:list")
+    @GetMapping("/like")
+    public TableDataInfo<KpStationVo> likeList(KpStationBo bo) {
+        return TableDataInfo.build(kpStationService.queryList(bo));
     }
 
     /**

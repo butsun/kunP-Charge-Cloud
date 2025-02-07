@@ -14,6 +14,7 @@ import org.dromara.kp.system.domain.bo.KpConnectorBo;
 import org.dromara.kp.system.domain.vo.KpConnectorVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
+import org.dromara.kp.system.mapper.KpConnectorMapper;
 import org.dromara.kp.system.service.IKpConnectorService;
 import org.dromara.kp.system.service.IKpOperatorService;
 import org.dromara.kp.system.service.IKpStationService;
@@ -42,7 +43,7 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
 
     private final KpEquipmentMapper baseMapper;
 
-    private final IKpConnectorService kpConnectorService;
+    private final KpConnectorMapper connectorMapper;
 
     private final IKpOperatorService kpOperatorService;
 
@@ -123,15 +124,15 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
         if (flag) {
             bo.setId(add.getId());
             //如果新增成功 则开始新增归属枪
-            KpConnectorBo kpConnectorBo = new KpConnectorBo();
-            kpConnectorBo.setStationId(add.getStationId());
-            kpConnectorBo.setOperatorId(add.getOperatorId());
-            kpConnectorBo.setEquipmentId(add.getId());
+            KpConnector kpConnector = new KpConnector();
+            kpConnector.setStationId(add.getStationId());
+            kpConnector.setOperatorId(add.getOperatorId());
+            kpConnector.setEquipmentId(add.getId());
 
             for (int i = 1; i <= bo.getGunSum(); i++) {
-                kpConnectorBo.setConnectorName(StringUtils.leftPad(i + "", 2, "0"));
-                kpConnectorBo.setConnectorNo(i);
-                kpConnectorService.insertByBo(kpConnectorBo);
+                kpConnector.setConnectorName(StringUtils.leftPad(i + "", 2, "0"));
+                kpConnector.setConnectorNo(i);
+                connectorMapper.insert(kpConnector);
             }
         }
         return flag;
@@ -154,7 +155,10 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
             kpConnectorBo.setEquipmentId(update.getId());
             kpConnectorBo.setStationId(update.getStationId());
             kpConnectorBo.setOperatorId(update.getOperatorId());
-            return kpConnectorService.updateByEquipmentId(kpConnectorBo);
+            return connectorMapper.update(Wrappers.<KpConnector>lambdaUpdate()
+                .eq(KpConnector::getEquipmentId, kpConnectorBo.getEquipmentId())
+                .set(Objects.nonNull(kpConnectorBo.getStationId()), KpConnector::getStationId, kpConnectorBo.getStationId())
+                .set(Objects.nonNull(kpConnectorBo.getOperatorId()), KpConnector::getOperatorId, kpConnectorBo.getOperatorId())) > 0;
         }
         return flag;
     }
@@ -179,5 +183,18 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteByIds(ids) > 0;
+    }
+
+
+    @Override
+    public KpEquipment queryByEquipmentNo(String pileCode) {
+        return baseMapper.selectOne(Wrappers.<KpEquipment>lambdaQuery()
+            .eq(KpEquipment::getEquipmentNo, pileCode)
+        );
+    }
+
+    @Override
+    public void update(KpEquipment equipment) {
+        baseMapper.updateById(equipment);
     }
 }

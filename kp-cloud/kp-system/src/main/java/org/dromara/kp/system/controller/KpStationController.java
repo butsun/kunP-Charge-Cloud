@@ -50,7 +50,7 @@ public class KpStationController extends BaseController {
 
 
     /**
-     * 模糊查询运营商管理列表
+     * 模糊查询站点管理列表
      */
     @SaCheckPermission("kpSystem:station:list")
     @GetMapping("/like")

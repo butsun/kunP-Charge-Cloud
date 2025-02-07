@@ -128,7 +128,7 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
             kpConnector.setStationId(add.getStationId());
             kpConnector.setOperatorId(add.getOperatorId());
             kpConnector.setEquipmentId(add.getId());
-
+            kpConnector.setEquipmentNo(add.getEquipmentNo());
             for (int i = 1; i <= bo.getGunSum(); i++) {
                 kpConnector.setConnectorName(StringUtils.leftPad(i + "", 2, "0"));
                 kpConnector.setConnectorNo(i);

@@ -38,9 +38,14 @@ public class KpConnector extends TenantEntity {
     private Long operatorId;
 
     /**
-     * 设备号
+     * 设备id
      */
     private Long equipmentId;
+
+    /**
+     * 设备号
+     */
+    private String equipmentNo;
 
     /**
      * 枪号

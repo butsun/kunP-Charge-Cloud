@@ -165,4 +165,11 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
             .set(Objects.nonNull(bo.getOperatorId()), KpConnector::getOperatorId, bo.getOperatorId())) > 0;
     }
 
+    @Override
+    public KpConnector queryByNo(String pileCode, String gunNo) {
+        return baseMapper.selectOne(Wrappers.<KpConnector>lambdaUpdate()
+            .eq(KpConnector::getEquipmentNo, pileCode)
+            .eq(KpConnector::getConnectorNo, gunNo));
+    }
+
 }

@@ -57,13 +57,11 @@ public class KpEquipmentBo extends BaseEntity {
     /**
      * 额定电压上限(单位:V)
      */
-    @NotNull(message = "额定电压上限(单位:V)不能为空", groups = {AddGroup.class, EditGroup.class})
     private Long voltageUpperLimits;
 
     /**
      * 额定电压下限(单位:V)
      */
-    @NotNull(message = "额定电压下限(单位:V)不能为空", groups = {AddGroup.class, EditGroup.class})
     private Long voltageLowerLimits;
 
     /**

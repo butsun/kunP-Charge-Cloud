@@ -48,7 +48,7 @@ public class KpChargeOrder extends TenantEntity {
     private String tradeNo;
 
     /**
-     * 订单状态
+     * 订单状态  ；1启动中 2充电中 3停止中 4已结束 5未知
      */
     private Integer startChargeSeqStat;
 
@@ -75,12 +75,12 @@ public class KpChargeOrder extends TenantEntity {
     /**
      * 充电枪id
      */
-    private Integer connectorId;
+    private Long connectorId;
 
     /**
      * 充电设备id
      */
-    private Integer equipmentId;
+    private Long equipmentId;
 
     /**
      * 电流A
@@ -193,20 +193,11 @@ public class KpChargeOrder extends TenantEntity {
      */
     private String priceInfo;
 
-    /**
-     * 运营商名称
-     */
-    private String operatorName;
-
-    /**
-     * 站点名称
-     */
-    private String stationName;
 
     /**
      * 枪口编号
      */
-    private String connectorNo;
+    private Integer connectorNo;
 
     /**
      * 设备编号

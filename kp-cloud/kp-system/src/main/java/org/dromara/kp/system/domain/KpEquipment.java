@@ -48,11 +48,6 @@ public class KpEquipment extends TenantEntity {
     private Long operatorId;
 
     /**
-     * 价格模版
-     */
-    private Long priceCode;
-
-    /**
      * 设备生产商名称
      */
     private String manufacturerName;

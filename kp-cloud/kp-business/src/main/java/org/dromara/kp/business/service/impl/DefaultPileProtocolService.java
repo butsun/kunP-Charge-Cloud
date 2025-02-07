@@ -211,22 +211,16 @@ public class DefaultPileProtocolService implements PileProtocolService {
         String pileCode = pileTryChargeRequest.getPileCode();
         String gunNo = pileTryChargeRequest.getGunNo();
 
-        // todo 毛都不敢先给个回复
+
+        PileTryChargeResponse response = pileChargeClient.tryCharge(pileTryChargeRequest);
+
 
         //        32010600019236 01 20010618034230 60。
         // 格式桩号（7bytes）+枪号（1byte）+年月日时分秒（6bytes）200106180342 +自增序号（2bytes）
-        String tradeNo = pileCode + gunNo + DateUtil.format(new Date(), "yyyyMMddHHmmss") + "01" ;
         // 构造下行计费
         DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, pileCode);
         downlinkMessageBuilder.downlinkCmd(PILE_TRY_CHARGE_ACK.name());
-        downlinkMessageBuilder.pileTryChargeResponse(PileTryChargeResponse.builder()
-            .tradeNo(tradeNo)
-            .gunNo(gunNo)
-            .cardNo(pileTryChargeRequest.getCardNo())
-            .failReason(0)
-            .pileCode(pileCode)
-            .success(true)
-            .build());
+        downlinkMessageBuilder.pileTryChargeResponse(response);
         downlinkCallService.downlinkCmdProcess(downlinkMessageBuilder.build());
 
     }

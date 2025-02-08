@@ -60,27 +60,27 @@ public class KpEquipment extends TenantEntity {
     /**
      * 额定电压上限(单位:V)
      */
-    private Long voltageUpperLimits;
+    private Integer voltageUpperLimits;
 
     /**
      * 额定电压下限(单位:V)
      */
-    private Long voltageLowerLimits;
+    private Integer voltageLowerLimits;
 
     /**
      * 额定电流
      */
-    private Long currentValue;
+    private Integer currentValue;
 
     /**
      * 额定功率
      */
-    private Long power;
+    private Integer power;
 
     /**
      * 设备类型
      */
-    private Long equipmentType;
+    private Integer equipmentType;
 
     /**
      * 枪数量
@@ -95,12 +95,12 @@ public class KpEquipment extends TenantEntity {
     /**
      * 充电桩最大允许输出功率 30%-100% 1Bin表示1%
      */
-    private Long maxPower;
+    private Integer maxPower;
 
     /**
      * 工作状态
      */
-    private Long isWorking;
+    private Integer isWorking;
 
     /**
      * 最近对时时间
@@ -131,7 +131,7 @@ public class KpEquipment extends TenantEntity {
      * 删除标记
      */
     @TableLogic
-    private Long delFlag;
+    private Integer delFlag;
 
 
 }

@@ -52,11 +52,6 @@ public class KpConnectorVo implements Serializable {
     @ExcelProperty(value = "设备id")
     private Long equipmentId;
 
-    /**
-     * 枪号
-     */
-    @ExcelProperty(value = "枪号")
-    private String connectorId;
 
     /**
      * 枪名称

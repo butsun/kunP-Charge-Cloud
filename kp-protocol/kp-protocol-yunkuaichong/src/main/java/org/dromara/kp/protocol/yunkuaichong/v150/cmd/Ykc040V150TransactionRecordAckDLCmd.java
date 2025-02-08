@@ -29,7 +29,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
 public class Ykc040V150TransactionRecordAckDLCmd extends YunKuaiChongDownlinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0交易记录确认", tcpSession);
+        log.info("{} 云快充1.5.0交易记录确认 {}", tcpSession,yunKuaiChongDwonlinkMessage);
 
         if (Objects.equals(yunKuaiChongDwonlinkMessage.getMsg().getTransactionRecordAck(),null)) {
             return;

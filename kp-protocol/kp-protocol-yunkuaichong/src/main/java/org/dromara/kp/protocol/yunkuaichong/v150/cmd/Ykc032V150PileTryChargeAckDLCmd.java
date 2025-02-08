@@ -26,7 +26,7 @@ public class Ykc032V150PileTryChargeAckDLCmd extends YunKuaiChongDownlinkCmdExe 
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
-        log.debug("{} 云快充1.5.0运营平台确认启动充电", tcpSession);
+        log.info("{} 云快充1.5.0运营平台确认启动充电 {}", tcpSession, yunKuaiChongDwonlinkMessage.getMsg().getPileTryChargeResponse());
 
         if (yunKuaiChongDwonlinkMessage.getMsg().getPileTryChargeResponse() == null) {
             return;
@@ -45,7 +45,6 @@ public class Ykc032V150PileTryChargeAckDLCmd extends YunKuaiChongDownlinkCmdExe 
         tryChargeAck.writeByte(pileTryChargeResponse.isSuccess() ? 0x01 : 0x00);
         tryChargeAck.writeBytes(encodeGunCode(pileTryChargeResponse.getFailReason() + ""));
 
-        log.info("tryChargeAck : {}", tryChargeAck);
         encodeAndWriteFlush(PILE_TRY_CHARGE_ACK,
             requestData.getSequenceNumber(),
             requestData.getEncryptionFlag(),

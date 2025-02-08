@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateTime;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.GunRunStatusProto;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.HeartBeatRequest;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.LoginResponse;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PileLostEvent;
 
 /**
  * @program: RuoYi-Cloud-Plus
@@ -20,7 +21,9 @@ public interface PileLeftCycleService {
      * 刷新枪状态
      * @param heartBeatRequest
      */
-    void refreshGunStatus(HeartBeatRequest heartBeatRequest);
+    void refreshPileStatus(HeartBeatRequest heartBeatRequest);
 
     void refreshGunStatus(GunRunStatusProto gunRunStatusProto);
+
+    void lost(PileLostEvent pileLostEvent);
 }

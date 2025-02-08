@@ -8,6 +8,8 @@ import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -35,6 +37,20 @@ public class KpChargeAccountBo extends BaseEntity {
      */
     @NotBlank(message = "昵称不能为空", groups = { AddGroup.class, EditGroup.class })
     private String nickName;
+
+
+    /**
+     * 运营商
+     */
+    @NotNull(message = "运营商", groups = { AddGroup.class, EditGroup.class })
+    private Long operatorId;
+
+
+    /**
+     * 账户余额
+     */
+    @NotNull(message = "账户余额", groups = { AddGroup.class, EditGroup.class })
+    private BigDecimal balance;
 
     /**
      * 性别

@@ -41,7 +41,7 @@ public class Ykc002V150LoginAckDLCmd extends YunKuaiChongDownlinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
-        log.debug("{} 云快充1.5.0登录认证应答", tcpSession);
+        log.info("{} 云快充1.5.0登录认证应答 {}", tcpSession,yunKuaiChongDwonlinkMessage.getMsg().getLoginResponse());
 
         if (Objects.equals(yunKuaiChongDwonlinkMessage.getMsg().getLoginResponse(),null)) {
             return;

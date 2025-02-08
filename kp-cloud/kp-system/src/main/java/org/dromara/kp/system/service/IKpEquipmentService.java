@@ -75,4 +75,6 @@ public interface IKpEquipmentService {
     KpEquipment queryByEquipmentNo(String pileCode);
 
     void update(KpEquipment equipment );
+
+    void pileLost(String pileCode);
 }

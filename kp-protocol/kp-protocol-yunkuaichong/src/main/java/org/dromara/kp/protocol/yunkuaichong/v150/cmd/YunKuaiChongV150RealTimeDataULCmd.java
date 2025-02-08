@@ -166,7 +166,6 @@ public class YunKuaiChongV150RealTimeDataULCmd extends YunKuaiChongUplinkCmdExe 
                 .totalChargingDurationMin(totalChargeTime)
                 .totalChargingEnergyKWh(chargeEnergy.toPlainString())
                 .totalChargingCostYuan(chargeAmount.toPlainString())
-                .additionalInfo(additionalInfo.toString())
                 .build();
 
             UplinkQueueMessage chargingProgressMessage = uplinkMessageBuilder(pileCode, tcpSession, yunKuaiChongUplinkMessage)

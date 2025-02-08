@@ -75,4 +75,6 @@ public interface PileProtocolService {
      * @param uplinkQueueMsg
      */
     void syncTimeResponse(UplinkQueueMessage uplinkQueueMsg);
+
+    void lostEvent(UplinkQueueMessage uplinkQueueMsg);
 }

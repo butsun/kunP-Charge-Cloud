@@ -6,14 +6,19 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Set;
 
+/**
+ * @program: RuoYi-Cloud-Plus
+ * @description:
+ * @author: sunjun
+ * @create: 13:05
+ **/
 @Data
 @AllArgsConstructor
 @Builder
-public class HeartBeatRequest  implements Serializable {
+public class PileLostEvent implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private String pileCode;
-    private int gunState;
-    private int gunCode;
+    private Set<String> pileCode;
 }

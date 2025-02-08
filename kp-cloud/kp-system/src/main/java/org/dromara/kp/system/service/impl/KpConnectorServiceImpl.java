@@ -1,7 +1,10 @@
 package org.dromara.kp.system.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import org.dromara.common.core.utils.DateUtils;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
+import org.dromara.common.mybatis.core.domain.BaseEntity;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,6 +15,8 @@ import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
 import org.dromara.kp.system.mapper.KpEquipmentMapper;
+import org.dromara.kp.system.mapper.KpOperatorMapper;
+import org.dromara.kp.system.mapper.KpStationMapper;
 import org.dromara.kp.system.service.IKpEquipmentService;
 import org.dromara.kp.system.service.IKpOperatorService;
 import org.dromara.kp.system.service.IKpStationService;
@@ -42,6 +47,9 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
 
     private final KpEquipmentMapper equipmentMapper;
 
+    private final KpOperatorMapper operatorMapper;
+
+    private final KpStationMapper stationMapper;
     /**
      * 查询充电枪管理
      *
@@ -57,8 +65,10 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
     @NotNull
     private KpConnectorVo getKpConnectorVo(KpConnectorVo vo) {
         KpEquipmentVo kpEquipmentVo = equipmentMapper.selectVoById(vo.getEquipmentId());
-        vo.setOperatorName(kpEquipmentVo.getOperatorName());
-        vo.setStationName(kpEquipmentVo.getStationName());
+        KpOperatorVo kpOperatorVo = operatorMapper.selectVoById(vo.getOperatorId());
+        KpStationVo kpStationVo = stationMapper.selectVoById(vo.getStationId());
+        vo.setOperatorName(kpOperatorVo.getOperatorName());
+        vo.setStationName(kpStationVo.getStationName());
         vo.setEquipmentNo(kpEquipmentVo.getEquipmentNo());
         vo.setEquipmentType(kpEquipmentVo.getEquipmentType());
         vo.setCurrentValue(kpEquipmentVo.getCurrentValue());
@@ -162,7 +172,8 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
         return baseMapper.update(Wrappers.<KpConnector>lambdaUpdate()
             .eq(KpConnector::getEquipmentId, bo.getEquipmentId())
             .set(Objects.nonNull(bo.getStationId()), KpConnector::getStationId, bo.getStationId())
-            .set(Objects.nonNull(bo.getOperatorId()), KpConnector::getOperatorId, bo.getOperatorId())) > 0;
+            .set(Objects.nonNull(bo.getOperatorId()), KpConnector::getOperatorId, bo.getOperatorId())
+            .set(BaseEntity::getUpdateTime, DateUtil.date())) > 0;
     }
 
     @Override
@@ -177,6 +188,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
         baseMapper.update(Wrappers.<KpConnector>lambdaUpdate()
             .eq(KpConnector::getEquipmentNo, pileCode)
             .eq(KpConnector::getConnectorNo, gunNo)
-            .set(KpConnector::getStatus, gunState));
+            .set(KpConnector::getStatus, gunState)
+            .set(BaseEntity::getUpdateTime, DateUtil.date()));
     }
 }

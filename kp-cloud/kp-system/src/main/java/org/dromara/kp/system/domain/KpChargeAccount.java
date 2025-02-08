@@ -1,9 +1,15 @@
 package org.dromara.kp.system.domain;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import jakarta.validation.constraints.NotNull;
+import org.dromara.common.core.validate.AddGroup;
+import org.dromara.common.core.validate.EditGroup;
 import org.dromara.common.tenant.core.TenantEntity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,6 +36,11 @@ public class KpChargeAccount extends TenantEntity {
     private Long id;
 
     /**
+     * 运营商id
+     */
+    private Long operatorId;
+
+    /**
      * 手机号
      */
     private String mobile;
@@ -48,6 +59,12 @@ public class KpChargeAccount extends TenantEntity {
      * 账户类型
      */
     private Integer accoutType;
+
+
+    /**
+     * 账户余额
+     */
+    private BigDecimal balance;
 
     /**
      * 禁用

@@ -200,7 +200,6 @@ public class Ykc03BV150TransactionRecordULCmd extends YunKuaiChongUplinkCmdExe {
             .totalAmountYuan(totalAmount.toPlainString())
             .tradeTs(tradeTime.toEpochMilli())
             .stopReason(stopReason)
-            .additionalInfo(additionalInfo.toString())
             .build();
 
         // 转发到后端
@@ -209,8 +208,7 @@ public class Ykc03BV150TransactionRecordULCmd extends YunKuaiChongUplinkCmdExe {
             .build();
 
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
-        log.info("{} 云快充1.5.0交易记录: {}", pileCode, additionalInfo);
-
+        log.info("{} 云快充1.5.0交易记录: {}", pileCode, transactionRecord);
     }
 
     public static long readLongLE5Byte(byte[] bytes) {

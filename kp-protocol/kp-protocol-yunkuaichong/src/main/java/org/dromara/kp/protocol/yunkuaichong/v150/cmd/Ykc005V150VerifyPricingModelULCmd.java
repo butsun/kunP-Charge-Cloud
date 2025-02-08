@@ -58,6 +58,6 @@ public class Ykc005V150VerifyPricingModelULCmd extends YunKuaiChongUplinkCmdExe 
             .build();
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
-        log.info("{} 计费模型验证请求: {}", pileCode, additionalInfo);
+        log.info("{} 计费模型验证请求: {}", pileCode, heartBeatRequest);
     }
 }

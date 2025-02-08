@@ -1,5 +1,6 @@
 package org.dromara.kp.system.service.impl;
 
+import org.bouncycastle.jcajce.provider.symmetric.TEA;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
@@ -8,9 +9,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.vo.*;
+import org.dromara.kp.system.mapper.KpChargeAccountMapper;
+import org.dromara.kp.system.mapper.KpOperatorMapper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpChargeVoucherBo;
-import org.dromara.kp.system.domain.vo.KpChargeVoucherVo;
 import org.dromara.kp.system.domain.KpChargeVoucher;
 import org.dromara.kp.system.mapper.KpChargeVoucherMapper;
 import org.dromara.kp.system.service.IKpChargeVoucherService;
@@ -32,6 +36,10 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
 
     private final KpChargeVoucherMapper baseMapper;
 
+    private final KpOperatorMapper operatorMapper;
+
+    private final KpChargeAccountMapper chargeAccountMapper;
+
     /**
      * 查询充电凭证管理
      *
@@ -39,8 +47,20 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
      * @return 充电凭证管理
      */
     @Override
-    public KpChargeVoucherVo queryById(Long id){
-        return baseMapper.selectVoById(id);
+    public KpChargeVoucherVo queryById(Long id) {
+        KpChargeVoucherVo vo = baseMapper.selectVoById(id);
+        return getKpChargeVoucherVo(vo);
+    }
+
+
+    @NotNull
+    private KpChargeVoucherVo getKpChargeVoucherVo(KpChargeVoucherVo vo) {
+        KpOperatorVo kpOperatorVo = operatorMapper.selectVoById(vo.getOperatorId());
+        KpChargeAccountVo kpChargeAccountVo = chargeAccountMapper.selectVoById(vo.getAccountId());
+        vo.setOperatorName(kpOperatorVo.getOperatorName());
+        vo.setMobile(kpChargeAccountVo.getMobile());
+        vo.setNickName(kpChargeAccountVo.getNickName());
+        return vo;
     }
 
     /**
@@ -54,6 +74,7 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
     public TableDataInfo<KpChargeVoucherVo> queryPageList(KpChargeVoucherBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<KpChargeVoucher> lqw = buildQueryWrapper(bo);
         Page<KpChargeVoucherVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        result.getRecords().forEach(this::getKpChargeVoucherVo);
         return TableDataInfo.build(result);
     }
 
@@ -66,7 +87,9 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
     @Override
     public List<KpChargeVoucherVo> queryList(KpChargeVoucherBo bo) {
         LambdaQueryWrapper<KpChargeVoucher> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<KpChargeVoucherVo> vos = baseMapper.selectVoList(lqw);
+        vos.forEach(this::getKpChargeVoucherVo);
+        return vos;
     }
 
     private LambdaQueryWrapper<KpChargeVoucher> buildQueryWrapper(KpChargeVoucherBo bo) {
@@ -111,7 +134,7 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
     /**
      * 保存前的数据校验
      */
-    private void validEntityBeforeSave(KpChargeVoucher entity){
+    private void validEntityBeforeSave(KpChargeVoucher entity) {
         //TODO 做一些数据校验,如唯一约束
     }
 
@@ -124,7 +147,7 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
+        if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteByIds(ids) > 0;

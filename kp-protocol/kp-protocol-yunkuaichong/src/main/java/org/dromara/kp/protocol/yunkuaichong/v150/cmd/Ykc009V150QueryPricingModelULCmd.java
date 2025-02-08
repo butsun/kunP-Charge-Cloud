@@ -26,7 +26,7 @@ public class Ykc009V150QueryPricingModelULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0充电桩计费模型请求", tcpSession);
+        log.debug("{} 云快充1.5.0充电桩计费模型请求", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
 
         byte[] pileCodeBytes = new byte[7];
@@ -41,6 +41,6 @@ public class Ykc009V150QueryPricingModelULCmd extends YunKuaiChongUplinkCmdExe {
                 .queryPricingRequest(queryPricingRequest)
                 .build();
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
-
+        log.debug("{} 充电桩计费模型请求 {}", pileCode,queryPricingRequest);
     }
 }

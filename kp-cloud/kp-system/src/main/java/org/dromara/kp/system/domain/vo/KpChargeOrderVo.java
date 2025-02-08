@@ -98,6 +98,20 @@ public class KpChargeOrderVo implements Serializable {
     @ExcelProperty(value = "最新采样时间")
     private Date endTime;
 
+
+
+    /**
+     * 电流
+     */
+    @ExcelProperty(value = "电流")
+    private BigDecimal gunCurrent;
+
+    /**
+     * 电压
+     */
+    @ExcelProperty(value = "电压")
+    private BigDecimal gunVoltage;
+
     /**
      * 充电量
      */
@@ -215,4 +229,11 @@ public class KpChargeOrderVo implements Serializable {
      */
     @ExcelProperty(value = "凭证编号")
     private String voucherNo;
+
+    /**
+     * 启动方式 默认0 未知   01 刷卡  02 账号  03 VIN
+     */
+    @ExcelProperty(value = "启动方式")
+    private Integer startType;
+
 }

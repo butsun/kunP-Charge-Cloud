@@ -8,6 +8,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.vo.KpEquipmentVo;
+import org.dromara.kp.system.domain.vo.KpOperatorVo;
+import org.dromara.kp.system.domain.vo.KpStationVo;
+import org.dromara.kp.system.mapper.KpOperatorMapper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpChargeAccountBo;
 import org.dromara.kp.system.domain.vo.KpChargeAccountVo;
@@ -31,6 +36,8 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
 
     private final KpChargeAccountMapper baseMapper;
 
+    private final KpOperatorMapper operatorMapper;
+
     /**
      * 查询充电账户
      *
@@ -39,8 +46,18 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
      */
     @Override
     public KpChargeAccountVo queryById(Long id){
-        return baseMapper.selectVoById(id);
+        KpChargeAccountVo vo = baseMapper.selectVoById(id);
+        return getChargeAccountVo(vo);
     }
+
+
+    @NotNull
+    private KpChargeAccountVo getChargeAccountVo(KpChargeAccountVo vo) {
+        KpOperatorVo kpOperatorVo = operatorMapper.selectVoById(vo.getOperatorId());
+        vo.setOperatorName(kpOperatorVo.getOperatorName());
+        return vo;
+    }
+
 
     /**
      * 分页查询充电账户列表
@@ -53,6 +70,7 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
     public TableDataInfo<KpChargeAccountVo> queryPageList(KpChargeAccountBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<KpChargeAccount> lqw = buildQueryWrapper(bo);
         Page<KpChargeAccountVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        result.getRecords().forEach(this::getChargeAccountVo);
         return TableDataInfo.build(result);
     }
 
@@ -65,7 +83,9 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
     @Override
     public List<KpChargeAccountVo> queryList(KpChargeAccountBo bo) {
         LambdaQueryWrapper<KpChargeAccount> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<KpChargeAccountVo> vos = baseMapper.selectVoList(lqw);
+        vos.forEach(this::getChargeAccountVo);
+        return vos;
     }
 
     private LambdaQueryWrapper<KpChargeAccount> buildQueryWrapper(KpChargeAccountBo bo) {

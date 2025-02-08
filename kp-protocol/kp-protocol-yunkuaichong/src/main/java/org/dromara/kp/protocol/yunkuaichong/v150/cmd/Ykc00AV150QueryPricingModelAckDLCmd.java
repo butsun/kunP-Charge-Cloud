@@ -4,18 +4,14 @@ package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
-
 import org.dromara.kp.infrastructure.util.jackson.JacksonUtil;
 import org.dromara.kp.protocol.ProtocolContext;
-import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
-import org.dromara.kp.protocol.yunkuaichong.domain.dto.FlagPriceProto;
-import org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto;
-import org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto;
-import org.dromara.kp.protocol.yunkuaichong.domain.dto.QueryPricingResponse;
 import org.dromara.kp.protocol.listener.tcp.TcpSession;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDownlinkCmdExe;
 import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongDwonlinkMessage;
+import org.dromara.kp.protocol.yunkuaichong.YunKuaiChongUplinkMessage;
 import org.dromara.kp.protocol.yunkuaichong.annotation.YunKuaiChongCmd;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.*;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
@@ -25,7 +21,6 @@ import java.util.Objects;
 
 import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto.PricingModelFlag.*;
 import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.QUERY_PRICING_ACK;
-import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.TRANSACTION_RECORD_ACK;
 
 
 /**
@@ -39,7 +34,7 @@ public class Ykc00AV150QueryPricingModelAckDLCmd extends YunKuaiChongDownlinkCmd
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0计费模型请求应答", tcpSession);
+        log.info("{} 云快充1.5.0计费模型请求应答 {}", tcpSession,yunKuaiChongDwonlinkMessage.getMsg().getQueryPricingResponse());
 
         if (Objects.equals(yunKuaiChongDwonlinkMessage.getMsg().getQueryPricingResponse(),null)) {
             return;
@@ -91,5 +86,14 @@ public class Ykc00AV150QueryPricingModelAckDLCmd extends YunKuaiChongDownlinkCmd
             requestData.getEncryptionFlag(),
             queryPricingAckMsgBody,
             tcpSession);
+
+
+        //todo  每次查询必发送设置计费模型请求
+        SetPricingRequest request = new SetPricingRequest(pileCode, pricingId, pricingModel);
+        yunKuaiChongDwonlinkMessage.setMsg(DownlinkRequestMessage.builder()
+            .setPricingRequest(request).build()
+        );
+        new Ykc058V150SetPricingModelDLCmd().execute(tcpSession, yunKuaiChongDwonlinkMessage, ctx);
+
     }
 }

@@ -22,6 +22,7 @@ import org.dromara.kp.protocol.listener.ChannelHandlerParameter;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -180,7 +181,6 @@ public class TcpChannelHandler<T> extends SimpleChannelInboundHandler<ProtocolUp
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-
         super.channelRegistered(ctx);
 
         log.info("[{}]{} 打开通道", protocolName, ctx.channel());
@@ -209,6 +209,5 @@ public class TcpChannelHandler<T> extends SimpleChannelInboundHandler<ProtocolUp
 
         log.info("[{}]{}{} 通道不活跃", protocolName, ctx.channel(), tcpSession);
     }
-
 
 }

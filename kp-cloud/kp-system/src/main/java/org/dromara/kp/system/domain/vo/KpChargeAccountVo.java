@@ -1,5 +1,6 @@
 package org.dromara.kp.system.domain.vo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.dromara.kp.system.domain.KpChargeAccount;
@@ -87,5 +88,27 @@ public class KpChargeAccountVo implements Serializable {
     @ExcelProperty(value = "备注")
     private String remark;
 
+    /**
+     * 运营商id
+     */
+    @ExcelProperty(value = "运营商id")
+    private Long operatorId;
 
+    /**
+     * 账户余额
+     */
+    @ExcelProperty(value = "账户余额")
+    private BigDecimal balance;
+
+    /**
+     * 运营商名称
+     */
+    @ExcelProperty(value = "运营商名称")
+    private String operatorName;
+
+    /**
+     * 注册时间
+     */
+    @ExcelProperty(value = "注册时间")
+    private Date createTime;
 }

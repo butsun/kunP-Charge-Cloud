@@ -66,4 +66,17 @@ public interface IKpChargeOrderService {
      * @return 是否删除成功
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    /**
+     *
+     * @param tradeNo 流水号
+     * @param pileCode 设备号
+     * @param gunCode 枪号
+     * @return KpChargeOrder
+     */
+    KpChargeOrder queryByTradeNo(String tradeNo, String pileCode, int gunCode);
+
+    boolean insertOrder(KpChargeOrder kpChargeOrder);
+
+    boolean refreshOrder(KpChargeOrder chargeOrder);
 }

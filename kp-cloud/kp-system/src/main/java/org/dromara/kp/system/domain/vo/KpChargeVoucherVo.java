@@ -85,4 +85,21 @@ public class KpChargeVoucherVo implements Serializable {
     private Date updateTime;
 
 
+    /**
+     * 归属运营商
+     */
+    @ExcelProperty(value = "归属运营商")
+    private String operatorName;
+
+    /**
+     * 归属账户手机号
+     */
+    @ExcelProperty(value = "归属账户手机号")
+    private String mobile;
+
+    /**
+     * 归属账户昵称
+     */
+    @ExcelProperty(value = "归属账户昵称")
+    private String nickName;
 }

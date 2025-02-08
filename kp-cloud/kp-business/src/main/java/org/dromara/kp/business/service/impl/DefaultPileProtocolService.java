@@ -15,12 +15,8 @@ import org.dromara.kp.protocol.yunkuaichong.domain.model.ProtoConverter;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
-import java.util.*;
+import java.util.UUID;
 
-import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PeriodProto.PricingModelFlag.*;
-import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto.PricingModelRule.SPLIT_TIME;
-import static org.dromara.kp.protocol.yunkuaichong.domain.dto.PricingModelProto.PricingModelType.CHARGE;
 import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDownlinkCmdEnum.*;
 
 
@@ -43,7 +39,7 @@ public class DefaultPileProtocolService implements PileProtocolService {
 
     @Override
     public void pileLogin(UplinkQueueMessage uplinkQueueMessage) {
-        log.debug("接收到桩登录事件 {}", uplinkQueueMessage.getLoginRequest());
+        log.info("接收到桩登录事件 {}", uplinkQueueMessage.getLoginRequest());
         LoginRequest loginRequest = uplinkQueueMessage.getLoginRequest();
 
         //查找设备是否存在
@@ -61,8 +57,8 @@ public class DefaultPileProtocolService implements PileProtocolService {
 
     @Override
     public void heartBeat(UplinkQueueMessage uplinkQueueMessage) {
-        log.debug("接收到枪心跳事件 {}", uplinkQueueMessage.getHeartBeatRequest());
-        pileLeftCycleClient.refreshGunStatus(uplinkQueueMessage.getHeartBeatRequest());
+        log.info("接收到枪心跳事件 {}", uplinkQueueMessage.getHeartBeatRequest());
+        pileLeftCycleClient.refreshPileStatus(uplinkQueueMessage.getHeartBeatRequest());
     }
 
 
@@ -72,15 +68,12 @@ public class DefaultPileProtocolService implements PileProtocolService {
 
         VerifyPricingRequest verifyPricingRequest = uplinkQueueMessage.getVerifyPricingRequest();
         String pileCode = verifyPricingRequest.getPileCode();
-
         long pricingId = verifyPricingRequest.getPricingId();
-        // todo 默认校验成功，后续查库校验
-        assert pricingId > 0;
 
         DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, pileCode);
         downlinkMessageBuilder.downlinkCmd(YunKuaiChongDownlinkCmdEnum.VERIFY_PRICING_ACK.name());
         downlinkMessageBuilder.verifyPricingResponse(VerifyPricingResponse.builder()
-            .success(true)
+            .success(false)
             .pricingId(pricingId)
             .build());
         downlinkCallService.downlinkCmdProcess(downlinkMessageBuilder.build());
@@ -92,31 +85,7 @@ public class DefaultPileProtocolService implements PileProtocolService {
 
         QueryPricingRequest queryPricingRequest = uplinkQueueMessage.getQueryPricingRequest();
         String pileCode = queryPricingRequest.getPileCode();
-
-        // TODO 先构造一个通用的计费模型，后续根据业务做库查询
-        List<PricingModel.Period> periods = new ArrayList<>();
-
-        periods.add(createPeriod(1, LocalTime.parse("00:00"), LocalTime.parse("06:00"), TOP));
-        periods.add(createPeriod(2, LocalTime.parse("06:00"), LocalTime.parse("12:00"), PEAK));
-        periods.add(createPeriod(3, LocalTime.parse("12:00"), LocalTime.parse("18:00"), FLAT));
-        periods.add(createPeriod(4, LocalTime.parse("18:00"), LocalTime.parse("00:00"), VALLEY));
-
-        Map<PeriodProto.PricingModelFlag, PricingModel.FlagPrice> flagPriceMap = new HashMap<>();
-        flagPriceMap.put(TOP, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
-        flagPriceMap.put(PEAK, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
-        flagPriceMap.put(FLAT, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
-        flagPriceMap.put(VALLEY, new PricingModel.FlagPrice(new BigDecimal("3.00"), new BigDecimal("1.00")));
-
-        PricingModel model = new PricingModel();
-        model.setId(UUID.randomUUID());
-        model.setSequenceNumber(1);
-        model.setPileCode(pileCode);
-        model.setType(CHARGE);
-        model.setRule(SPLIT_TIME);
-        model.setStandardElec(new BigDecimal("3.00"));
-        model.setStandardServ(new BigDecimal("1.00"));
-        model.setFlagPriceList(flagPriceMap);
-        model.setPeriodsList(periods);
+        PricingModel model = pileChargeClient.getPilePricingModel(pileCode);
 
         // 构造下行计费
         DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, pileCode);
@@ -141,15 +110,13 @@ public class DefaultPileProtocolService implements PileProtocolService {
     @Override
     public void postChargingProgress(UplinkQueueMessage uplinkQueueMessage) {
         log.info("接收到充电桩上报的充电进度 {}", uplinkQueueMessage.getChargingProgressProto());
-
         // TODO 处理相关业务逻辑  找到订单计费
-
-
+        pileChargeClient.refreshChargeOrder(uplinkQueueMessage.getChargingProgressProto());
     }
 
     @Override
     public void onSetPricingResponse(UplinkQueueMessage uplinkQueueMessage) {
-        log.info("接收到充电桩上费率下发反馈 {}", uplinkQueueMessage.getSetPricingResponse());
+        log.info("接收到充电桩费率下发反馈 {}", uplinkQueueMessage.getSetPricingResponse());
 
         // TODO 处理相关业务逻辑
 
@@ -208,20 +175,20 @@ public class DefaultPileProtocolService implements PileProtocolService {
         pileLeftCycleClient.syncTime(syncTimeResponse.getPileCode(), DateUtil.date(syncTimeResponse.getCurrentTime().toEpochMilli()));
     }
 
+
+    @Override
+    public void lostEvent(UplinkQueueMessage uplinkQueueMsg) {
+        log.info("接收到充电桩失去链接 {}", uplinkQueueMsg.getPileLostEvent());
+        pileLeftCycleClient.lost(uplinkQueueMsg.getPileLostEvent());
+    }
+
     //远程下发启动响应
     @Override
     public void startCharge(String pileCode, String gunCode, BigDecimal limitYuan, String orderNo) {
 
     }
 
-    private static PricingModel.Period createPeriod(int sn, LocalTime beginTime, LocalTime endTime, PeriodProto.PricingModelFlag flag) {
-        PricingModel.Period period = new PricingModel.Period();
-        period.setSn(sn);
-        period.setBegin(beginTime);
-        period.setEnd(endTime);
-        period.setFlag(flag);
-        return period;
-    }
+
 
     private DownlinkRequestMessage.DownlinkRequestMessageBuilder createDownlinkMessageBuilder(UplinkQueueMessage uplinkQueueMessage, String pileCode) {
         UUID messageId = UUID.randomUUID();

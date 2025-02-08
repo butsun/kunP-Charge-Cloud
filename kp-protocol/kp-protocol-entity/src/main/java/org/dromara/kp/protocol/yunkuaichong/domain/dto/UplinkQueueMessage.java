@@ -35,4 +35,6 @@ public class UplinkQueueMessage  implements Serializable {
     private PileTryChargeRequest pileTryChargeRequest;
     private SyncTimeResponse syncTimeResponse;
 
+    private PileLostEvent pileLostEvent;
+
 }

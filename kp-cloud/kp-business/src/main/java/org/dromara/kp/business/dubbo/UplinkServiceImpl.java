@@ -70,6 +70,8 @@ public class UplinkServiceImpl implements UplinkService {
                 pileProtocolService.pileTryChargeRequest(uplinkQueueMsg);
             } else if (hasMessage(uplinkQueueMsg.getSyncTimeResponse())){
                 pileProtocolService.syncTimeResponse(uplinkQueueMsg);
+            } else if (hasMessage(uplinkQueueMsg.getPileLostEvent())){
+                pileProtocolService.lostEvent(uplinkQueueMsg);
             }
             else {
                 log.warn("uplinkMsg未找到可用实现, {}", uplinkQueueMsg);
@@ -77,6 +79,7 @@ public class UplinkServiceImpl implements UplinkService {
 
         } catch (Exception e) {
             log.warn("uplinkMsg处理失败, {}", uplinkQueueMsg);
+            throw e;
         }
     }
 

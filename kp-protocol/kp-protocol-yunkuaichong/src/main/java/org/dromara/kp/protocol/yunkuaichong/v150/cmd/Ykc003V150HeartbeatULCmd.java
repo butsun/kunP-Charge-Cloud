@@ -58,7 +58,7 @@ public class Ykc003V150HeartbeatULCmd extends YunKuaiChongUplinkCmdExe {
             .build();
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
-        log.info("{} 充电桩心跳包: {}", pileCode, additionalInfo);
+        log.info("{} 充电桩心跳包: {}", pileCode, heartBeatRequest);
         pingAck(tcpSession, pileCodeBytes, gunCodeByte);
     }
 

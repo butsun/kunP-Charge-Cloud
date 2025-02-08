@@ -59,6 +59,12 @@ public class KpConnectorBo extends BaseEntity {
     @NotNull(message = "枪类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private Integer connectorType;
 
+
+    /**
+     * 设备编号
+     */
+    private String equipmentNo;
+
     /**
      * 状态
      */

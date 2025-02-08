@@ -80,6 +80,6 @@ public class Ykc019V150ChargeEndULCmd extends YunKuaiChongUplinkCmdExe {
         additionalInfo.put("电桩充电机编号", chargingMachineNo);
 
         // TODO 先打印日志，暂不转发
-        log.debug("{} 云快充1.5.0充电结束信息解析完成:{}", tcpSession, additionalInfo);
+        log.info("{} 云快充1.5.0充电结束信息解析完成:{}", pileCode, additionalInfo);
     }
 }

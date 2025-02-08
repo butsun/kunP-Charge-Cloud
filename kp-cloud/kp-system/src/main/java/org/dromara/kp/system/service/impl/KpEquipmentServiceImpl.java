@@ -1,8 +1,10 @@
 package org.dromara.kp.system.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import org.dromara.common.core.exception.base.BaseException;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
+import org.dromara.common.mybatis.core.domain.BaseEntity;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -125,14 +127,15 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
         if (flag) {
             bo.setId(add.getId());
             //如果新增成功 则开始新增归属枪
-            KpConnector kpConnector = new KpConnector();
-            kpConnector.setStationId(add.getStationId());
-            kpConnector.setOperatorId(add.getOperatorId());
-            kpConnector.setEquipmentId(add.getId());
-            kpConnector.setEquipmentNo(add.getEquipmentNo());
+            KpConnectorBo kpConnectorBo = new KpConnectorBo();
+            kpConnectorBo.setStationId(add.getStationId());
+            kpConnectorBo.setOperatorId(add.getOperatorId());
+            kpConnectorBo.setEquipmentId(add.getId());
+            kpConnectorBo.setEquipmentNo(add.getEquipmentNo());
             for (int i = 1; i <= bo.getGunSum(); i++) {
-                kpConnector.setConnectorName(StringUtils.leftPad(i + "", 2, "0"));
-                kpConnector.setConnectorNo(i);
+                kpConnectorBo.setConnectorName(StringUtils.leftPad(i + "", 2, "0"));
+                kpConnectorBo.setConnectorNo(i);
+                KpConnector kpConnector = MapstructUtils.convert(kpConnectorBo, KpConnector.class);
                 connectorMapper.insert(kpConnector);
             }
         }
@@ -159,7 +162,8 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
             return connectorMapper.update(Wrappers.<KpConnector>lambdaUpdate()
                 .eq(KpConnector::getEquipmentId, kpConnectorBo.getEquipmentId())
                 .set(Objects.nonNull(kpConnectorBo.getStationId()), KpConnector::getStationId, kpConnectorBo.getStationId())
-                .set(Objects.nonNull(kpConnectorBo.getOperatorId()), KpConnector::getOperatorId, kpConnectorBo.getOperatorId())) > 0;
+                .set(Objects.nonNull(kpConnectorBo.getOperatorId()), KpConnector::getOperatorId, kpConnectorBo.getOperatorId())
+                .set(BaseEntity::getUpdateTime, DateUtil.date())) > 0;
         }
         return flag;
     }
@@ -197,5 +201,22 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
     @Override
     public void update(KpEquipment equipment) {
         baseMapper.updateById(equipment);
+    }
+
+
+    @Override
+    public void pileLost(String pileCode) {
+        baseMapper.update(Wrappers.<KpEquipment>lambdaUpdate()
+            .eq(KpEquipment::getEquipmentNo, pileCode)
+            .eq(KpEquipment::getDelFlag, 0)
+            .set(KpEquipment::getIsWorking, 1)
+            .set(KpEquipment::getNetType, 3)
+            .set(BaseEntity::getUpdateTime, DateUtil.date())
+        );
+        connectorMapper.update(Wrappers.<KpConnector>lambdaUpdate()
+            .eq(KpConnector::getEquipmentNo, pileCode)
+            .eq(KpConnector::getDelFlag, 0)
+            .set(KpConnector::getStatus, 0)
+            .set(BaseEntity::getUpdateTime, DateUtil.date()));
     }
 }

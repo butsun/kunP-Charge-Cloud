@@ -29,7 +29,6 @@ public class Ykc015V150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe {
 
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
-
         log.debug("{} 云快充1.5.0充电握手", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
 
@@ -114,7 +113,6 @@ public class Ykc015V150BmsHandshakeULCmd extends YunKuaiChongUplinkCmdExe {
         byteBuf.readBytes(bmsSoftVersionBytes);
         additionalInfo.put("BMS 软件版本号", HexUtil.encodeHexStr(bmsSoftVersionBytes));
 
-        // TODO 先打印日志，暂不转发
         log.info("{} 充电握手信息解析完成:{}", pileCode, additionalInfo);
     }
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,9 +20,8 @@ import java.io.Serial;
  * @date 2025-01-20
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("kp_charge_order")
-public class KpChargeOrder extends TenantEntity {
+public class KpChargeOrder implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -83,34 +83,14 @@ public class KpChargeOrder extends TenantEntity {
     private Long equipmentId;
 
     /**
-     * 电流A
+     * 电流
      */
-    private BigDecimal currentA;
+    private BigDecimal gunCurrent;
 
     /**
-     * 电流B
+     * 电压
      */
-    private BigDecimal currentB;
-
-    /**
-     * 电流C
-     */
-    private BigDecimal currentC;
-
-    /**
-     * 电压A
-     */
-    private BigDecimal voltageA;
-
-    /**
-     * 电压B
-     */
-    private BigDecimal voltageB;
-
-    /**
-     * 电压C
-     */
-    private BigDecimal voltageC;
+    private BigDecimal gunVoltage;
 
     /**
      * Soc
@@ -218,4 +198,21 @@ public class KpChargeOrder extends TenantEntity {
      * 凭证编号
      */
     private String voucherNo;
+
+    /**
+     * 启动方式 默认0 未知   01 刷卡  02 账号  03 VIN
+     */
+    private Integer startType;
+
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
 }

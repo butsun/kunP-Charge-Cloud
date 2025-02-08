@@ -23,5 +23,4 @@ public class ChargingProgressProto implements Serializable {
     private int totalChargingDurationMin;
     private String totalChargingEnergyKWh;
     private String totalChargingCostYuan;
-    private String additionalInfo;
 }

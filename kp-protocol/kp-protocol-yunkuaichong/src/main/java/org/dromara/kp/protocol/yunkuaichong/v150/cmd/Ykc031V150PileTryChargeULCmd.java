@@ -81,65 +81,8 @@ public class Ykc031V150PileTryChargeULCmd extends YunKuaiChongUplinkCmdExe {
             .build();
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
-        log.info("{} 充电桩主动申请启动充电: {}", pileCode, additionalInfo);
+        log.info("{} 充电桩主动申请启动充电: {}", pileCode, pileTryChargeRequest);
 
     }
 
-//
-//    public static void main(String[] args) {
-//        String hex = "3201060001923601010000000000d2a03534000000000000000000000000000000000000000000000000000000000000000000";
-//
-//        hex = hex.replaceAll("\\s", "");
-//        int len = hex.length();
-//        byte[] bytes = new byte[len / 2];
-//        for (int i = 0; i < len; i += 2) {
-//            bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-//                + Character.digit(hex.charAt(i + 1), 16));
-//        }
-//
-//        ByteBuf byteBuf = Unpooled.copiedBuffer(bytes);
-//
-//        ObjectNode additionalInfo = JacksonUtil.newObjectNode();
-//
-//
-//        //1.桩编号
-//        byte[] pileCodeBytes = new byte[7];
-//        byteBuf.readBytes(pileCodeBytes);
-//        String pileCode = BCDUtil.toString(pileCodeBytes);
-//
-//        //2 枪号
-//        byte gunCodeByte = byteBuf.readByte();
-//        String gunCode = BCDUtil.toString(gunCodeByte);
-//        additionalInfo.put("枪号", gunCode);
-//
-//        //3 启动方式
-//        byte upType = byteBuf.readByte();
-//        additionalInfo.put("启动方式 01刷卡  03VIN启动", upType);
-//
-//        //4 是否需要密码
-//        additionalInfo.put("是否需要密码 00不需要  01需要", byteBuf.readByte());
-//
-//        //5 账号或者物理卡号 3533714740
-//        long cardNo = byteBuf.readLong();
-//        additionalInfo.put("账号或物理卡号", cardNo);
-//
-//        //6 输入密码
-//        byte[] pwdBytes = new byte[16];
-//        byteBuf.readBytes(pwdBytes);
-//        String pwd = new String(pwdBytes);
-//        additionalInfo.put("输入密码", pwd);
-//
-//
-//        //7 VIN 码
-//        byte[] carVINBytes = new byte[17];
-//        byteBuf.readBytes(carVINBytes);
-//        String carVin = new String(carVINBytes, StandardCharsets.US_ASCII);
-//        additionalInfo.put("VIN码", carVin);
-//
-//        log.info("{} 充电桩主动申请启动充电: {}", pileCode, additionalInfo);
-//
-//
-//
-//
-//    }
 }

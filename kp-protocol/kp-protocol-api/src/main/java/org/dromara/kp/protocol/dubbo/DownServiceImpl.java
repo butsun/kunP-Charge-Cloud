@@ -24,7 +24,7 @@ public class DownServiceImpl implements DownlinkService {
 
     @Override
     public void downlinkCmdProcess(DownlinkRequestMessage downlinkMsg) {
-        log.info("收到dubbo下行请求 {}", downlinkMsg);
+        log.debug("收到dubbo下行请求 {}", downlinkMsg);
         UUID protocolSessionId = new UUID(downlinkMsg.getSessionIdMSB(), downlinkMsg.getSessionIdLSB());
         ProtocolSession protocolSession = protocolSessionRegistryProvider.get(protocolSessionId);
         try {

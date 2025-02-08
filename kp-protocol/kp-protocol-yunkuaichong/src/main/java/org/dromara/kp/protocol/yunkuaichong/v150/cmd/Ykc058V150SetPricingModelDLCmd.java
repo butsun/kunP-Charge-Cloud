@@ -30,10 +30,10 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
  */
 @Slf4j
 @YunKuaiChongCmd(downCmd = SET_PRICING)
-public class YunKuaiChongV150SetPricingModelDLCmd extends YunKuaiChongDownlinkCmdExe {
+public class Ykc058V150SetPricingModelDLCmd extends YunKuaiChongDownlinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0计费模型设置", tcpSession);
+        log.info("{} 云快充1.5.0计费模型设置 {}", tcpSession,yunKuaiChongDwonlinkMessage.getMsg().getSetPricingRequest());
 
         if (yunKuaiChongDwonlinkMessage.getMsg().getSetPricingRequest() == null) {
             return;

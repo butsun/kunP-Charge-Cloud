@@ -29,7 +29,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
 public class Ykc006V150VerifyPricingModelAckDLCmd extends YunKuaiChongDownlinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongDwonlinkMessage yunKuaiChongDwonlinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0计费模型验证请求应答", tcpSession);
+        log.info("{} 云快充1.5.0计费模型验证请求应答 {}", tcpSession,yunKuaiChongDwonlinkMessage.getMsg().getVerifyPricingResponse());
 
         if (yunKuaiChongDwonlinkMessage.getMsg().getVerifyPricingResponse() == null) {
             return;

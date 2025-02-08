@@ -60,5 +60,6 @@ public class Ykc055V150SyncTimeAckULCmd extends YunKuaiChongUplinkCmdExe {
             .build();
 
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
+        log.debug("{} 对时应答 {}", pileCode, syncTimeResponse);
     }
 }

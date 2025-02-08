@@ -10,13 +10,15 @@ import org.dromara.kp.business.api.domain.ConnectStatusConvertEnum;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.GunRunStatusProto;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.HeartBeatRequest;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.LoginResponse;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PileLostEvent;
 import org.dromara.kp.system.domain.KpConnector;
 import org.dromara.kp.system.domain.KpEquipment;
-import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.service.IKpConnectorService;
 import org.dromara.kp.system.service.IKpEquipmentService;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @program: RuoYi-Cloud-Plus
@@ -27,7 +29,7 @@ import java.util.Objects;
 @DubboService
 @Slf4j
 @RequiredArgsConstructor
-public class PileLeftCycleClient  implements PileLeftCycleService {
+public class PileLeftCycleClient implements PileLeftCycleService {
 
     private final IKpEquipmentService kpEquipmentService;
 
@@ -39,6 +41,7 @@ public class PileLeftCycleClient  implements PileLeftCycleService {
         if (Objects.nonNull(equipment)) {
             //设备存在 开始上电
             equipment.setNetType(netType);
+            equipment.setIsWorking(0);
             equipment.setOnlineTm(DateUtil.date());
             equipment.setSyncTm(DateUtil.date());
             kpEquipmentService.update(equipment);
@@ -59,7 +62,7 @@ public class PileLeftCycleClient  implements PileLeftCycleService {
 
 
     @Override
-    public void refreshGunStatus(HeartBeatRequest heartBeatRequest) {
+    public void refreshPileStatus(HeartBeatRequest heartBeatRequest) {
         KpEquipment equipment =  kpEquipmentService.queryByEquipmentNo(heartBeatRequest.getPileCode());
         equipment.setOnlineTm(DateUtil.date());
         kpEquipmentService.update(equipment);
@@ -70,5 +73,14 @@ public class PileLeftCycleClient  implements PileLeftCycleService {
     public void refreshGunStatus(GunRunStatusProto gunRunStatusProto) {
         Integer gunState = ConnectStatusConvertEnum.getCode(gunRunStatusProto.getGunRunStatus().name());
         kpConnectorService.updateStatus(gunRunStatusProto.getPileCode(), gunRunStatusProto.getGunCode(),gunState);
+    }
+
+
+    @Override
+    public void lost(PileLostEvent pileLostEvent) {
+        Set<String> pileCodes = pileLostEvent.getPileCode();
+        for (String pileCode : pileCodes) {
+            kpEquipmentService.pileLost(pileCode);
+        }
     }
 }

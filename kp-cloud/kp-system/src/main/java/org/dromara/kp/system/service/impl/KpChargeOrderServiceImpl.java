@@ -39,7 +39,7 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
      * @return 充电订单管理
      */
     @Override
-    public KpChargeOrderVo queryById(Long id){
+    public KpChargeOrderVo queryById(Long id) {
         return baseMapper.selectVoById(id);
     }
 
@@ -77,7 +77,7 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
         lqw.eq(bo.getStartChargeSeqStat() != null, KpChargeOrder::getStartChargeSeqStat, bo.getStartChargeSeqStat());
         lqw.eq(Objects.nonNull(bo.getStationId()), KpChargeOrder::getStationId, bo.getStationId());
         lqw.between(params.get("beginStartTime") != null && params.get("endStartTime") != null,
-            KpChargeOrder::getStartTime ,params.get("beginStartTime"), params.get("endStartTime"));
+            KpChargeOrder::getStartTime, params.get("beginStartTime"), params.get("endStartTime"));
         return lqw;
     }
 
@@ -114,7 +114,7 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
     /**
      * 保存前的数据校验
      */
-    private void validEntityBeforeSave(KpChargeOrder entity){
+    private void validEntityBeforeSave(KpChargeOrder entity) {
         //TODO 做一些数据校验,如唯一约束
     }
 
@@ -127,9 +127,31 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
+        if (isValid) {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteByIds(ids) > 0;
+    }
+
+
+    @Override
+    public KpChargeOrder queryByTradeNo(String tradeNo, String pileCode, int gunCode) {
+        return baseMapper.selectOne(Wrappers.<KpChargeOrder>lambdaQuery()
+            .eq(KpChargeOrder::getTradeNo, tradeNo)
+            .eq(KpChargeOrder::getEquipmentNo, pileCode)
+            .eq(KpChargeOrder::getConnectorNo, gunCode)
+        );
+    }
+
+
+    @Override
+    public boolean insertOrder(KpChargeOrder kpChargeOrder) {
+        return baseMapper.insert(kpChargeOrder) > 0;
+    }
+
+
+    @Override
+    public boolean refreshOrder(KpChargeOrder chargeOrder) {
+        return baseMapper.updateById(chargeOrder) > 0;
     }
 }

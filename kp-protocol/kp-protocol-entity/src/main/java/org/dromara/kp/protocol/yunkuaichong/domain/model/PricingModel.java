@@ -54,7 +54,9 @@ public class PricingModel  implements Serializable {
 
     @Setter
     @Getter
-    public static class Period {
+    public static class Period  implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 1L;
         private int sn;
 
         // 起始时间
@@ -70,7 +72,9 @@ public class PricingModel  implements Serializable {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class FlagPrice {
+    public static class FlagPrice  implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 1L;
 
         // 分时电价，单位元
         private BigDecimal elec;

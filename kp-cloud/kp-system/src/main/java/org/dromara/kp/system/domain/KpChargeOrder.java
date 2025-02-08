@@ -113,6 +113,23 @@ public class KpChargeOrder implements Serializable {
     private BigDecimal totalPower;
 
     /**
+     * 尖充电量
+     */
+    private BigDecimal topPower;
+    /**
+     * 峰充电量
+     */
+    private BigDecimal peakPower;
+    /**
+     * 平充电量
+     */
+    private BigDecimal flatPower;
+    /**
+     * 谷充电量
+     */
+    private BigDecimal valleyPower;
+
+    /**
      * 电费
      */
     private BigDecimal elecMoney;

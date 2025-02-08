@@ -1,8 +1,10 @@
 package org.dromara.kp.system.service;
 
 import org.dromara.kp.system.domain.KpPriceTemplate;
+import org.dromara.kp.system.domain.bo.KpPriceTemplateBo;
 import org.dromara.kp.system.domain.request.PriceAddRequest;
 import org.dromara.kp.system.domain.resposne.PriceInfoResponse;
+import org.dromara.kp.system.domain.vo.KpPriceTemplateVo;
 import org.dromara.kp.system.domain.vo.KpPriceTemplateVo;
 import org.dromara.kp.system.domain.bo.KpPriceTemplateBo;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
@@ -23,21 +25,45 @@ public interface IKpPriceTemplateService {
 
 
     /**
-     * 查询站点价格模版
+     * 查询价格模版管理
      *
-     * @param bo priceCode
-     * @return 价格模版列表
+     * @param id 主键
+     * @return 价格模版管理
      */
-    TableDataInfo<PriceListDto> getPricePage(KpPriceTemplateBo bo, PageQuery pageQuery);
-
+    KpPriceTemplateVo queryById(Long id);
 
     /**
-     * 根据priceCOde获取指定价格模版list
-     * @param priceCode
-     * @return
+     * 分页查询价格模版管理列表
+     *
+     * @param bo        查询条件
+     * @param pageQuery 分页参数
+     * @return 价格模版管理分页列表
      */
-    PriceInfoResponse getPriceInfo(Long priceCode);
+    TableDataInfo<KpPriceTemplateVo> queryPageList(KpPriceTemplateBo bo, PageQuery pageQuery);
 
+    /**
+     * 查询符合条件的价格模版管理列表
+     *
+     * @param bo 查询条件
+     * @return 价格模版管理列表
+     */
+    List<KpPriceTemplateVo> queryList(KpPriceTemplateBo bo);
+
+    /**
+     * 新增价格模版管理
+     *
+     * @param bo 价格模版管理
+     * @return 是否新增成功
+     */
+    Boolean insertByBo(KpPriceTemplateBo bo);
+
+    /**
+     * 修改价格模版管理
+     *
+     * @param bo 价格模版管理
+     * @return 是否修改成功
+     */
+    Boolean updateByBo(KpPriceTemplateBo bo);
 
     /**
      * 根据站点id获取指定价格模版list
@@ -45,17 +71,8 @@ public interface IKpPriceTemplateService {
      * @return
      */
     PriceInfoResponse getStationPriceInfo(Long stationId);
-
-
     /**
-     * 删除指定priceCode的价格模版
-     * @param priceCode priceCode
-     */
-    void removePrice(Long priceCode);
-
-
-    /**
-     * 校验并批量删除站点价格模版信息
+     * 校验并批量删除价格模版管理信息
      *
      * @param ids     待删除的主键集合
      * @param isValid 是否进行有效性校验
@@ -63,20 +80,5 @@ public interface IKpPriceTemplateService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
-
-    /**
-     * 添加价格模版
-     * @param priceAddRequest priceAddRequest
-     * @return  Long PriceCode
-     */
-    Long addPrice(PriceAddRequest priceAddRequest);
-
-    /**
-     * 获取最大的priceCode
-     * @return Long
-     */
-    Long getMaxPriceCode();
-
-
-    void editPrice(PriceEditRequest priceEditRequest);
+    KpPriceTemplate queryBYStationId(Long stationId);
 }

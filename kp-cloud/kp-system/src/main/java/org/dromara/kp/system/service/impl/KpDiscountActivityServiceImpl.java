@@ -148,4 +148,14 @@ public class KpDiscountActivityServiceImpl implements IKpDiscountActivityService
         }
         return baseMapper.deleteByIds(ids) > 0;
     }
+
+    @Override
+    public KpDiscountActivity queryByOperatorId(Long operatorId ,Integer accountType) {
+        return baseMapper.selectOne(Wrappers.lambdaQuery(KpDiscountActivity.class)
+            .eq(KpDiscountActivity::getOperatorId, operatorId)
+            .eq(KpDiscountActivity::getDisableFlag,0)
+            .eq(KpDiscountActivity::getDelFlag,0)
+            .eq(KpDiscountActivity::getActivityType,accountType)
+        );
+    }
 }

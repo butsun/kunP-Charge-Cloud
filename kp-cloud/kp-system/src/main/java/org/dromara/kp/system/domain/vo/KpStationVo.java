@@ -113,7 +113,7 @@ public class KpStationVo implements Serializable {
      * 价格模版code
      */
     @ExcelProperty(value = "价格模版code")
-    private Long priceCode;
+    private Long priceId;
 
     /**
      * 备注信息

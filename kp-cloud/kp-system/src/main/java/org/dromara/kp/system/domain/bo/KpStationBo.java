@@ -96,7 +96,7 @@ public class KpStationBo extends BaseEntity {
     /**
      * 价格模版code
      */
-    private Long priceCode;
+    private Long priceId;
 
 
 }

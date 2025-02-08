@@ -56,12 +56,12 @@ public class KpDiscountActivity extends TenantEntity {
     /**
      * 禁用
      */
-    private Long disableFlag;
+    private Integer disableFlag;
 
     /**
      * 活动类型
      */
-    private Long activityType;
+    private Integer activityType;
 
     /**
      * 备注

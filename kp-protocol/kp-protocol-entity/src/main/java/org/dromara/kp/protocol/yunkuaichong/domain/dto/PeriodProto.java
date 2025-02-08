@@ -26,7 +26,7 @@ public class PeriodProto  implements Serializable {
         PEAK,
         FLAT,
         VALLEY,
-        DEEP
+         DEEP
     }
 }
 

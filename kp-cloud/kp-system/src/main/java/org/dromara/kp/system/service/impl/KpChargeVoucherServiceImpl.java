@@ -152,4 +152,12 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
         }
         return baseMapper.deleteByIds(ids) > 0;
     }
+
+    @Override
+    public KpChargeVoucher queryByVoucherVoNo(String voucherNo) {
+        return baseMapper.selectOne(Wrappers.lambdaQuery(KpChargeVoucher.class)
+            .eq(KpChargeVoucher::getVoucherNumber, voucherNo)
+            .eq(KpChargeVoucher::getDisableFlag, 0)
+            .eq(KpChargeVoucher::getDelFlag, 0));
+    }
 }

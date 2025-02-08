@@ -66,4 +66,6 @@ public interface IKpChargeVoucherService {
      * @return 是否删除成功
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+
+    KpChargeVoucher queryByVoucherVoNo(String voucherNo);
 }

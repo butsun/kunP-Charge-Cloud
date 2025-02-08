@@ -21,32 +21,10 @@ public class PricingModel  implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private UUID id;
-
-    // 计数器，供充电桩协议使用
-    private int sequenceNumber;
-
-    private String pileCode;
-
-    private PricingModelProto.PricingModelType type;
-
-    private PricingModelProto.PricingModelRule rule;
-
-    /**
-     * 标准电价（单位元）
-     */
-    private BigDecimal standardElec;
-
-    /**
-     * 标准服务费（单位元）
-     */
-    private BigDecimal standardServ;
-
     /**
      * 分时电价
      */
     private Map<PeriodProto.PricingModelFlag, FlagPrice> flagPriceList;
-
     /**
      * 分时时段
      */

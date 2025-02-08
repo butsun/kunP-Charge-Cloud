@@ -23,12 +23,6 @@ public class ProtoConverter {
         // 创建 PricingModelProto 实例
         PricingModelProto.PricingModelProtoBuilder builder = PricingModelProto.builder();
 
-        // 设置字段
-        builder.type(PricingModelProto.PricingModelType.valueOf(pricingModel.getType().name()));
-        builder.rule(PricingModelProto.PricingModelRule.valueOf(pricingModel.getRule().name()));
-        builder.standardElec(pricingModel.getStandardElec().toPlainString());
-        builder.standardServ(pricingModel.getStandardServ().toPlainString());
-
         // 转换 flagPriceList
         Map<Integer, FlagPriceProto> flagPrices = new HashMap<>();
         for (Map.Entry<PeriodProto.PricingModelFlag, PricingModel.FlagPrice> entry : pricingModel.getFlagPriceList().entrySet()) {

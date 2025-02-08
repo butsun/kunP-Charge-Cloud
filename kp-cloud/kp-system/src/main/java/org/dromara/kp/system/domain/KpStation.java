@@ -95,7 +95,7 @@ public class KpStation extends TenantEntity {
     /**
      * 价格模版code
      */
-    private Long priceCode;
+    private Long priceId;
 
     /**
      * 数据状态:0、正常;1、删除

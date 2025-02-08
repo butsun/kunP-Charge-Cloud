@@ -135,7 +135,7 @@ public class KpStationServiceImpl implements IKpStationService {
 
     @Override
     public List<Long> getLinkStations(Long priceCode) {
-        LambdaQueryWrapper<KpStation> lqw = Wrappers.<KpStation>lambdaQuery().eq(KpStation::getPriceCode, priceCode)
+        LambdaQueryWrapper<KpStation> lqw = Wrappers.<KpStation>lambdaQuery().eq(KpStation::getPriceId, priceCode)
             .eq(KpStation::getDelFlag, 0)
             .select(KpStation::getId);
         List<KpStationVo> kpStationVos = baseMapper.selectVoList(lqw);

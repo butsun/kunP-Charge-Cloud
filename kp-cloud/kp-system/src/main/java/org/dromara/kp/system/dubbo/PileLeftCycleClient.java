@@ -83,4 +83,5 @@ public class PileLeftCycleClient implements PileLeftCycleService {
             kpEquipmentService.pileLost(pileCode);
         }
     }
+
 }

@@ -58,7 +58,7 @@ public class DefaultPileProtocolService implements PileProtocolService {
     @Override
     public void heartBeat(UplinkQueueMessage uplinkQueueMessage) {
         log.info("接收到枪心跳事件 {}", uplinkQueueMessage.getHeartBeatRequest());
-        pileLeftCycleClient.refreshPileStatus(uplinkQueueMessage.getHeartBeatRequest());
+//        pileLeftCycleClient.refreshPileStatus(uplinkQueueMessage.getHeartBeatRequest());
     }
 
 
@@ -92,7 +92,7 @@ public class DefaultPileProtocolService implements PileProtocolService {
         downlinkMessageBuilder.downlinkCmd(QUERY_PRICING_ACK.name());
         downlinkMessageBuilder.queryPricingResponse(QueryPricingResponse.builder()
             .pileCode(pileCode)
-            .pricingId(model.getSequenceNumber())
+            .pricingId(1)
             .pricingModel(ProtoConverter.toPricingModel(model))
             .build());
 

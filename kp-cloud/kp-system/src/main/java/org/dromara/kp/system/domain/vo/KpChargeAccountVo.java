@@ -54,21 +54,21 @@ public class KpChargeAccountVo implements Serializable {
      */
     @ExcelProperty(value = "性别", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "kp_user_sex")
-    private Long sex;
+    private Integer sex;
 
     /**
      * 账户类型
      */
     @ExcelProperty(value = "账户类型", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "kp_accout_type")
-    private Long accoutType;
+    private Integer accoutType;
 
     /**
      * 禁用
      */
     @ExcelProperty(value = "禁用", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "kp_disable_flag")
-    private Long disableFlag;
+    private Integer disableFlag;
 
     /**
      * 注册时间

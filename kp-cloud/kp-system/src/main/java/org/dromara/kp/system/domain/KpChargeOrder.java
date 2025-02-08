@@ -204,4 +204,18 @@ public class KpChargeOrder extends TenantEntity {
      */
     private String equipmentNo;
 
+    /**
+     * 停止原因
+     */
+    private String stopReason;
+
+    /**
+     * 订单归属账户id
+     */
+    private Long accountId;
+
+    /**
+     * 凭证编号
+     */
+    private String voucherNo;
 }

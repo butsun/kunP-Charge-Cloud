@@ -177,20 +177,13 @@ public class DefaultPileProtocolService implements PileProtocolService {
     @Override
     public void onTransactionRecord(UplinkQueueMessage uplinkQueueMessage) {
         log.info("接收到充电桩交易记录上报 {}", uplinkQueueMessage.getTransactionRecord());
-
-        // todo 毛都不敢先给个回复
-        TransactionRecord transactionRecord = uplinkQueueMessage.getTransactionRecord();
-
-        String tradeNo = transactionRecord.getTradeNo();
-        String pileCode = transactionRecord.getPileCode();
+        TransactionRecordAck transactionRecordAck =  pileChargeClient.pileChargeTransactionRecord(uplinkQueueMessage.getTransactionRecord());
 
         // 构造下行计费
-        DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, pileCode);
+        DownlinkRequestMessage.DownlinkRequestMessageBuilder downlinkMessageBuilder = createDownlinkMessageBuilder(uplinkQueueMessage, uplinkQueueMessage.getTransactionRecord().getPileCode());
+
         downlinkMessageBuilder.downlinkCmd(TRANSACTION_RECORD_ACK.name());
-        downlinkMessageBuilder.transactionRecordAck(TransactionRecordAck.builder()
-            .tradeNo(tradeNo)
-            .success(true)
-            .build());
+        downlinkMessageBuilder.transactionRecordAck(transactionRecordAck);
         downlinkCallService.downlinkCmdProcess(downlinkMessageBuilder.build());
 
     }

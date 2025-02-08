@@ -75,4 +75,6 @@ public interface IKpConnectorService {
     Boolean updateByEquipmentId(KpConnectorBo bo);
 
     KpConnector queryByNo(String pileCode, Integer gunNo);
+
+    void updateStatus(String pileCode,int gunNo, Integer gunState);
 }

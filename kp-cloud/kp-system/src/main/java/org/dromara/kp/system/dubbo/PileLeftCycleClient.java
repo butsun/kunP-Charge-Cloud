@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.dromara.kp.business.api.PileLeftCycleService;
+import org.dromara.kp.business.api.domain.ConnectStatusConvertEnum;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.GunRunStatusProto;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.HeartBeatRequest;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.LoginResponse;
@@ -67,8 +68,7 @@ public class PileLeftCycleClient  implements PileLeftCycleService {
 
     @Override
     public void refreshGunStatus(GunRunStatusProto gunRunStatusProto) {
-
-
-
+        Integer gunState = ConnectStatusConvertEnum.getCode(gunRunStatusProto.getGunRunStatus().name());
+        kpConnectorService.updateStatus(gunRunStatusProto.getPileCode(), gunRunStatusProto.getGunCode(),gunState);
     }
 }

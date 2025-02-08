@@ -14,7 +14,7 @@ public class TransactionRecord  implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private String pileCode;
-    private String gunCode;
+    private int gunCode;
     private String tradeNo;
     private long startTs;
     private long endTs;

@@ -53,7 +53,7 @@ public class Ykc03BV150TransactionRecordULCmd extends YunKuaiChongUplinkCmdExe {
 
         // 3.抢号
         byte gunCodeByte = byteBuf.readByte();
-        String gunCode = BCDUtil.toString(gunCodeByte);
+        int gunCode = Integer.parseInt(BCDUtil.toString(gunCodeByte));
         additionalInfo.put("枪号", gunCode);
 
 

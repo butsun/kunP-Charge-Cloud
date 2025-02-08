@@ -8,6 +8,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.vo.KpEquipmentVo;
+import org.dromara.kp.system.domain.vo.KpOperatorVo;
+import org.dromara.kp.system.domain.vo.KpStationVo;
+import org.dromara.kp.system.mapper.KpOperatorMapper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpDiscountActivityBo;
 import org.dromara.kp.system.domain.vo.KpDiscountActivityVo;
@@ -32,6 +37,7 @@ public class KpDiscountActivityServiceImpl implements IKpDiscountActivityService
 
     private final KpDiscountActivityMapper baseMapper;
 
+    private final KpOperatorMapper operatorMapper;
     /**
      * 查询充电优惠管理
      *
@@ -40,7 +46,15 @@ public class KpDiscountActivityServiceImpl implements IKpDiscountActivityService
      */
     @Override
     public KpDiscountActivityVo queryById(Long id){
-        return baseMapper.selectVoById(id);
+        KpDiscountActivityVo vo = baseMapper.selectVoById(id);
+        return getKpDiscountActivityVo(vo);
+    }
+
+    @NotNull
+    private KpDiscountActivityVo getKpDiscountActivityVo(KpDiscountActivityVo vo) {
+        KpOperatorVo kpOperatorVo = operatorMapper.selectVoById(vo.getOperatorId());
+        vo.setOperatorName(kpOperatorVo.getOperatorName());
+        return vo;
     }
 
     /**
@@ -54,6 +68,7 @@ public class KpDiscountActivityServiceImpl implements IKpDiscountActivityService
     public TableDataInfo<KpDiscountActivityVo> queryPageList(KpDiscountActivityBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<KpDiscountActivity> lqw = buildQueryWrapper(bo);
         Page<KpDiscountActivityVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        result.getRecords().forEach(this::getKpDiscountActivityVo);
         return TableDataInfo.build(result);
     }
 
@@ -66,7 +81,9 @@ public class KpDiscountActivityServiceImpl implements IKpDiscountActivityService
     @Override
     public List<KpDiscountActivityVo> queryList(KpDiscountActivityBo bo) {
         LambdaQueryWrapper<KpDiscountActivity> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<KpDiscountActivityVo> vos = baseMapper.selectVoList(lqw);
+        vos.forEach(this::getKpDiscountActivityVo);
+        return vos;
     }
 
     private LambdaQueryWrapper<KpDiscountActivity> buildQueryWrapper(KpDiscountActivityBo bo) {

@@ -86,5 +86,9 @@ public class KpDiscountActivityVo implements Serializable {
     @ExcelProperty(value = "备注")
     private String remark;
 
-
+    /**
+     * 运营商名称
+     */
+    @ExcelProperty(value = "运营商名称")
+    private String operatorName;
 }

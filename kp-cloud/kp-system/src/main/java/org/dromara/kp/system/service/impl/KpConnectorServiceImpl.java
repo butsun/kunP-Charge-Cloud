@@ -172,4 +172,11 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
             .eq(KpConnector::getConnectorNo, gunNo));
     }
 
+    @Override
+    public void updateStatus(String pileCode, int gunNo, Integer gunState) {
+        baseMapper.update(Wrappers.<KpConnector>lambdaUpdate()
+            .eq(KpConnector::getEquipmentNo, pileCode)
+            .eq(KpConnector::getConnectorNo, gunNo)
+            .set(KpConnector::getStatus, gunState));
+    }
 }

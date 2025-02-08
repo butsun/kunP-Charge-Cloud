@@ -9,6 +9,8 @@ import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.kp.business.api.PileChargeService;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.PileTryChargeRequest;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.PileTryChargeResponse;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.TransactionRecord;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.TransactionRecordAck;
 import org.dromara.kp.system.domain.KpChargeOrder;
 import org.dromara.kp.system.domain.KpConnector;
 import org.dromara.kp.system.domain.KpEquipment;
@@ -78,5 +80,24 @@ public class PileChargeClient implements PileChargeService {
 
     private boolean verifyChargeSession() {
         return true;
+    }
+
+
+    @Override
+    public TransactionRecordAck pileChargeTransactionRecord(TransactionRecord transactionRecord) {
+        //Todo  补充订单详情
+        String tradeNo = transactionRecord.getTradeNo();
+        String pileCode = transactionRecord.getPileCode();
+        int gunCode = transactionRecord.getGunCode();
+
+//        KpChargeOrder chargeOrder =  chargeOrderService.queryByTradeNo(tradeNo, pileCode, gunCode);
+
+
+
+
+        return TransactionRecordAck.builder()
+            .tradeNo(tradeNo)
+            .success(true)
+            .build();
     }
 }

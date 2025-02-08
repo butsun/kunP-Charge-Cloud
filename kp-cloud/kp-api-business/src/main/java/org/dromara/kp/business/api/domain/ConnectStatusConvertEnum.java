@@ -28,4 +28,13 @@ public enum ConnectStatusConvertEnum {
     private final String status;
 
 
+    public static Integer getCode(String status) {
+        for (ConnectStatusConvertEnum value : ConnectStatusConvertEnum.values()) {
+            if (value.getStatus().equals(status)) {
+                return value.getCode();
+            }
+        }
+        return OFFLINE.getCode();
+    }
+
 }

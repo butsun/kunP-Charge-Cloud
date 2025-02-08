@@ -70,7 +70,7 @@ public class KpConnector extends TenantEntity {
     /**
      * 状态
      */
-    private Long status;
+    private Integer status;
 
     /**
      * 数据状态:0、正常;1、删除

@@ -15,6 +15,8 @@ import org.dromara.kp.system.domain.vo.KpConnectorVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
 import org.dromara.kp.system.mapper.KpConnectorMapper;
+import org.dromara.kp.system.mapper.KpOperatorMapper;
+import org.dromara.kp.system.mapper.KpStationMapper;
 import org.dromara.kp.system.service.IKpConnectorService;
 import org.dromara.kp.system.service.IKpOperatorService;
 import org.dromara.kp.system.service.IKpStationService;
@@ -45,10 +47,9 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
 
     private final KpConnectorMapper connectorMapper;
 
-    private final IKpOperatorService kpOperatorService;
+    private final KpOperatorMapper operatorMapper;
 
-    private final IKpStationService kpStationService;
-
+    private final KpStationMapper stationMapper;
 
     /**
      * 查询充电设备管理
@@ -64,8 +65,8 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
 
     @NotNull
     private KpEquipmentVo getKpEquipmentVo(KpEquipmentVo vo) {
-        KpOperatorVo kpOperatorVo = kpOperatorService.queryById(vo.getOperatorId());
-        KpStationVo kpStationVo = kpStationService.queryById(vo.getStationId());
+        KpOperatorVo kpOperatorVo = operatorMapper.selectVoById(vo.getOperatorId());
+        KpStationVo kpStationVo = stationMapper.selectVoById(vo.getStationId());
         vo.setOperatorName(kpOperatorVo.getOperatorName());
         vo.setStationName(kpStationVo.getStationName());
         return vo;

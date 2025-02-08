@@ -197,4 +197,22 @@ public class KpChargeOrderVo implements Serializable {
      */
     @ExcelProperty(value = "设备编号")
     private String equipmentNo;
+
+    /**
+     * 停止原因
+     */
+    @ExcelProperty(value = "停止原因")
+    private String stopReason;
+
+    /**
+     * 订单归属账户id
+     */
+    @ExcelProperty(value = "订单归属账户id")
+    private Long accountId;
+
+    /**
+     * 凭证编号
+     */
+    @ExcelProperty(value = "凭证编号")
+    private String voucherNo;
 }

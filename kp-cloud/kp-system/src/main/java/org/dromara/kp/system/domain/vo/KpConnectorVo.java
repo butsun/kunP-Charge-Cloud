@@ -96,6 +96,8 @@ public class KpConnectorVo implements Serializable {
     @ExcelProperty(value = "设备号")
     private String equipmentNo;
 
+    private Integer netType;
+
     private String operatorName;
 
     private String stationName;

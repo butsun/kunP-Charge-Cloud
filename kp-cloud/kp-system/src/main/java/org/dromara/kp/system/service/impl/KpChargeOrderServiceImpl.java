@@ -8,6 +8,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.vo.KpEquipmentVo;
+import org.dromara.kp.system.domain.vo.KpOperatorVo;
+import org.dromara.kp.system.domain.vo.KpStationVo;
+import org.dromara.kp.system.mapper.KpOperatorMapper;
+import org.dromara.kp.system.mapper.KpStationMapper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpChargeOrderBo;
 import org.dromara.kp.system.domain.vo.KpChargeOrderVo;
@@ -31,7 +37,8 @@ import java.util.Objects;
 public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
 
     private final KpChargeOrderMapper baseMapper;
-
+    private final KpOperatorMapper operatorMapper;
+    private final KpStationMapper stationMapper;
     /**
      * 查询充电订单管理
      *
@@ -40,8 +47,19 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
      */
     @Override
     public KpChargeOrderVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        KpChargeOrderVo vo = baseMapper.selectVoById(id);
+        return getKpChargeOrderVo(vo);
     }
+
+    @NotNull
+    private KpChargeOrderVo getKpChargeOrderVo(KpChargeOrderVo vo) {
+        KpOperatorVo kpOperatorVo = operatorMapper.selectVoById(vo.getOperatorId());
+        KpStationVo kpStationVo = stationMapper.selectVoById(vo.getStationId());
+        vo.setOperatorName(kpOperatorVo.getOperatorName());
+        vo.setStationName(kpStationVo.getStationName());
+        return vo;
+    }
+
 
     /**
      * 分页查询充电订单管理列表
@@ -54,6 +72,7 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
     public TableDataInfo<KpChargeOrderVo> queryPageList(KpChargeOrderBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<KpChargeOrder> lqw = buildQueryWrapper(bo);
         Page<KpChargeOrderVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        result.getRecords().forEach(this::getKpChargeOrderVo);
         return TableDataInfo.build(result);
     }
 
@@ -66,7 +85,9 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
     @Override
     public List<KpChargeOrderVo> queryList(KpChargeOrderBo bo) {
         LambdaQueryWrapper<KpChargeOrder> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<KpChargeOrderVo> vos = baseMapper.selectVoList(lqw);
+        vos.forEach(this::getKpChargeOrderVo);
+        return vos;
     }
 
     private LambdaQueryWrapper<KpChargeOrder> buildQueryWrapper(KpChargeOrderBo bo) {

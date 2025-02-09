@@ -42,6 +42,7 @@ public class PileChargeClient implements PileChargeService {
     private final IKpPriceTemplateService priceTemplateService;
     private final IKpDiscountActivityService discountActivityService;
     private final IKpChargeAccountService chargeAccountService;
+    private final IKpUserCarService userCarService;
 
 
 
@@ -87,9 +88,16 @@ public class PileChargeClient implements PileChargeService {
         kpChargeOrder.setActivityService(kpDiscountActivity.getDisService());
 
         //通过站点获取 下单时计价快照
-        KpPriceTemplate kpPriceTemplate = priceTemplateService.queryBYStationId(equipment.getStationId());
+        KpPriceTemplate kpPriceTemplate = priceTemplateService.queryByStationId(equipment.getStationId());
         PricingModel pricingModel = buildPricingModel(kpPriceTemplate);
         kpChargeOrder.setPriceInfo(JSONUtil.toJsonStr(pricingModel));
+
+
+        //通过VIN获取车牌号
+        KpUserCar kpUserCar = userCarService.queryByVin(carVin);
+        kpChargeOrder.setPlateNum(kpUserCar.getPlateNo());
+
+
 
         boolean result = chargeOrderService.insertOrder(kpChargeOrder);
         return PileTryChargeResponse.builder()
@@ -250,11 +258,11 @@ public class PileChargeClient implements PileChargeService {
     public PricingModel getPilePricingModel(String pileCode) {
         KpEquipment equipment = equipmentService.queryByEquipmentNo(pileCode);
         //通过站点获取 下单时计价快照
-        KpPriceTemplate kpPriceTemplate = priceTemplateService.queryBYStationId(equipment.getStationId());
+        KpPriceTemplate kpPriceTemplate = priceTemplateService.queryByStationId(equipment.getStationId());
         return buildPricingModel(kpPriceTemplate);
     }
 
-    private PricingModel.Period createPeriod(int sn, LocalTime beginTime, LocalTime endTime, PeriodProto.PricingModelFlag flag) {
+    private static PricingModel.Period createPeriod(int sn, LocalTime beginTime, LocalTime endTime, PeriodProto.PricingModelFlag flag) {
         PricingModel.Period period = new PricingModel.Period();
         period.setSn(sn);
         period.setBegin(beginTime);
@@ -264,15 +272,11 @@ public class PileChargeClient implements PileChargeService {
     }
 
 
-
-
-
     private PricingModel buildPricingModel(KpPriceTemplate kpPriceTemplate) {
         if (kpPriceTemplate == null) {
             return getDefaultPriceTemplate();
         }
         List<PricingModel.Period> periods = new ArrayList<>();
-
         String periodJsonArray = kpPriceTemplate.getPeriods();
         JSONArray periodsJson = JSONUtil.parseArray(periodJsonArray);
 
@@ -281,7 +285,6 @@ public class PileChargeClient implements PileChargeService {
             String start = periodJson.getStr("start");
             String end = periodJson.getStr("end");
             int flag = periodJson.getInt("flag");
-
             // 将数字标志转换为对应的PricingModelFlag
             PeriodProto.PricingModelFlag modelFlag = switch (flag) {
                 case 1 -> TOP;
@@ -290,8 +293,6 @@ public class PileChargeClient implements PileChargeService {
                 case 4 -> VALLEY;
                 default -> FLAT; // 默认为平段
             };
-
-
             periods.add(createPeriod(i + 1, LocalTime.parse(start), LocalTime.parse(end), modelFlag));
         }
 
@@ -301,15 +302,11 @@ public class PileChargeClient implements PileChargeService {
         flagPriceMap.put(FLAT, new PricingModel.FlagPrice(kpPriceTemplate.getFlatElecPrice(), kpPriceTemplate.getFlatServPrice()));
         flagPriceMap.put(VALLEY, new PricingModel.FlagPrice(kpPriceTemplate.getValleyElecPrice(), kpPriceTemplate.getValleyServPrice()));
 
-
-
         PricingModel model = new PricingModel();
         model.setFlagPriceList(flagPriceMap);
         model.setPeriodsList(periods);
         return model;
     }
-
-
 
 
     private PricingModel getDefaultPriceTemplate() {

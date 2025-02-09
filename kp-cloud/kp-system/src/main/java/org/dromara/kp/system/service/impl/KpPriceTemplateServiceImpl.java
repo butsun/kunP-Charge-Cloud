@@ -12,7 +12,9 @@ import org.dromara.kp.system.domain.KpPriceTemplate;
 import org.dromara.kp.system.domain.bo.KpPriceTemplateBo;
 import org.dromara.kp.system.domain.resposne.PriceInfoResponse;
 import org.dromara.kp.system.domain.vo.KpPriceTemplateVo;
+import org.dromara.kp.system.domain.vo.KpStationVo;
 import org.dromara.kp.system.mapper.KpPriceTemplateMapper;
+import org.dromara.kp.system.mapper.KpStationMapper;
 import org.dromara.kp.system.service.IKpPriceTemplateService;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,7 @@ import java.util.Map;
 public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
 
     private final KpPriceTemplateMapper baseMapper;
+    private final KpStationMapper stationMapper;
 
     /**
      * 查询价格模版管理
@@ -131,12 +134,13 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
 
 
     @Override
-    public PriceInfoResponse getStationPriceInfo(Long stationId) {
-        return null;
-    }
-
-    @Override
-    public KpPriceTemplate queryBYStationId(Long stationId) {
+    public KpPriceTemplate queryByStationId(Long stationId) {
+        KpStationVo kpStationVo = stationMapper.selectVoById(stationId);
+        if (kpStationVo != null) {
+            LambdaQueryWrapper<KpPriceTemplate> lqw = Wrappers.lambdaQuery();
+            lqw.eq(KpPriceTemplate::getId, kpStationVo.getPriceId());
+            return baseMapper.selectOne(lqw);
+        }
         return null;
     }
 }

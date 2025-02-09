@@ -60,7 +60,6 @@ public class KpPriceTemplateController extends BaseController {
     }
 
 
-
     /**
      * 模糊查询价格模版管理列表
      */
@@ -91,7 +90,7 @@ public class KpPriceTemplateController extends BaseController {
     @SaCheckPermission("kpSystem:priceTemplate:query")
     @GetMapping("/{id}")
     public R<KpPriceTemplateVo> getInfo(@NotNull(message = "主键不能为空")
-                                   @PathVariable Long id) {
+                                        @PathVariable Long id) {
         return R.ok(kpPriceTemplateService.queryById(id));
     }
 
@@ -141,14 +140,7 @@ public class KpPriceTemplateController extends BaseController {
     @GetMapping(value = "/getStationPrice/{stationId}")
     @Operation(summary = "根据充电站，获取价格")
     public R getStationPrice(@PathVariable Long stationId) {
-        try {
-            return R.ok(kpPriceTemplateService.getStationPriceInfo(stationId));
-        } catch (BaseException ex) {
-            log.error(ex.getMessage(), ex);
-            return R.fail("内部服务错误");
-        } catch (Exception ex) {
-            log.error(ex.toString(), ex);
-            return R.fail("内部服务错误");
-        }
+        return R.ok(kpPriceTemplateService.queryByStationId(stationId));
     }
+
 }

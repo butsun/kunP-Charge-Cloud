@@ -1,5 +1,6 @@
 package org.dromara.kp.system.service.impl;
 
+import org.dromara.common.core.exception.base.BaseException;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
@@ -94,7 +95,7 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
         lqw.like(StringUtils.isNotBlank(bo.getMobile()), KpChargeAccount::getMobile, bo.getMobile());
         lqw.like(StringUtils.isNotBlank(bo.getNickName()), KpChargeAccount::getNickName, bo.getNickName());
         lqw.eq(bo.getAccoutType() != null, KpChargeAccount::getAccoutType, bo.getAccoutType());
-        lqw.eq(bo.getDisableFlag() != null, KpChargeAccount::getDisableFlag, bo.getDisableFlag());
+        lqw.eq( KpChargeAccount::getDisableFlag, 0);
         return lqw;
     }
 
@@ -124,7 +125,6 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
     @Override
     public Boolean updateByBo(KpChargeAccountBo bo) {
         KpChargeAccount update = MapstructUtils.convert(bo, KpChargeAccount.class);
-        validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
     }
 
@@ -132,7 +132,19 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
      * 保存前的数据校验
      */
     private void validEntityBeforeSave(KpChargeAccount entity){
-        //TODO 做一些数据校验,如唯一约束
+        LambdaQueryWrapper<KpChargeAccount> lqw = buildValidQuery(entity);
+        KpChargeAccount kpChargeAccount = baseMapper.selectOne(lqw);
+        if (kpChargeAccount != null) {
+            throw  new BaseException("该手机号账户已经存在");
+        }
+    }
+
+    private LambdaQueryWrapper<KpChargeAccount> buildValidQuery(KpChargeAccount entity) {
+        LambdaQueryWrapper<KpChargeAccount> lqw = Wrappers.lambdaQuery();
+        lqw.eq( KpChargeAccount::getMobile, entity.getMobile());
+        lqw.eq( KpChargeAccount::getAccoutType, entity.getAccoutType());
+        lqw.eq( KpChargeAccount::getDisableFlag,0);
+        return lqw;
     }
 
     /**

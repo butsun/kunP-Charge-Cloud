@@ -72,6 +72,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
         vo.setEquipmentNo(kpEquipmentVo.getEquipmentNo());
         vo.setEquipmentType(kpEquipmentVo.getEquipmentType());
         vo.setCurrentValue(kpEquipmentVo.getCurrentValue());
+        vo.setNetType(kpEquipmentVo.getNetType());
         vo.setPower(kpEquipmentVo.getPower());
         return vo;
     }

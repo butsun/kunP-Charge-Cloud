@@ -91,16 +91,16 @@ public class KpConnectorController extends BaseController {
 //        return toAjax(kpConnectorService.updateByBo(bo));
 //    }
 
-    /**
-     * 删除充电枪管理
-     *
-     * @param ids 主键串
-     */
-    @SaCheckPermission("kpSystem:connector:remove")
-    @Log(title = "充电枪管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}")
-    public R<Void> remove(@NotEmpty(message = "主键不能为空")
-                          @PathVariable Long[] ids) {
-        return toAjax(kpConnectorService.deleteWithValidByIds(List.of(ids), true));
-    }
+//    /**
+//     * 删除充电枪管理
+//     *
+//     * @param ids 主键串
+//     */
+//    @SaCheckPermission("kpSystem:connector:remove")
+//    @Log(title = "充电枪管理", businessType = BusinessType.DELETE)
+//    @DeleteMapping("/{ids}")
+//    public R<Void> remove(@NotEmpty(message = "主键不能为空")
+//                          @PathVariable Long[] ids) {
+//        return toAjax(kpConnectorService.deleteWithValidByIds(List.of(ids), true));
+//    }
 }

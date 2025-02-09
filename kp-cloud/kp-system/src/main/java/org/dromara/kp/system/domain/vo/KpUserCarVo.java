@@ -72,4 +72,6 @@ public class KpUserCarVo implements Serializable {
     private String remark;
 
 
+    private String accountName;
+
 }

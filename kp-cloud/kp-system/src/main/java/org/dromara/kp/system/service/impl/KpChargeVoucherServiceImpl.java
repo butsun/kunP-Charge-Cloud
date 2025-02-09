@@ -1,6 +1,7 @@
 package org.dromara.kp.system.service.impl;
 
 import org.bouncycastle.jcajce.provider.symmetric.TEA;
+import org.dromara.common.core.exception.base.BaseException;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.KpChargeAccount;
 import org.dromara.kp.system.domain.vo.*;
 import org.dromara.kp.system.mapper.KpChargeAccountMapper;
 import org.dromara.kp.system.mapper.KpOperatorMapper;
@@ -127,7 +129,6 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
     @Override
     public Boolean updateByBo(KpChargeVoucherBo bo) {
         KpChargeVoucher update = MapstructUtils.convert(bo, KpChargeVoucher.class);
-        validEntityBeforeSave(update);
         return baseMapper.updateById(update) > 0;
     }
 
@@ -135,7 +136,21 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
      * 保存前的数据校验
      */
     private void validEntityBeforeSave(KpChargeVoucher entity) {
-        //TODO 做一些数据校验,如唯一约束
+        LambdaQueryWrapper<KpChargeVoucher> lqw = buildValidQuery(entity);
+        KpChargeVoucher kpChargeVoucher = baseMapper.selectOne(lqw);
+        if (kpChargeVoucher != null) {
+            throw  new BaseException("凭证已经存在");
+        }
+    }
+
+    private LambdaQueryWrapper<KpChargeVoucher> buildValidQuery(KpChargeVoucher entity) {
+        LambdaQueryWrapper<KpChargeVoucher> lqw = Wrappers.lambdaQuery();
+        lqw.eq( KpChargeVoucher::getVoucherNumber, entity.getVoucherNumber());
+        lqw.eq( KpChargeVoucher::getOperatorId, entity.getOperatorId());
+        lqw.eq( KpChargeVoucher::getVoucherType, entity.getVoucherType());
+        lqw.eq( KpChargeVoucher::getAccountId, entity.getAccountId());
+        lqw.eq( KpChargeVoucher::getDisableFlag,0);
+        return lqw;
     }
 
     /**

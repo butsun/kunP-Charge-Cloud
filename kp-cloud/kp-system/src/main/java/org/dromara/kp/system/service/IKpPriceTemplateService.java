@@ -66,12 +66,6 @@ public interface IKpPriceTemplateService {
     Boolean updateByBo(KpPriceTemplateBo bo);
 
     /**
-     * 根据站点id获取指定价格模版list
-     * @param stationId
-     * @return
-     */
-    PriceInfoResponse getStationPriceInfo(Long stationId);
-    /**
      * 校验并批量删除价格模版管理信息
      *
      * @param ids     待删除的主键集合
@@ -80,5 +74,5 @@ public interface IKpPriceTemplateService {
      */
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
-    KpPriceTemplate queryBYStationId(Long stationId);
+    KpPriceTemplate queryByStationId(Long stationId);
 }

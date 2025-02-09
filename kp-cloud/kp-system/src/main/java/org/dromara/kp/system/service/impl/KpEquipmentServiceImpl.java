@@ -152,7 +152,6 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
     @Override
     public Boolean updateByBo(KpEquipmentBo bo) {
         KpEquipment update = MapstructUtils.convert(bo, KpEquipment.class);
-        validEntityBeforeSave(update);
         boolean flag = baseMapper.updateById(update) > 0;
         if (flag) {
             KpConnectorBo kpConnectorBo = new KpConnectorBo();
@@ -173,6 +172,14 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
      */
     private void validEntityBeforeSave(KpEquipment entity) {
         //TODO 做一些数据校验,如唯一约束
+        KpEquipment equipment = baseMapper.selectOne(Wrappers.lambdaQuery(KpEquipment.class)
+            .eq(KpEquipment::getEquipmentNo, entity.getEquipmentNo())
+            .eq(KpEquipment::getDelFlag, 0)
+        );
+
+        if (equipment != null) {
+            throw new BaseException("设备编号已存在");
+        }
     }
 
     /**

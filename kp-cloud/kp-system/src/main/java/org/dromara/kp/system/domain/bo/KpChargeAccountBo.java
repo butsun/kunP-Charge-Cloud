@@ -49,7 +49,7 @@ public class KpChargeAccountBo extends BaseEntity {
     /**
      * 账户余额
      */
-    @NotNull(message = "账户余额", groups = { AddGroup.class, EditGroup.class })
+//    @NotNull(message = "账户余额", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal balance;
 
     /**

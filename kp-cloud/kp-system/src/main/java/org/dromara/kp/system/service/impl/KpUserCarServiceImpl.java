@@ -8,13 +8,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.vo.*;
+import org.dromara.kp.system.mapper.KpChargeAccountMapper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpUserCarBo;
-import org.dromara.kp.system.domain.vo.KpUserCarVo;
 import org.dromara.kp.system.domain.KpUserCar;
 import org.dromara.kp.system.mapper.KpUserCarMapper;
 import org.dromara.kp.system.service.IKpUserCarService;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
@@ -30,6 +33,7 @@ import java.util.Collection;
 public class KpUserCarServiceImpl implements IKpUserCarService {
 
     private final KpUserCarMapper baseMapper;
+    private final KpChargeAccountMapper chargeAccountMapper;
 
     /**
      * 查询车辆管理
@@ -39,8 +43,21 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
      */
     @Override
     public KpUserCarVo queryById(Long id){
-        return baseMapper.selectVoById(id);
+        KpUserCarVo kpUserCarVo = baseMapper.selectVoById(id);
+        return getKpUserCarVo(kpUserCarVo);
+
     }
+
+    @NotNull
+    private KpUserCarVo getKpUserCarVo(KpUserCarVo vo) {
+        KpChargeAccountVo kpChargeAccountVo = chargeAccountMapper.selectVoById(vo.getAccountId());
+        vo.setAccountName(kpChargeAccountVo.getNickName());
+        return vo;
+    }
+
+
+
+
 
     /**
      * 分页查询车辆管理列表
@@ -53,6 +70,7 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
     public TableDataInfo<KpUserCarVo> queryPageList(KpUserCarBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<KpUserCar> lqw = buildQueryWrapper(bo);
         Page<KpUserCarVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        result.getRecords().forEach(this::getKpUserCarVo);
         return TableDataInfo.build(result);
     }
 
@@ -65,15 +83,17 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
     @Override
     public List<KpUserCarVo> queryList(KpUserCarBo bo) {
         LambdaQueryWrapper<KpUserCar> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<KpUserCarVo> vos = baseMapper.selectVoList(lqw);
+        vos.forEach(this::getKpUserCarVo);
+        return vos;
     }
 
     private LambdaQueryWrapper<KpUserCar> buildQueryWrapper(KpUserCarBo bo) {
         Map<String, Object> params = bo.getParams();
         LambdaQueryWrapper<KpUserCar> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getAccountId() != null, KpUserCar::getAccountId, bo.getAccountId());
-        lqw.eq(StringUtils.isNotBlank(bo.getPlateNo()), KpUserCar::getPlateNo, bo.getPlateNo());
-        lqw.eq(StringUtils.isNotBlank(bo.getCarVin()), KpUserCar::getCarVin, bo.getCarVin());
+        lqw.like(StringUtils.isNotBlank(bo.getPlateNo()), KpUserCar::getPlateNo, bo.getPlateNo());
+        lqw.like(StringUtils.isNotBlank(bo.getCarVin()), KpUserCar::getCarVin, bo.getCarVin());
         return lqw;
     }
 
@@ -127,5 +147,13 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
             //TODO 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteByIds(ids) > 0;
+    }
+
+    @Override
+    public KpUserCar queryByVin(String vin) {
+        return baseMapper.selectOne(Wrappers.lambdaQuery(KpUserCar.class)
+            .eq(KpUserCar::getCarVin, vin)
+            .eq(KpUserCar::getDelFlag, 0)
+        );
     }
 }

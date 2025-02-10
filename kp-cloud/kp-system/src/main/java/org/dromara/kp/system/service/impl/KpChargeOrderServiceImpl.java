@@ -57,6 +57,7 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
         KpStationVo kpStationVo = stationMapper.selectVoById(vo.getStationId());
         vo.setOperatorName(kpOperatorVo.getOperatorName());
         vo.setStationName(kpStationVo.getStationName());
+        vo.setActivityMoney( vo.getTotalMoney().subtract(vo.getFinalTotalMoney()) );
         return vo;
     }
 

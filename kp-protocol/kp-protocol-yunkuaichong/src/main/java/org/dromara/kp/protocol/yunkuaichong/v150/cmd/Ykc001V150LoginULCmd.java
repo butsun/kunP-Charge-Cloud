@@ -72,8 +72,8 @@ public class Ykc001V150LoginULCmd extends YunKuaiChongUplinkCmdExe {
             .loginRequest(loginRequest)
             .build();
 
-        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
         log.info("{} 登录认证请求 : {}",pileCode,additionalInfo);
+        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
     }
 
 }

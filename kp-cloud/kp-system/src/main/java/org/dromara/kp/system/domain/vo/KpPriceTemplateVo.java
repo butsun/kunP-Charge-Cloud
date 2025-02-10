@@ -3,6 +3,7 @@ package org.dromara.kp.system.domain.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -34,6 +35,7 @@ public class KpPriceTemplateVo implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private Long id;
 
     /**
      * 模版名称
@@ -98,7 +100,11 @@ public class KpPriceTemplateVo implements Serializable {
     @ExcelProperty("备注")
     private String remark;
 
-
+    /**
+     * 备注
+     */
+    @ExcelProperty("备注")
+    private Date createTime;
 
 
 //

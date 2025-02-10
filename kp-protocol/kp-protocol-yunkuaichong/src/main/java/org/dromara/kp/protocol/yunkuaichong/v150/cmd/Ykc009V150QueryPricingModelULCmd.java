@@ -18,6 +18,7 @@ import org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongUplinkCmdEn
 
 /**
  * 云快充1.5.0充电桩计费模型请求
+ *
  * @author but
  */
 @Slf4j
@@ -35,12 +36,12 @@ public class Ykc009V150QueryPricingModelULCmd extends YunKuaiChongUplinkCmdExe {
 
         // 转发到后端
         QueryPricingRequest queryPricingRequest = QueryPricingRequest.builder()
-                .pileCode(pileCode)
-                .build();
+            .pileCode(pileCode)
+            .build();
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(queryPricingRequest.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
-                .queryPricingRequest(queryPricingRequest)
-                .build();
+            .queryPricingRequest(queryPricingRequest)
+            .build();
+        log.info("{} 充电桩计费模型请求 {}", pileCode, queryPricingRequest);
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
-        log.debug("{} 充电桩计费模型请求 {}", pileCode,queryPricingRequest);
     }
 }

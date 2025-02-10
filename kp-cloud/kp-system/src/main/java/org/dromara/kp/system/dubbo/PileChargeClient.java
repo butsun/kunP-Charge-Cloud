@@ -2,9 +2,9 @@ package org.dromara.kp.system.dubbo;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -45,7 +45,6 @@ public class PileChargeClient implements PileChargeService {
     private final IKpUserCarService userCarService;
 
 
-
     @Override
     public PileTryChargeResponse tryCharge(PileTryChargeRequest pileTryChargeRequest) {
         String pileCode = pileTryChargeRequest.getPileCode();
@@ -58,7 +57,7 @@ public class PileChargeClient implements PileChargeService {
         KpEquipment equipment = equipmentService.queryByEquipmentNo(pileCode);
         KpConnector connector = connectorService.queryByNo(pileCode, Integer.parseInt(gunNo));
 
-        //todo  还有卡校验等操作
+        //todo  还有卡校验等操作  凭证是否存在
         String tradeNo = generateChargeTradeNo(pileCode, gunNo, startDate);
         String startChargeSeq = "OKP" + tradeNo;
         KpChargeOrder kpChargeOrder = new KpChargeOrder();
@@ -78,26 +77,39 @@ public class PileChargeClient implements PileChargeService {
 
         //通过凭证获取账户id
         KpChargeVoucher kpChargeVoucher = chargeVoucherService.queryByVoucherVoNo(kpChargeOrder.getVoucherNo());
+        if (Objects.isNull(kpChargeVoucher)) {
+            return PileTryChargeResponse.builder()
+                .tradeNo(tradeNo)
+                .gunNo(gunNo)
+                .cardNo(pileTryChargeRequest.getCardNo())
+                .failReason(0)
+                .pileCode(pileCode)
+                .success(false)
+                .build();
+        }
+
+
         kpChargeOrder.setAccountId(kpChargeVoucher.getAccountId());
         KpChargeAccountVo kpChargeAccountVo = chargeAccountService.queryById(kpChargeOrder.getAccountId());
 
         //通过运营商获取折扣Id
-        KpDiscountActivity kpDiscountActivity =  discountActivityService.queryByOperatorId(equipment.getOperatorId(),kpChargeAccountVo.getAccoutType());
-        kpChargeOrder.setAccountId(kpDiscountActivity.getId());
-        kpChargeOrder.setActivittyElec(kpDiscountActivity.getDisElectricity());
-        kpChargeOrder.setActivityService(kpDiscountActivity.getDisService());
+        KpDiscountActivity kpDiscountActivity = discountActivityService.queryByOperatorId(equipment.getOperatorId(), kpChargeAccountVo.getAccoutType());
+        if (Objects.nonNull(kpDiscountActivity)) {
+            kpChargeOrder.setAccountId(kpDiscountActivity.getId());
+            kpChargeOrder.setActivittyElec(kpDiscountActivity.getDisElectricity());
+            kpChargeOrder.setActivityService(kpDiscountActivity.getDisService());
+        }
 
         //通过站点获取 下单时计价快照
         KpPriceTemplate kpPriceTemplate = priceTemplateService.queryByStationId(equipment.getStationId());
         PricingModel pricingModel = buildPricingModel(kpPriceTemplate);
         kpChargeOrder.setPriceInfo(JSONUtil.toJsonStr(pricingModel));
 
-
         //通过VIN获取车牌号
         KpUserCar kpUserCar = userCarService.queryByVin(carVin);
-        kpChargeOrder.setPlateNum(kpUserCar.getPlateNo());
-
-
+        if (Objects.nonNull(kpUserCar)) {
+            kpChargeOrder.setPlateNum(kpUserCar.getPlateNo());
+        }
 
         boolean result = chargeOrderService.insertOrder(kpChargeOrder);
         return PileTryChargeResponse.builder()
@@ -112,7 +124,6 @@ public class PileChargeClient implements PileChargeService {
 
     @Override
     public void refreshChargeOrder(ChargingProgressProto chargingProgressProto) {
-
         String pileCode = chargingProgressProto.getPileCode();
         int gunCode = chargingProgressProto.getGunCode();
         String tradeNo = chargingProgressProto.getTradeNo();
@@ -121,11 +132,13 @@ public class PileChargeClient implements PileChargeService {
             //找不到订单直接返回
             return;
         }
+        chargeOrder.setStartChargeSeqStat(2);
         chargeOrder.setSoc(new BigDecimal(chargingProgressProto.getSoc()));
         chargeOrder.setEndTime(DateUtil.date());
         chargeOrder.setGunCurrent(new BigDecimal(chargingProgressProto.getOutputCurrent()));
         chargeOrder.setGunVoltage(new BigDecimal(chargingProgressProto.getOutputVoltage()));
-        calculateChargePrice(chargeOrder,new BigDecimal(chargingProgressProto.getTotalChargingEnergyKWh()),chargingProgressProto.getTs());
+        chargeOrder.setUpdateTime(DateUtil.date());
+        calculateChargePrice(chargeOrder, new BigDecimal(chargingProgressProto.getTotalChargingEnergyKWh()), chargingProgressProto.getTs());
 
         chargeOrderService.refreshOrder(chargeOrder);
     }
@@ -151,8 +164,8 @@ public class PileChargeClient implements PileChargeService {
             chargeOrder.setStartChargeSeqStat(4);
             chargeOrder.setEndTime(DateUtil.date());
             chargeOrder.setStopReason(transactionRecord.getStopReason());
-
-            chargeOrder =  calculateChargePrice(chargeOrder,new BigDecimal(transactionRecord.getTotalEnergyKWh()),transactionRecord.getEndTs());
+            chargeOrder.setUpdateTime(DateUtil.date());
+            chargeOrder = calculateChargePrice(chargeOrder, new BigDecimal(transactionRecord.getTotalEnergyKWh()), transactionRecord.getEndTs());
             flag = chargeOrderService.refreshOrder(chargeOrder);
         }
         return TransactionRecordAck.builder()
@@ -161,14 +174,14 @@ public class PileChargeClient implements PileChargeService {
             .build();
     }
 
-    private KpChargeOrder calculateChargePrice(KpChargeOrder chargeOrder, BigDecimal currentPower,long currentTs) {
+    private KpChargeOrder calculateChargePrice(KpChargeOrder chargeOrder, BigDecimal currentPower, long currentTs) {
         BigDecimal totalPower = chargeOrder.getTotalPower();
         BigDecimal topPower = chargeOrder.getTopPower();
         BigDecimal flatPower = chargeOrder.getFlatPower();
         BigDecimal valleyPower = chargeOrder.getValleyPower();
         BigDecimal peakPower = chargeOrder.getPeakPower();
 
-       //计算区间电量
+        //计算区间电量
         BigDecimal intervalPower = NumberUtil.sub(currentPower, totalPower);
 
         //找出当前时间段所处的类型
@@ -192,16 +205,16 @@ public class PileChargeClient implements PileChargeService {
 
         switch (flag) {
             case TOP:
-                topPower =  intervalPower.add(chargeOrder.getTopPower());
+                topPower = intervalPower.add(chargeOrder.getTopPower());
                 break;
             case PEAK:
-                peakPower =  intervalPower.add(chargeOrder.getPeakPower());
+                peakPower = intervalPower.add(chargeOrder.getPeakPower());
                 break;
             case VALLEY:
-                valleyPower =  intervalPower.add(chargeOrder.getValleyPower());
+                valleyPower = intervalPower.add(chargeOrder.getValleyPower());
                 break;
             default:
-                flatPower =  intervalPower.add(chargeOrder.getFlatPower());
+                flatPower = intervalPower.add(chargeOrder.getFlatPower());
                 break;
         }
 
@@ -209,23 +222,23 @@ public class PileChargeClient implements PileChargeService {
         Map<PeriodProto.PricingModelFlag, PricingModel.FlagPrice> flagPriceMap = pilePricingModel.getFlagPriceList();
         // 计算尖峰时段费用
         PricingModel.FlagPrice topPrice = flagPriceMap.get(TOP);
-        BigDecimal topElectricityFee = topPower.multiply(topPrice.getElec()).setScale(2, RoundingMode.UP);
-        BigDecimal topServiceFee = topPower.multiply(topPrice.getServ()).setScale(2, RoundingMode.UP);
+        BigDecimal topElectricityFee = topPower.multiply(topPrice.getElec()).setScale(4, RoundingMode.DOWN);
+        BigDecimal topServiceFee = topPower.multiply(topPrice.getServ()).setScale(4, RoundingMode.DOWN);
 
         // 计算峰时段费用
         PricingModel.FlagPrice peakPrice = flagPriceMap.get(PEAK);
-        BigDecimal peakElectricityFee = peakPower.multiply(peakPrice.getElec()).setScale(2, RoundingMode.UP);
-        BigDecimal peakServiceFee = peakPower.multiply(peakPrice.getServ()).setScale(2, RoundingMode.UP);
+        BigDecimal peakElectricityFee = peakPower.multiply(peakPrice.getElec()).setScale(4, RoundingMode.DOWN);
+        BigDecimal peakServiceFee = peakPower.multiply(peakPrice.getServ()).setScale(4, RoundingMode.DOWN);
 
         // 计算谷时段费用
         PricingModel.FlagPrice valleyPrice = flagPriceMap.get(VALLEY);
-        BigDecimal valleyElectricityFee = valleyPower.multiply(valleyPrice.getElec()).setScale(2, RoundingMode.UP);
-        BigDecimal valleyServiceFee = valleyPower.multiply(valleyPrice.getServ()).setScale(2, RoundingMode.UP);
+        BigDecimal valleyElectricityFee = valleyPower.multiply(valleyPrice.getElec()).setScale(4, RoundingMode.DOWN);
+        BigDecimal valleyServiceFee = valleyPower.multiply(valleyPrice.getServ()).setScale(4, RoundingMode.DOWN);
 
         // 计算平时段费用
         PricingModel.FlagPrice flatPrice = flagPriceMap.get(FLAT);
-        BigDecimal flatElectricityFee = flatPower.multiply(flatPrice.getElec()).setScale(2, RoundingMode.UP);
-        BigDecimal flatServiceFee = flatPower.multiply(flatPrice.getServ()).setScale(2, RoundingMode.UP);
+        BigDecimal flatElectricityFee = flatPower.multiply(flatPrice.getElec()).setScale(4, RoundingMode.DOWN);
+        BigDecimal flatServiceFee = flatPower.multiply(flatPrice.getServ()).setScale(4, RoundingMode.DOWN);
 
         // 设置总电量和分时段电量
         chargeOrder.setTotalPower(currentPower);
@@ -244,13 +257,11 @@ public class PileChargeClient implements PileChargeService {
 
 
         //计算优惠费用
-        BigDecimal finalElecMoney = totalElectricityFee.multiply(chargeOrder.getActivittyElec()).setScale(2, RoundingMode.UP);
-        BigDecimal finalServiceMoney = totalServiceFee.multiply(chargeOrder.getActivityService()).setScale(2, RoundingMode.UP);
+        BigDecimal finalElecMoney = totalElectricityFee.multiply(chargeOrder.getActivittyElec()).setScale(4, RoundingMode.DOWN);
+        BigDecimal finalServiceMoney = totalServiceFee.multiply(chargeOrder.getActivityService()).setScale(4, RoundingMode.DOWN);
         chargeOrder.setFinalElecMoney(finalElecMoney);
         chargeOrder.setFinalServiceMoney(finalServiceMoney);
         chargeOrder.setFinalTotalMoney(finalElecMoney.add(finalServiceMoney));
-
-
         return chargeOrder;
     }
 
@@ -277,14 +288,13 @@ public class PileChargeClient implements PileChargeService {
             return getDefaultPriceTemplate();
         }
         List<PricingModel.Period> periods = new ArrayList<>();
-        String periodJsonArray = kpPriceTemplate.getPeriods();
-        JSONArray periodsJson = JSONUtil.parseArray(periodJsonArray);
+        JSONArray periodJsonArray = JSONArray.parseArray(kpPriceTemplate.getPeriods());
 
-        for (int i = 0; i < periodsJson.size(); i++) {
-            JSONObject periodJson = periodsJson.getJSONObject(i);
-            String start = periodJson.getStr("start");
-            String end = periodJson.getStr("end");
-            int flag = periodJson.getInt("flag");
+        for (int i = 0; i < periodJsonArray.size(); i++) {
+            JSONObject periodJson = periodJsonArray.getJSONObject(i);
+            String start = periodJson.getString("start");
+            String end = periodJson.getString("end");
+            int flag = periodJson.getInteger("flag");
             // 将数字标志转换为对应的PricingModelFlag
             PeriodProto.PricingModelFlag modelFlag = switch (flag) {
                 case 1 -> TOP;

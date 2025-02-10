@@ -9,6 +9,7 @@ import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
 import org.dromara.kp.system.domain.KpPriceTemplate;
+import org.dromara.kp.system.domain.KpStation;
 import org.dromara.kp.system.domain.bo.KpPriceTemplateBo;
 import org.dromara.kp.system.domain.resposne.PriceInfoResponse;
 import org.dromara.kp.system.domain.vo.KpPriceTemplateVo;
@@ -132,6 +133,13 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
         return baseMapper.deleteByIds(ids) > 0;
     }
 
+    @Override
+    public Boolean linkStation(KpPriceTemplateBo bo) {
+        return stationMapper.update(Wrappers.lambdaUpdate(KpStation.class)
+            .eq(KpStation::getId, bo.getStationId())
+            .set(KpStation::getPriceId, bo.getId())
+        ) > 0;
+    }
 
     @Override
     public KpPriceTemplate queryByStationId(Long stationId) {

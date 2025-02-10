@@ -1,5 +1,6 @@
 package org.dromara.kp.system.domain.bo;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import org.dromara.kp.system.domain.KpPriceTemplate;
@@ -25,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = KpPriceTemplate.class, reverseConvertGenerate = false)
 public class KpPriceTemplateBo extends BaseEntity {
-
     private Long id;
 
     @NotNull(message = "模版名称不能为空", groups = { AddGroup.class, EditGroup.class })
@@ -34,52 +34,52 @@ public class KpPriceTemplateBo extends BaseEntity {
     /**
      * 尖电单价:XXXX.XXXX
      */
-    @NotNull(message = "尖电单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "尖电单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal topElecPrice;
 
     /**
      * 尖服务费单价:XXXX.XXXX
      */
-    @NotNull(message = "尖服务费单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "尖服务费单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal topServPrice;
 
     /**
      * 峰电单价:XXXX.XXXX
      */
-    @NotNull(message = "峰电单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "峰电单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal peakElecPrice;
     /**
      * 峰服务费单价:XXXX.XXXX
      */
-    @NotNull(message = "峰服务费单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "峰服务费单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal peakServPrice;
 
     /**
      * 平电单价:XXXX.XXXX
      */
-    @NotNull(message = "平电单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "平电单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal flatElecPrice;
     /**
      * 平服务费单价:XXXX.XXXX
      */
-    @NotNull(message = "平服务费单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "平服务费单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal flatServPrice;
 
     /**
      * 谷电单价:XXXX.XXXX
      */
-    @NotNull(message = "谷电单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "谷电单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal valleyElecPrice;
     /**
      * 谷服务费单价:XXXX.XXXX
      */
-    @NotNull(message = "谷服务费单价", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "谷服务费单价不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal valleyServPrice;
 
     /**
      * 时段对应类型list  [{start: 00:00, end: 12:00, flag: 1}, {start: 12:00, end: 00:00, flag: 2}]
      */
-    @NotNull(message = "时段对应类型", groups = { AddGroup.class, EditGroup.class })
+    @NotNull(message = "时段对应类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private String periods;
 
     /**
@@ -87,7 +87,10 @@ public class KpPriceTemplateBo extends BaseEntity {
      */
     private String remark;
 
-
+    /**
+     * 站点id
+     */
+    private Long stationId;
 //
 //    /**
 //     * 自增id

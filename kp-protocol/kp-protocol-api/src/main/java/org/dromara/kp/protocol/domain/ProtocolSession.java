@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.forwarder.Forwarder;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PileLostEvent;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
 
 
 import java.io.Closeable;

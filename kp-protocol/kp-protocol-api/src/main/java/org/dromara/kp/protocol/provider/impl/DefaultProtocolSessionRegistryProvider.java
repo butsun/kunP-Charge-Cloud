@@ -56,7 +56,6 @@ public class DefaultProtocolSessionRegistryProvider implements ProtocolSessionRe
         scheduledExecutorService.scheduleAtFixedRate(() -> sessionCache.asMap().forEach((id, session) -> {
             if (session.getLastActivityTime().isBefore(LocalDateTime.now().minusSeconds(defaultInactivityTimeoutInSec))) {
                 session.close(SessionCloseReason.INACTIVE);
-                sendUnregister(session.getPileCodeSet());
                 unregister(session.getId());
             }
         }), defaultStateCheckIntervalInSec, defaultStateCheckIntervalInSec, TimeUnit.SECONDS);
@@ -88,6 +87,7 @@ public class DefaultProtocolSessionRegistryProvider implements ProtocolSessionRe
     public void unregister(UUID sessionId) {
 
         log.info("Unregistering session {}", sessionId);
+        sendUnregister(get(sessionId).getPileCodeSet());
         sessionCache.invalidate(sessionId);
     }
 

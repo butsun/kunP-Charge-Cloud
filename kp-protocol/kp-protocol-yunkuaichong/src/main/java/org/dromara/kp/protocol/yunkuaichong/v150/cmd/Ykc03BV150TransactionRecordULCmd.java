@@ -207,8 +207,8 @@ public class Ykc03BV150TransactionRecordULCmd extends YunKuaiChongUplinkCmdExe {
             .transactionRecord(transactionRecord)
             .build();
 
-        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
         log.info("{} 云快充1.5.0交易记录: {}", pileCode, transactionRecord);
+        tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
     }
 
     public static long readLongLE5Byte(byte[] bytes) {

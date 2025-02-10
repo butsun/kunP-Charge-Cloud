@@ -19,9 +19,12 @@ import org.dromara.kp.protocol.domain.SessionCloseReason;
 import org.dromara.kp.protocol.domain.SessionToHandlerMsg;
 import org.dromara.kp.protocol.yunkuaichong.domain.dto.DownlinkRequestMessage;
 import org.dromara.kp.protocol.listener.ChannelHandlerParameter;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PileLostEvent;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -30,25 +33,12 @@ public class TcpChannelHandler<T> extends SimpleChannelInboundHandler<ProtocolUp
     private final String protocolName;
     private final ProtocolMessageProcessor protocolMessageProcessor;
 
-//    private final MessagesStats uplinkMsgStats;
-//    private final DefaultCounter uplinkTrafficCounter;
-//    private final MessagesStats downlinkMsgStats;
-//    private final DefaultCounter downlinkTrafficCounter;
-//    private final Timer downlinkTimer;
-
     private final TcpSession tcpSession;
 
     @SneakyThrows
     public TcpChannelHandler(ChannelHandlerParameter parameter) {
         this.protocolName = parameter.getProtocolName();
         this.protocolMessageProcessor = parameter.getProtocolMessageProcessor();
-
-//        this.uplinkMsgStats = parameter.uplinkMsgStats();
-//        this.uplinkTrafficCounter = parameter.uplinkTrafficCounter();
-//        this.downlinkMsgStats = parameter.downlinkMsgStats();
-//        this.downlinkTrafficCounter = parameter.downlinkTrafficCounter();
-//        this.downlinkTimer = parameter.downlinkTimer();
-
         tcpSession = new TcpSession(protocolName, this::onDownlink, this::writeAndFlush);
     }
 
@@ -141,8 +131,7 @@ public class TcpChannelHandler<T> extends SimpleChannelInboundHandler<ProtocolUp
                 logDownlinkStart(byteBuf.readableBytes(), () -> ByteBufUtil.hexDump(byteBuf));
 
                 ctx.writeAndFlush(Unpooled.wrappedBuffer(byteBuf))
-                        .addListener(this::logDownlinkUnsuccessful);
-
+                    .addListener(this::logDownlinkUnsuccessful);
 
 
             } catch (Exception e) {
@@ -190,7 +179,7 @@ public class TcpChannelHandler<T> extends SimpleChannelInboundHandler<ProtocolUp
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
 
         super.channelUnregistered(ctx);
-
+        close();
         log.info("[{}]{}{} 关闭通道", protocolName, ctx.channel(), tcpSession);
     }
 
@@ -206,8 +195,13 @@ public class TcpChannelHandler<T> extends SimpleChannelInboundHandler<ProtocolUp
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 
         super.channelInactive(ctx);
-
+        close();
         log.info("[{}]{}{} 通道不活跃", protocolName, ctx.channel(), tcpSession);
+    }
+
+
+    private void close() {
+        protocolMessageProcessor.sessionClose(tcpSession.getId());
     }
 
 }

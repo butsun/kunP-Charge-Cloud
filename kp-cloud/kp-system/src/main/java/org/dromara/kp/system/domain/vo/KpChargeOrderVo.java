@@ -39,7 +39,7 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 订单号
      */
-    @ExcelProperty(value = "订单号")
+    @ExcelProperty(value = "订单号",index = 1)
     private String startChargeSeq;
 
     /**
@@ -50,7 +50,7 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 充电流水号
      */
-    @ExcelProperty(value = "流水号")
+    @ExcelProperty(value = "流水号",index = 2)
     private String tradeNo;
 
     /**
@@ -83,13 +83,13 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 开始充电时间
      */
-    @ExcelProperty(value = "开始充电时间")
+    @ExcelProperty(value = "开始充电时间",index = 3)
     private Date startTime;
 
     /**
      * 最新采样时间
      */
-    @ExcelProperty(value = "结束充电时间")
+    @ExcelProperty(value = "结束充电时间",index = 4)
     private Date endTime;
 
 
@@ -107,19 +107,19 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 充电量
      */
-    @ExcelProperty(value = "充电量")
+    @ExcelProperty(value = "充电量",index = 5)
     private BigDecimal totalPower;
 
     /**
      * 电费
      */
-    @ExcelProperty(value = "电费")
+    @ExcelProperty(value = "电费",index = 6)
     private BigDecimal elecMoney;
 
     /**
      * 服务费
      */
-    @ExcelProperty(value = "服务费")
+    @ExcelProperty(value = "服务费",index = 7)
     private BigDecimal serviceMoney;
 
     /**
@@ -138,14 +138,17 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 结算金额
      */
-    @ExcelProperty(value = "结算金额")
+    @ExcelProperty(value = "结算金额",index = 10)
     private BigDecimal finalTotalMoney;
 
     /**
      * 订单金额
      */
-    @ExcelProperty(value = "订单金额")
+    @ExcelProperty(value = "订单金额",index = 8)
     private BigDecimal totalMoney;
+
+    @ExcelProperty(value = "优惠金额",index = 9)
+    private BigDecimal activityMoney;
 
     /**
      * 故障原因 0无 1此设备不存在 2此设备离线 3设备已停止充电 4-99自定义（参考12.1 充电停止原因代码表）
@@ -202,7 +205,7 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 停止原因
      */
-    @ExcelProperty(value = "停止原因")
+    @ExcelProperty(value = "停止原因",index = 11)
     private String stopReason;
 
     /**

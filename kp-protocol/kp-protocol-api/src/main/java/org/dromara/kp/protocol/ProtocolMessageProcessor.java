@@ -7,6 +7,8 @@ import org.dromara.kp.infrastructure.util.trace.TracerRunnable;
 import org.dromara.kp.protocol.domain.ListenerToHandlerMsg;
 import org.dromara.kp.protocol.domain.SessionToHandlerMsg;
 import org.dromara.kp.protocol.forwarder.Forwarder;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.PileLostEvent;
+import org.dromara.kp.protocol.yunkuaichong.domain.dto.UplinkQueueMessage;
 
 
 import java.util.UUID;
@@ -55,4 +57,9 @@ public abstract class ProtocolMessageProcessor {
     }
 
     protected abstract void downlinkHandle(SessionToHandlerMsg sessionToHandlerMsg);
+
+
+    public void sessionClose(UUID uuid) {
+        protocolContext.getProtocolSessionRegistryProvider().unregister(uuid);
+    }
 }

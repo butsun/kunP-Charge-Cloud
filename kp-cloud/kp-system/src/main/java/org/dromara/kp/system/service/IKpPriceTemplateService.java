@@ -75,4 +75,6 @@ public interface IKpPriceTemplateService {
     Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
 
     KpPriceTemplate queryByStationId(Long stationId);
+
+    Boolean linkStation(KpPriceTemplateBo bo);
 }

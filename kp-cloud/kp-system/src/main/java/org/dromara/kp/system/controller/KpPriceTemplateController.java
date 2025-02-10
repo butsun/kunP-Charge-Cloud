@@ -131,6 +131,19 @@ public class KpPriceTemplateController extends BaseController {
     }
 
 
+
+    /**
+     * 绑定价格模版到指定站点
+     */
+    @SaCheckPermission("kpSystem:priceTemplate:edit")
+    @Log(title = "绑定价格模版到指定站点", businessType = BusinessType.UPDATE)
+    @RepeatSubmit()
+    @PutMapping("/station")
+    public R<Void> linkStation(@RequestBody KpPriceTemplateBo bo) {
+        return toAjax(kpPriceTemplateService.linkStation(bo));
+    }
+
+
     /**
      * 根据站点id获取价格模版
      *

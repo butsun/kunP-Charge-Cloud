@@ -79,9 +79,9 @@ public class Ykc031V150PileTryChargeULCmd extends YunKuaiChongUplinkCmdExe {
         UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(pileTryChargeRequest.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
             .pileTryChargeRequest(pileTryChargeRequest)
             .build();
+        log.info("{} 充电桩主动申请启动充电: {}", pileCode, pileTryChargeRequest);
         tcpSession.getForwarder().sendMessage(uplinkQueueMessage);
 
-        log.info("{} 充电桩主动申请启动充电: {}", pileCode, pileTryChargeRequest);
 
     }
 

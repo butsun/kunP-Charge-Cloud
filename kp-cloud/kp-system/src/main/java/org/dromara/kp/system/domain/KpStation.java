@@ -24,6 +24,7 @@ public class KpStation extends TenantEntity {
     /**
      * 自增id
      */
+    @OrderBy
     @TableId(value = "id")
     private Long id;
 

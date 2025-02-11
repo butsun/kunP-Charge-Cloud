@@ -25,6 +25,7 @@ public class KpDiscountActivity extends TenantEntity {
     /**
      *
      */
+    @OrderBy
     @TableId(value = "id")
     private Long id;
 

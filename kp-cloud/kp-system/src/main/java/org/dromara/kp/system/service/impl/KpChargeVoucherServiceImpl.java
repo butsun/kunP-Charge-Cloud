@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.dromara.kp.system.domain.KpChargeAccount;
+import org.dromara.kp.system.domain.KpConnector;
 import org.dromara.kp.system.domain.vo.*;
 import org.dromara.kp.system.mapper.KpChargeAccountMapper;
 import org.dromara.kp.system.mapper.KpOperatorMapper;
@@ -99,7 +100,7 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
         LambdaQueryWrapper<KpChargeVoucher> lqw = Wrappers.lambdaQuery();
         lqw.eq(StringUtils.isNotBlank(bo.getVoucherNumber()), KpChargeVoucher::getVoucherNumber, bo.getVoucherNumber());
         lqw.eq(Objects.nonNull(bo.getOperatorId()), KpChargeVoucher::getOperatorId, bo.getOperatorId());
-        lqw.eq(bo.getDisableFlag() != null, KpChargeVoucher::getDisableFlag, bo.getDisableFlag());
+        lqw.eq(KpChargeVoucher::getDelFlag, 0);
         return lqw;
     }
 
@@ -163,9 +164,12 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+            //凭证可以删除
         }
-        return baseMapper.deleteByIds(ids) > 0;
+        return baseMapper.update(Wrappers.lambdaUpdate(KpChargeVoucher.class)
+            .in(KpChargeVoucher::getId, ids)
+            .set(KpChargeVoucher::getDelFlag, 1)
+        ) > 0;
     }
 
     @Override

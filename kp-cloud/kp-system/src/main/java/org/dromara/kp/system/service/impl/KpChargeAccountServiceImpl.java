@@ -9,9 +9,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.KpChargeVoucher;
 import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
+import org.dromara.kp.system.mapper.KpChargeVoucherMapper;
 import org.dromara.kp.system.mapper.KpOperatorMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import org.dromara.kp.system.service.IKpChargeAccountService;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * 充电账户Service业务层处理
@@ -39,6 +42,8 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
 
     private final KpOperatorMapper operatorMapper;
 
+    private final KpChargeVoucherMapper chargeVoucherMapper;
+
     /**
      * 查询充电账户
      *
@@ -46,7 +51,7 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
      * @return 充电账户
      */
     @Override
-    public KpChargeAccountVo queryById(Long id){
+    public KpChargeAccountVo queryById(Long id) {
         KpChargeAccountVo vo = baseMapper.selectVoById(id);
         return getChargeAccountVo(vo);
     }
@@ -95,7 +100,7 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
         lqw.like(StringUtils.isNotBlank(bo.getMobile()), KpChargeAccount::getMobile, bo.getMobile());
         lqw.like(StringUtils.isNotBlank(bo.getNickName()), KpChargeAccount::getNickName, bo.getNickName());
         lqw.eq(bo.getAccoutType() != null, KpChargeAccount::getAccoutType, bo.getAccoutType());
-        lqw.eq( KpChargeAccount::getDisableFlag, 0);
+        lqw.eq( KpChargeAccount::getDelFlag,0);
         return lqw;
     }
 
@@ -131,19 +136,19 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
     /**
      * 保存前的数据校验
      */
-    private void validEntityBeforeSave(KpChargeAccount entity){
+    private void validEntityBeforeSave(KpChargeAccount entity) {
         LambdaQueryWrapper<KpChargeAccount> lqw = buildValidQuery(entity);
         KpChargeAccount kpChargeAccount = baseMapper.selectOne(lqw);
         if (kpChargeAccount != null) {
-            throw  new BaseException("该手机号账户已经存在");
+            throw new BaseException("该手机号账户已经存在");
         }
     }
 
     private LambdaQueryWrapper<KpChargeAccount> buildValidQuery(KpChargeAccount entity) {
         LambdaQueryWrapper<KpChargeAccount> lqw = Wrappers.lambdaQuery();
-        lqw.eq( KpChargeAccount::getMobile, entity.getMobile());
-        lqw.eq( KpChargeAccount::getAccoutType, entity.getAccoutType());
-        lqw.eq( KpChargeAccount::getDisableFlag,0);
+        lqw.eq(KpChargeAccount::getMobile, entity.getMobile());
+        lqw.eq(KpChargeAccount::getAccoutType, entity.getAccoutType());
+        lqw.eq(KpChargeAccount::getDisableFlag, 0);
         return lqw;
     }
 
@@ -156,9 +161,19 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
+        if (isValid) {
+            Optional.ofNullable(chargeVoucherMapper.selectOne(Wrappers.lambdaQuery(KpChargeVoucher.class)
+                .in(KpChargeVoucher::getAccountId, ids)
+                .eq(KpChargeVoucher::getDelFlag, 0),false
+            )).ifPresent(kpChargeVoucher -> {
+                throw new BaseException("删除账户还存在有效凭证，请先删除凭证");
+            });
         }
-        return baseMapper.deleteByIds(ids) > 0;
+        return baseMapper.update(Wrappers.lambdaUpdate(KpChargeAccount.class)
+            .in(KpChargeAccount::getId, ids)
+            .set(KpChargeAccount::getDelFlag, 1)
+        ) > 0;
     }
+
+
 }

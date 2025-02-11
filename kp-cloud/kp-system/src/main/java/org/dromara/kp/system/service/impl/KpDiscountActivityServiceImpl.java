@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.KpChargeVoucher;
+import org.dromara.kp.system.domain.KpEquipment;
 import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
@@ -94,6 +96,8 @@ public class KpDiscountActivityServiceImpl implements IKpDiscountActivityService
         lqw.eq(Objects.nonNull(bo.getStationId()), KpDiscountActivity::getStationId, bo.getStationId());
         lqw.eq(bo.getDisService() != null, KpDiscountActivity::getDisService, bo.getDisService());
         lqw.eq(bo.getDisElectricity() != null, KpDiscountActivity::getDisElectricity, bo.getDisElectricity());
+        lqw.eq(KpDiscountActivity::getDelFlag, 0);
+
         return lqw;
     }
 
@@ -144,9 +148,11 @@ public class KpDiscountActivityServiceImpl implements IKpDiscountActivityService
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
         }
-        return baseMapper.deleteByIds(ids) > 0;
+        return baseMapper.update(Wrappers.lambdaUpdate(KpDiscountActivity.class)
+            .in(KpDiscountActivity::getId, ids)
+            .set(KpDiscountActivity::getDelFlag, 1)
+        ) > 0;
     }
 
     @Override

@@ -91,11 +91,22 @@ public class PileChargeClient implements PileChargeService {
 
         kpChargeOrder.setAccountId(kpChargeVoucher.getAccountId());
         KpChargeAccountVo kpChargeAccountVo = chargeAccountService.queryById(kpChargeOrder.getAccountId());
+        if (kpChargeAccountVo.getDisableFlag() == 1) {
+            return PileTryChargeResponse.builder()
+                .tradeNo(tradeNo)
+                .gunNo(gunNo)
+                .cardNo(pileTryChargeRequest.getCardNo())
+                .failReason(0)
+                .pileCode(pileCode)
+                .success(false)
+                .build();
+        }
+
 
         //通过运营商获取折扣Id
         KpDiscountActivity kpDiscountActivity = discountActivityService.queryByOperatorId(equipment.getOperatorId(), kpChargeAccountVo.getAccoutType());
         if (Objects.nonNull(kpDiscountActivity)) {
-            kpChargeOrder.setAccountId(kpDiscountActivity.getId());
+            kpChargeOrder.setActivityId(kpDiscountActivity.getId());
             kpChargeOrder.setActivittyElec(kpDiscountActivity.getDisElectricity());
             kpChargeOrder.setActivityService(kpDiscountActivity.getDisService());
         }

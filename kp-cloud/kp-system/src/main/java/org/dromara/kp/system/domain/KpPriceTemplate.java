@@ -29,6 +29,7 @@ public class KpPriceTemplate extends TenantEntity {
     /**
      * 自增id
      */
+    @OrderBy
     @TableId(value = "id")
     private Long id;
 

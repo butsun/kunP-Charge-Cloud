@@ -29,6 +29,7 @@ public class KpChargeOrder implements Serializable {
     /**
      *
      */
+    @OrderBy
     @TableId(value = "id")
     private Long id;
 

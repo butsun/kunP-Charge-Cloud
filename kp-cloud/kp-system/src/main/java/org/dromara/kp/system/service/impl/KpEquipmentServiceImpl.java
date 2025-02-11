@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.dromara.kp.system.domain.KpConnector;
+import org.dromara.kp.system.domain.KpDiscountActivity;
+import org.dromara.kp.system.domain.KpOperator;
 import org.dromara.kp.system.domain.bo.KpConnectorBo;
 import org.dromara.kp.system.domain.vo.KpConnectorVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
@@ -109,6 +111,8 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
         lqw.eq(Objects.nonNull(bo.getStationId()), KpEquipment::getStationId, bo.getStationId());
         lqw.like(StringUtils.isNotBlank(bo.getEquipmentNo()), KpEquipment::getEquipmentNo, bo.getEquipmentNo());
         lqw.eq(Objects.nonNull(bo.getEquipmentType()), KpEquipment::getEquipmentType, bo.getEquipmentType());
+        lqw.eq(KpEquipment::getDelFlag, 0);
+
         return lqw;
     }
 
@@ -192,9 +196,17 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+            //TODO   可以删除  会把绑定的connector数据也删除
         }
-        return baseMapper.deleteByIds(ids) > 0;
+        connectorMapper.update(Wrappers.<KpConnector>lambdaUpdate()
+            .in(KpConnector::getEquipmentId, ids)
+            .set(KpConnector::getDelFlag, 1)
+        );
+        return baseMapper.update(Wrappers.lambdaUpdate(KpEquipment.class)
+            .in(KpEquipment::getId, ids)
+            .set(KpEquipment::getDelFlag, 1)
+        ) > 0;
+
     }
 
 

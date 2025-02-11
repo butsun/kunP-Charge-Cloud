@@ -8,6 +8,7 @@ import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.kp.system.domain.KpOperator;
 import org.dromara.kp.system.domain.KpPriceTemplate;
 import org.dromara.kp.system.domain.KpStation;
 import org.dromara.kp.system.domain.bo.KpPriceTemplateBo;
@@ -78,6 +79,8 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
         LambdaQueryWrapper<KpPriceTemplate> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(bo.getPriceName()), KpPriceTemplate::getPriceName, bo.getPriceName());
         lqw.like(StringUtils.isNotBlank(bo.getRemark()), KpPriceTemplate::getRemark, bo.getRemark());
+        lqw.eq(KpPriceTemplate::getDelFlag, 0);
+
         return lqw;
     }
 
@@ -128,9 +131,12 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+            //TODO  可以删除
         }
-        return baseMapper.deleteByIds(ids) > 0;
+        return baseMapper.update(Wrappers.lambdaUpdate(KpPriceTemplate.class)
+            .in(KpPriceTemplate::getId, ids)
+            .set(KpPriceTemplate::getDelFlag, 1)
+        ) > 0;
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.KpChargeVoucher;
 import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
@@ -100,6 +101,8 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
         lqw.eq(Objects.nonNull(bo.getStationId()), KpChargeOrder::getStationId, bo.getStationId());
         lqw.between(params.get("beginStartTime") != null && params.get("endStartTime") != null,
             KpChargeOrder::getStartTime, params.get("beginStartTime"), params.get("endStartTime"));
+        lqw.eq(KpChargeOrder::getDelFlag, 0);
+
         return lqw;
     }
 
@@ -150,7 +153,7 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+            //TODO  不允许删除
         }
         return baseMapper.deleteByIds(ids) > 0;
     }

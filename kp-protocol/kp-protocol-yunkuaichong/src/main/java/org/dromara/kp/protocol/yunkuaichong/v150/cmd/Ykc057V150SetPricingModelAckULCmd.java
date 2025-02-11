@@ -26,7 +26,7 @@ import static org.dromara.kp.protocol.yunkuaichong.domain.enums.YunKuaiChongDown
 public class Ykc057V150SetPricingModelAckULCmd extends YunKuaiChongUplinkCmdExe {
     @Override
     public void execute(TcpSession tcpSession, YunKuaiChongUplinkMessage yunKuaiChongUplinkMessage, ProtocolContext ctx) {
-        log.info("{} 云快充1.5.0计费模型应答", tcpSession);
+        log.debug("{} 云快充1.5.0计费模型应答", tcpSession);
         ByteBuf byteBuf = Unpooled.copiedBuffer(yunKuaiChongUplinkMessage.getMsgBody());
 
         // 1.桩编号
@@ -47,6 +47,7 @@ public class Ykc057V150SetPricingModelAckULCmd extends YunKuaiChongUplinkCmdExe 
                     .success(isSuccess)
                     .pricingId(pricingIdL)
                     .build();
+            log.info("{} 计费模型应答 {}", pileCode, setPricingResponse);
             UplinkQueueMessage uplinkQueueMessage = uplinkMessageBuilder(setPricingResponse.getPileCode(), tcpSession, yunKuaiChongUplinkMessage)
                     .setPricingResponse(setPricingResponse)
                     .build();

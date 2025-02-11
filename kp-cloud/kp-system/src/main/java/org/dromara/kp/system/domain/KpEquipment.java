@@ -29,6 +29,7 @@ public class KpEquipment extends TenantEntity {
     /**
      *
      */
+    @OrderBy
     @TableId(value = "id")
     private Long id;
 

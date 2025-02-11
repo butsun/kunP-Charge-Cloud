@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.KpStation;
 import org.dromara.kp.system.domain.vo.*;
 import org.dromara.kp.system.mapper.KpChargeAccountMapper;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +43,7 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
      * @return 车辆管理
      */
     @Override
-    public KpUserCarVo queryById(Long id){
+    public KpUserCarVo queryById(Long id) {
         KpUserCarVo kpUserCarVo = baseMapper.selectVoById(id);
         return getKpUserCarVo(kpUserCarVo);
 
@@ -54,9 +55,6 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
         vo.setAccountName(kpChargeAccountVo.getNickName());
         return vo;
     }
-
-
-
 
 
     /**
@@ -94,6 +92,7 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
         lqw.eq(bo.getAccountId() != null, KpUserCar::getAccountId, bo.getAccountId());
         lqw.like(StringUtils.isNotBlank(bo.getPlateNo()), KpUserCar::getPlateNo, bo.getPlateNo());
         lqw.like(StringUtils.isNotBlank(bo.getCarVin()), KpUserCar::getCarVin, bo.getCarVin());
+        lqw.eq(KpUserCar::getDelFlag, 0);
         return lqw;
     }
 
@@ -130,7 +129,7 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
     /**
      * 保存前的数据校验
      */
-    private void validEntityBeforeSave(KpUserCar entity){
+    private void validEntityBeforeSave(KpUserCar entity) {
         //TODO 做一些数据校验,如唯一约束
     }
 
@@ -143,10 +142,13 @@ public class KpUserCarServiceImpl implements IKpUserCarService {
      */
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
+        if (isValid) {
+            // 可以删除
         }
-        return baseMapper.deleteByIds(ids) > 0;
+        return baseMapper.update(Wrappers.lambdaUpdate(KpUserCar.class)
+            .in(KpUserCar::getId, ids)
+            .set(KpUserCar::getDelFlag, 1)
+        ) > 0;
     }
 
     @Override

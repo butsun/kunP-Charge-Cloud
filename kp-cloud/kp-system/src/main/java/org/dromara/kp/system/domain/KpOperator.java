@@ -22,8 +22,9 @@ public class KpOperator extends TenantEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     *
      */
+    @OrderBy
     @TableId(value = "id")
     private Long id;
 

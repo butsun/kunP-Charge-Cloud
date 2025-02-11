@@ -1,5 +1,6 @@
 package org.dromara.kp.system.service.impl;
 
+import org.dromara.common.core.exception.base.BaseException;
 import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
@@ -8,6 +9,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.KpEquipment;
+import org.dromara.kp.system.domain.KpPriceTemplate;
+import org.dromara.kp.system.domain.KpStation;
+import org.dromara.kp.system.mapper.KpStationMapper;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpOperatorBo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
@@ -18,6 +23,7 @@ import org.dromara.kp.system.service.IKpOperatorService;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * 运营商管理Service业务层处理
@@ -30,6 +36,7 @@ import java.util.Collection;
 public class KpOperatorServiceImpl implements IKpOperatorService {
 
     private final KpOperatorMapper baseMapper;
+    private final KpStationMapper stationMapper;
 
     /**
      * 查询运营商管理
@@ -74,6 +81,8 @@ public class KpOperatorServiceImpl implements IKpOperatorService {
         lqw.eq(StringUtils.isNotBlank(bo.getProvince()), KpOperator::getProvince, bo.getProvince());
         lqw.eq(StringUtils.isNotBlank(bo.getCity()), KpOperator::getCity, bo.getCity());
         lqw.like(StringUtils.isNotBlank(bo.getOperatorName()), KpOperator::getOperatorName, bo.getOperatorName());
+        lqw.eq(KpOperator::getDelFlag, 0);
+
         return lqw;
     }
 
@@ -124,8 +133,15 @@ public class KpOperatorServiceImpl implements IKpOperatorService {
     @Override
     public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
         if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+            Optional.ofNullable(stationMapper.selectOne(Wrappers.lambdaQuery(KpStation.class)
+                .in(KpStation::getOperatorId, ids)
+                .eq(KpStation::getDelFlag, 0),false)).ifPresent(kpStation -> {
+                throw new BaseException("删除运营商还存在运营站点，请先删除站点");
+            });
         }
-        return baseMapper.deleteByIds(ids) > 0;
+        return baseMapper.update(Wrappers.lambdaUpdate(KpOperator.class)
+            .in(KpOperator::getId, ids)
+            .set(KpOperator::getDelFlag, 1)
+        ) > 0;
     }
 }

@@ -24,6 +24,7 @@ public class KpUserCar extends TenantEntity {
     /**
      * 车辆ID
      */
+    @OrderBy
     @TableId(value = "id")
     private Long id;
 

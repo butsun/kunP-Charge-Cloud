@@ -133,5 +133,12 @@ public class KpStationVo implements Serializable {
     @ExcelProperty(value = "更新时间")
     private Date updateTime;
 
+    private String operatorName;
+
+    /**
+     * 计费模版名称
+     */
+    private String priceTemplateName;
+
 
 }

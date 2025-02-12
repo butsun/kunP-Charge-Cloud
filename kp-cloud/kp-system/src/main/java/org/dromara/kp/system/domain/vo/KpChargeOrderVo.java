@@ -56,7 +56,7 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 订单状态
      */
-    @ExcelProperty(value = "订单状态", converter = ExcelDictConvert.class)
+    @ExcelProperty(value = "订单状态", converter = ExcelDictConvert.class,index = 13)
     @ExcelDictFormat(dictType = "kp_start_charge_seq_stat")
     private Integer startChargeSeqStat;
 
@@ -189,7 +189,7 @@ public class KpChargeOrderVo implements Serializable {
     /**
      * 站点名称
      */
-    @ExcelProperty(value = "站点名称")
+    @ExcelProperty(value = "站点名称",index = 12)
     private String stationName;
 
     /**

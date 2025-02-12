@@ -131,7 +131,6 @@ public class KpEquipment extends TenantEntity {
     /**
      * 删除标记
      */
-    @TableLogic
     private Integer delFlag;
 
 

@@ -193,9 +193,7 @@ public class TcpChannelHandler<T> extends SimpleChannelInboundHandler<ProtocolUp
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-
         super.channelInactive(ctx);
-        close();
         log.info("[{}]{}{} 通道不活跃", protocolName, ctx.channel(), tcpSession);
     }
 

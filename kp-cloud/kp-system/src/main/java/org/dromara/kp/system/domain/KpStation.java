@@ -101,7 +101,6 @@ public class KpStation extends TenantEntity {
     /**
      * 数据状态:0、正常;1、删除
      */
-    @TableLogic
     private Long delFlag;
 
 

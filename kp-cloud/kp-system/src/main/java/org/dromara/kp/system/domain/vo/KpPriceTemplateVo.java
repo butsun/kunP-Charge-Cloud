@@ -18,7 +18,7 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
-
+import java.util.List;
 
 
 /**
@@ -105,6 +105,8 @@ public class KpPriceTemplateVo implements Serializable {
      */
     @ExcelProperty("备注")
     private Date createTime;
+
+    private List<KpStationVo> stationIds;
 
 
 //

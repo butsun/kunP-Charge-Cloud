@@ -14,6 +14,8 @@ import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -86,6 +88,11 @@ public class KpPriceTemplateBo extends BaseEntity {
      * 备注
      */
     private String remark;
+
+    /**
+     * 站点id list
+     */
+    private List<Long> stationIds;
 
     /**
      * 站点id

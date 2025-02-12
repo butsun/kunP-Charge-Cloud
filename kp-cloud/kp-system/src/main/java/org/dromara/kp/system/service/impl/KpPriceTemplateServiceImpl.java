@@ -1,5 +1,6 @@
 package org.dromara.kp.system.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,16 +9,15 @@ import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
-import org.dromara.kp.system.domain.KpOperator;
 import org.dromara.kp.system.domain.KpPriceTemplate;
 import org.dromara.kp.system.domain.KpStation;
 import org.dromara.kp.system.domain.bo.KpPriceTemplateBo;
-import org.dromara.kp.system.domain.resposne.PriceInfoResponse;
 import org.dromara.kp.system.domain.vo.KpPriceTemplateVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
 import org.dromara.kp.system.mapper.KpPriceTemplateMapper;
 import org.dromara.kp.system.mapper.KpStationMapper;
 import org.dromara.kp.system.service.IKpPriceTemplateService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -45,8 +45,17 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
      */
     @Override
     public KpPriceTemplateVo queryById(Long id) {
-        return baseMapper.selectVoById(id);
+        KpPriceTemplateVo vo = baseMapper.selectVoById(id);
+        return getKpPriceTemplateVo(vo);
     }
+
+    @NotNull
+    private KpPriceTemplateVo getKpPriceTemplateVo(KpPriceTemplateVo vo) {
+        List<KpStationVo> kpStationVos = stationMapper.selectVoList(Wrappers.lambdaQuery(KpStation.class).eq(KpStation::getPriceId, vo.getId()).eq(KpStation::getDelFlag, 0));
+        vo.setStationIds(kpStationVos);
+        return vo;
+    }
+
 
     /**
      * 分页查询价格模版管理列表
@@ -59,6 +68,7 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
     public TableDataInfo<KpPriceTemplateVo> queryPageList(KpPriceTemplateBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<KpPriceTemplate> lqw = buildQueryWrapper(bo);
         Page<KpPriceTemplateVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        result.getRecords().forEach(this::getKpPriceTemplateVo);
         return TableDataInfo.build(result);
     }
 
@@ -70,8 +80,19 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
      */
     @Override
     public List<KpPriceTemplateVo> queryList(KpPriceTemplateBo bo) {
+        if (bo.getStationId() != null) {
+            KpStationVo kpStationVo = stationMapper.selectVoById(bo.getStationId());
+            if (kpStationVo != null) {
+                LambdaQueryWrapper<KpPriceTemplate> lqw = Wrappers.lambdaQuery();
+                lqw.eq(KpPriceTemplate::getId, kpStationVo.getPriceId());
+                return baseMapper.selectVoList(lqw);
+            }
+        }
         LambdaQueryWrapper<KpPriceTemplate> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<KpPriceTemplateVo> vos = baseMapper.selectVoList(lqw);
+        vos.forEach(this::getKpPriceTemplateVo);
+        return vos;
+
     }
 
     private LambdaQueryWrapper<KpPriceTemplate> buildQueryWrapper(KpPriceTemplateBo bo) {
@@ -97,6 +118,12 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
         boolean flag = baseMapper.insert(add) > 0;
         if (flag) {
             bo.setId(add.getId());
+            if (CollUtil.isNotEmpty(bo.getStationIds())) {
+                stationMapper.update(Wrappers.lambdaUpdate(KpStation.class)
+                    .in(KpStation::getId, bo.getStationIds())
+                    .set(KpStation::getPriceId, bo.getId())
+                );
+            }
         }
         return flag;
     }
@@ -111,7 +138,14 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
     public Boolean updateByBo(KpPriceTemplateBo bo) {
         KpPriceTemplate update = MapstructUtils.convert(bo, KpPriceTemplate.class);
         validEntityBeforeSave(update);
-        return baseMapper.updateById(update) > 0;
+        boolean flag = baseMapper.updateById(update) > 0;
+        if (flag && CollUtil.isNotEmpty(bo.getStationIds())) {
+            stationMapper.update(Wrappers.lambdaUpdate(KpStation.class)
+                .in(KpStation::getId, bo.getStationIds())
+                .set(KpStation::getPriceId, bo.getId())
+            );
+        }
+        return flag;
     }
 
     /**

@@ -108,6 +108,7 @@ public class KpStationServiceImpl implements IKpStationService {
         lqw.eq(bo.getStationType() != null, KpStation::getStationType, bo.getStationType());
         lqw.eq(bo.getStationStatus() != null, KpStation::getStationStatus, bo.getStationStatus());
         lqw.eq(KpStation::getDelFlag, 0);
+        lqw.eq(bo.getPriceId() != null, KpStation::getPriceId, bo.getPriceId());
         return lqw;
     }
 

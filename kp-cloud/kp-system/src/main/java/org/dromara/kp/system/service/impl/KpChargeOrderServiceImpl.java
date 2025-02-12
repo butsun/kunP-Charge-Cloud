@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.dromara.kp.system.domain.KpChargeVoucher;
+import org.dromara.kp.system.domain.KpOperator;
+import org.dromara.kp.system.domain.KpStation;
 import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
@@ -54,8 +56,8 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
 
     @NotNull
     private KpChargeOrderVo getKpChargeOrderVo(KpChargeOrderVo vo) {
-        KpOperatorVo kpOperatorVo = operatorMapper.selectVoById(vo.getOperatorId());
-        KpStationVo kpStationVo = stationMapper.selectVoById(vo.getStationId());
+        KpOperator kpOperatorVo = operatorMapper.selectById(vo.getOperatorId());
+        KpStation kpStationVo = stationMapper.selectById(vo.getStationId());
         vo.setOperatorName(kpOperatorVo.getOperatorName());
         vo.setStationName(kpStationVo.getStationName());
         vo.setActivityMoney( vo.getTotalMoney().subtract(vo.getFinalTotalMoney()) );

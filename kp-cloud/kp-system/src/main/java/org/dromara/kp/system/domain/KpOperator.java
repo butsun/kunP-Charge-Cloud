@@ -51,7 +51,6 @@ public class KpOperator extends TenantEntity {
     /**
      * 删除标记
      */
-    @TableLogic
     private Long delFlag;
 
 

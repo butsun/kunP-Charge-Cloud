@@ -1,5 +1,6 @@
 package org.dromara.kp.protocol.yunkuaichong.v150.cmd;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBuf;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +66,7 @@ public class Ykc031V150PileTryChargeULCmd extends YunKuaiChongUplinkCmdExe {
         byte[] carVINBytes = new byte[17];
         byteBuf.readBytes(carVINBytes);
         String carVin = new String(carVINBytes, StandardCharsets.US_ASCII);
+        carVin = StrUtil.reverse(carVin);
         additionalInfo.put("VIN码", carVin);
 
 

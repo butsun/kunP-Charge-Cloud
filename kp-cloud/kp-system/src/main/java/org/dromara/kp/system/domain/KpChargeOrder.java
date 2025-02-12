@@ -173,7 +173,6 @@ public class KpChargeOrder implements Serializable {
     /**
      * 删除标记
      */
-    @TableLogic
     private Long delFlag;
 
     /**

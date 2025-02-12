@@ -123,6 +123,7 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
                     .in(KpStation::getId, bo.getStationIds())
                     .set(KpStation::getPriceId, bo.getId())
                 );
+                //如果成功 调用client下发设备
             }
         }
         return flag;
@@ -144,6 +145,9 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
                 .in(KpStation::getId, bo.getStationIds())
                 .set(KpStation::getPriceId, bo.getId())
             );
+
+
+            //如果成功 调用client下发设备
         }
         return flag;
     }

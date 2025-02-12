@@ -101,10 +101,10 @@ public class KpPriceTemplateVo implements Serializable {
     private String remark;
 
     /**
-     * 备注
+     * 修改时间
      */
-    @ExcelProperty("备注")
-    private Date createTime;
+    @ExcelProperty("修改时间")
+    private Date updateTime;
 
     private List<KpStationVo> stationIds;
 

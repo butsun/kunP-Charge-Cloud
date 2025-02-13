@@ -110,6 +110,10 @@
             <version>2.2.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.dromara</groupId>
+            <artifactId>ruoyi-common-job</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

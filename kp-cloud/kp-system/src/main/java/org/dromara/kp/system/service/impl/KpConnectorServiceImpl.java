@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.dromara.kp.system.domain.KpChargeVoucher;
 import org.dromara.kp.system.domain.KpDiscountActivity;
 import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
@@ -175,6 +176,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
     public Boolean updateByEquipmentId(KpConnectorBo bo) {
         return baseMapper.update(Wrappers.<KpConnector>lambdaUpdate()
             .eq(KpConnector::getEquipmentId, bo.getEquipmentId())
+            .eq(KpConnector::getDelFlag, 0)
             .set(Objects.nonNull(bo.getStationId()), KpConnector::getStationId, bo.getStationId())
             .set(Objects.nonNull(bo.getOperatorId()), KpConnector::getOperatorId, bo.getOperatorId())
             .set(BaseEntity::getUpdateTime, DateUtil.date())) > 0;
@@ -184,7 +186,8 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
     public KpConnector queryByNo(String pileCode, Integer gunNo) {
         return baseMapper.selectOne(Wrappers.<KpConnector>lambdaUpdate()
             .eq(KpConnector::getEquipmentNo, pileCode)
-            .eq(KpConnector::getConnectorNo, gunNo));
+            .eq(KpConnector::getConnectorNo, gunNo)
+            .eq(KpConnector::getDelFlag, 0));
     }
 
     @Override
@@ -192,6 +195,7 @@ public class KpConnectorServiceImpl implements IKpConnectorService {
         baseMapper.update(Wrappers.<KpConnector>lambdaUpdate()
             .eq(KpConnector::getEquipmentNo, pileCode)
             .eq(KpConnector::getConnectorNo, gunNo)
+            .eq(KpConnector::getDelFlag, 0)
             .set(KpConnector::getStatus, gunState)
             .set(BaseEntity::getUpdateTime, DateUtil.date()));
     }

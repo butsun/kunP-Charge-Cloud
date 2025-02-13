@@ -8,9 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
-import org.dromara.kp.system.domain.KpChargeVoucher;
-import org.dromara.kp.system.domain.KpOperator;
-import org.dromara.kp.system.domain.KpStation;
+import org.dromara.kp.system.domain.*;
 import org.dromara.kp.system.domain.vo.KpEquipmentVo;
 import org.dromara.kp.system.domain.vo.KpOperatorVo;
 import org.dromara.kp.system.domain.vo.KpStationVo;
@@ -20,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.dromara.kp.system.domain.bo.KpChargeOrderBo;
 import org.dromara.kp.system.domain.vo.KpChargeOrderVo;
-import org.dromara.kp.system.domain.KpChargeOrder;
 import org.dromara.kp.system.mapper.KpChargeOrderMapper;
 import org.dromara.kp.system.service.IKpChargeOrderService;
 
@@ -167,6 +164,7 @@ public class KpChargeOrderServiceImpl implements IKpChargeOrderService {
             .eq(KpChargeOrder::getTradeNo, tradeNo)
             .eq(KpChargeOrder::getEquipmentNo, pileCode)
             .eq(KpChargeOrder::getConnectorNo, gunCode)
+            .eq(KpChargeOrder::getDelFlag, 0)
         );
     }
 

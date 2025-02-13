@@ -64,7 +64,7 @@ public class PileLeftCycleClient implements PileLeftCycleService {
     @Override
     public void refreshPileStatus(HeartBeatRequest heartBeatRequest) {
         KpEquipment equipment =  kpEquipmentService.queryByEquipmentNo(heartBeatRequest.getPileCode());
-        equipment.setOnlineTm(DateUtil.date());
+        equipment.setIsWorking(0);
         kpEquipmentService.update(equipment);
     }
 

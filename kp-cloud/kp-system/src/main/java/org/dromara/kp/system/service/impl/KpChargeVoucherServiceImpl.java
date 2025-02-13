@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.dromara.kp.system.domain.KpChargeAccount;
+import org.dromara.kp.system.domain.KpChargeOrder;
 import org.dromara.kp.system.domain.KpConnector;
 import org.dromara.kp.system.domain.vo.*;
 import org.dromara.kp.system.mapper.KpChargeAccountMapper;
@@ -151,6 +152,7 @@ public class KpChargeVoucherServiceImpl implements IKpChargeVoucherService {
         lqw.eq( KpChargeVoucher::getVoucherType, entity.getVoucherType());
         lqw.eq( KpChargeVoucher::getAccountId, entity.getAccountId());
         lqw.eq( KpChargeVoucher::getDisableFlag,0);
+        lqw.eq(KpChargeVoucher::getDelFlag, 0);
         return lqw;
     }
 

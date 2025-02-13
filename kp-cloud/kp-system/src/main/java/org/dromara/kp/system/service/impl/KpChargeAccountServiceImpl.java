@@ -149,6 +149,7 @@ public class KpChargeAccountServiceImpl implements IKpChargeAccountService {
         lqw.eq(KpChargeAccount::getMobile, entity.getMobile());
         lqw.eq(KpChargeAccount::getAccoutType, entity.getAccoutType());
         lqw.eq(KpChargeAccount::getDisableFlag, 0);
+        lqw.eq(KpChargeAccount::getDelFlag, 0);
         return lqw;
     }
 

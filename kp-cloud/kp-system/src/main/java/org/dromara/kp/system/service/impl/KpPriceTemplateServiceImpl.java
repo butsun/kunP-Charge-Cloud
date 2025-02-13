@@ -9,6 +9,7 @@ import org.dromara.common.core.utils.MapstructUtils;
 import org.dromara.common.core.utils.StringUtils;
 import org.dromara.common.mybatis.core.page.PageQuery;
 import org.dromara.common.mybatis.core.page.TableDataInfo;
+import org.dromara.kp.system.domain.KpConnector;
 import org.dromara.kp.system.domain.KpPriceTemplate;
 import org.dromara.kp.system.domain.KpStation;
 import org.dromara.kp.system.domain.bo.KpPriceTemplateBo;
@@ -181,6 +182,7 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
     public Boolean linkStation(KpPriceTemplateBo bo) {
         return stationMapper.update(Wrappers.lambdaUpdate(KpStation.class)
             .eq(KpStation::getId, bo.getStationId())
+            .eq(KpStation::getDelFlag, 0)
             .set(KpStation::getPriceId, bo.getId())
         ) > 0;
     }
@@ -191,6 +193,7 @@ public class KpPriceTemplateServiceImpl implements IKpPriceTemplateService {
         if (kpStationVo != null) {
             LambdaQueryWrapper<KpPriceTemplate> lqw = Wrappers.lambdaQuery();
             lqw.eq(KpPriceTemplate::getId, kpStationVo.getPriceId());
+            lqw.eq(KpPriceTemplate::getDelFlag, 0);
             return baseMapper.selectOne(lqw);
         }
         return null;

@@ -214,6 +214,7 @@ public class KpEquipmentServiceImpl implements IKpEquipmentService {
     public KpEquipment queryByEquipmentNo(String pileCode) {
         return baseMapper.selectOne(Wrappers.<KpEquipment>lambdaQuery()
             .eq(KpEquipment::getEquipmentNo, pileCode)
+            .eq(KpEquipment::getDelFlag, 0)
         );
     }
 

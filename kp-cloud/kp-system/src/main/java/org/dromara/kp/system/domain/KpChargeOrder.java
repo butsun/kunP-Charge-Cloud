@@ -232,4 +232,9 @@ public class KpChargeOrder implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    /**
+     * 租户编号
+     */
+    private String tenantId;
 }

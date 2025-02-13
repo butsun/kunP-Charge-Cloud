@@ -122,6 +122,8 @@ public class PileChargeClient implements PileChargeService {
             kpChargeOrder.setPlateNum(kpUserCar.getPlateNo());
         }
 
+        kpChargeOrder.setTenantId(equipment.getTenantId());
+
         boolean result = chargeOrderService.insertOrder(kpChargeOrder);
         return PileTryChargeResponse.builder()
             .tradeNo(tradeNo)
@@ -139,8 +141,8 @@ public class PileChargeClient implements PileChargeService {
         int gunCode = chargingProgressProto.getGunCode();
         String tradeNo = chargingProgressProto.getTradeNo();
         KpChargeOrder chargeOrder = chargeOrderService.queryByTradeNo(tradeNo, pileCode, gunCode);
-        if (Objects.isNull(chargeOrder)) {
-            //找不到订单直接返回
+        if (Objects.isNull(chargeOrder) || chargeOrder.getStartChargeSeqStat() == 4) {
+            //找不到订单直接返回  此处为枪上报的充电信息   只能修改未结算的订单信息
             return;
         }
         chargeOrder.setStartChargeSeqStat(2);
@@ -273,6 +275,7 @@ public class PileChargeClient implements PileChargeService {
         chargeOrder.setFinalElecMoney(finalElecMoney);
         chargeOrder.setFinalServiceMoney(finalServiceMoney);
         chargeOrder.setFinalTotalMoney(finalElecMoney.add(finalServiceMoney));
+
         return chargeOrder;
     }
 
